@@ -1,0 +1,25 @@
+<div class="tw:flex tw:flex-col tw:gap-5">
+  <% %i[slim medium large].each do |size| %>
+    <div>
+      <p class="tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted"><%= size.to_s.humanize %></p>
+      <div class="tw:flex tw:flex-wrap tw:items-center tw:gap-2">
+        <%= render(ShopifyUI::ButtonComponent.new(size: size)) { "Secondary" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :primary, size: size)) { "Primary" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :tertiary, size: size)) { "Tertiary" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :critical, size: size)) { "Critical" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :plain, size: size)) { "Plain" } %>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <p class="tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted">Disabled</p>
+    <div class="tw:flex tw:flex-wrap tw:items-center tw:gap-2">
+      <%= render(ShopifyUI::ButtonComponent.new(disabled: true)) { "Secondary" } %>
+      <%= render(ShopifyUI::ButtonComponent.new(variant: :primary, disabled: true)) { "Primary" } %>
+      <%= render(ShopifyUI::ButtonComponent.new(variant: :tertiary, disabled: true)) { "Tertiary" } %>
+      <%= render(ShopifyUI::ButtonComponent.new(variant: :critical, disabled: true)) { "Critical" } %>
+      <%= render(ShopifyUI::ButtonComponent.new(variant: :plain, disabled: true)) { "Plain" } %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.DS_Store
+.bundle/
+log/
+tmp/
+coverage/
+node_modules/
+*.log
+.idea/
+.vscode/
+
+# Preview server
+/dev/public/assets/
+/dev/tmp/
+/dev/log/

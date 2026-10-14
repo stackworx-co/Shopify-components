@@ -1,0 +1,68 @@
+/* shopify-ui Tailwind theme.
+   Imported by the host app's Tailwind entry file AFTER its tailwindcss imports
+   (see docs/setup.md). Only design-token colors exist; the default palette is cleared. */
+@import "./tokens.css";
+
+@source "../../../components";
+@source "../../../views";
+
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-ink: var(--sui-ink);
+  --color-ink-secondary: var(--sui-ink-secondary);
+  --color-muted: var(--sui-muted);
+  --color-faint: var(--sui-faint);
+  --color-disabled: var(--sui-disabled);
+  --color-page: var(--sui-page);
+  --color-border: var(--sui-border);
+  --color-border-secondary: var(--sui-border-secondary);
+  --color-border-hover: var(--sui-border-hover);
+  --color-input-border: var(--sui-input-border);
+  --color-surface: var(--sui-surface);
+  --color-surface-secondary: var(--sui-surface-secondary);
+  --color-surface-hover: var(--sui-surface-hover);
+  --color-surface-sunken: var(--sui-surface-sunken);
+  --color-accent: var(--sui-accent);
+  --color-accent-hover: var(--sui-accent-hover);
+  --color-accent-light: var(--sui-accent-light);
+  --color-on-accent: var(--sui-on-accent);
+  --color-on-accent-hover: var(--sui-on-accent-hover);
+  --color-fill-tertiary: var(--sui-fill-tertiary);
+  --color-fill-tertiary-hover: var(--sui-fill-tertiary-hover);
+  --color-fill-tertiary-active: var(--sui-fill-tertiary-active);
+  --color-link: var(--sui-link);
+  --color-link-hover: var(--sui-link-hover);
+  --color-good: var(--sui-good);
+  --color-good-light: var(--sui-good-light);
+  --color-good-icon: var(--sui-good-icon);
+  --color-warn: var(--sui-warn);
+  --color-warn-light: var(--sui-warn-light);
+  --color-warn-icon: var(--sui-warn-icon);
+  --color-danger: var(--sui-danger);
+  --color-danger-light: var(--sui-danger-light);
+  --color-danger-icon: var(--sui-danger-icon);
+  --color-danger-fill: var(--sui-danger-fill);
+  --color-danger-fill-hover: var(--sui-danger-fill-hover);
+  --color-info: var(--sui-info);
+  --color-info-light: var(--sui-info-light);
+  --color-info-icon: var(--sui-info-icon);
+  --color-attention: var(--sui-attention);
+  --color-on-attention: var(--sui-on-attention);
+  --color-neutral: var(--sui-neutral);
+  --color-neutral-light: var(--sui-neutral-light);
+
+  /* Inter stands in for ShopifyInter, which is not publicly distributed. */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Consolas, Menlo, monospace;
+
+  --font-weight-regular: 450;
+  --font-weight-medium: 550;
+  --font-weight-semibold: 650;
+  --font-weight-bold: 700;
+
+  --radius-surface: 16px;
+  --radius-control: 8px;
+
+  --shadow-card: var(--sui-shadow-card);
+}

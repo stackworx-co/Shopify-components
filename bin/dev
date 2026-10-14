@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Starts the component gallery and the Tailwind watcher.
+# Usage: bin/dev            -> http://localhost:4000
+#        PORT=5000 bin/dev
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+PORT="${PORT:-4000}"
+CSS_IN="dev/tailwind.css"
+CSS_OUT="dev/public/assets/preview.css"
+
+bundle exec tailwindcss -i "$CSS_IN" -o "$CSS_OUT"
+bundle exec tailwindcss -i "$CSS_IN" -o "$CSS_OUT" --watch=always &
+TAILWIND_PID=$!
+trap 'kill "$TAILWIND_PID" 2>/dev/null || true' EXIT INT TERM
+
+echo "shopify-ui components: http://localhost:${PORT}"
+bundle exec puma --port "$PORT" dev/config.ru

@@ -1,0 +1,67 @@
+/* shopify-ui design tokens. Light only.
+   Values follow the Polaris 1 token package (@shopify/polaris-tokens@9.4.2) plus
+   shapes observed in the current Shopify admin; an approximation, not Polaris 2.
+   Prefixed --sui-* so they never collide with a host app's own variables. */
+:root {
+  /* Text */
+  --sui-ink: #303030;
+  --sui-ink-secondary: #616161;
+  --sui-muted: #616161;
+  --sui-faint: #8a8a8a;
+  --sui-disabled: #b5b5b5;
+
+  /* Surfaces */
+  --sui-page: #f1f1f1;
+  --sui-surface: #fff;
+  --sui-surface-secondary: #f7f7f7;
+  --sui-surface-hover: #f7f7f7;
+  --sui-surface-sunken: #f1f1f1;
+
+  /* Borders */
+  --sui-border: #e3e3e3;
+  --sui-border-secondary: #ebebeb;
+  --sui-border-hover: #cccccc;
+  --sui-input-border: #8a8a8a;
+
+  /* Primary */
+  --sui-accent: #1a1a1a;
+  --sui-accent-hover: #000;
+  --sui-accent-light: rgba(0, 0, 0, .06);
+  --sui-on-accent: #fff;
+  --sui-on-accent-hover: #cccccc;
+
+  /* Tertiary fill */
+  --sui-fill-tertiary: #e3e3e3;
+  --sui-fill-tertiary-hover: #cccccc;
+  --sui-fill-tertiary-active: #b5b5b5;
+
+  /* Links */
+  --sui-link: #005bd3;
+  --sui-link-hover: #004299;
+
+  /* Status: text, tinted surface (-light), icon */
+  --sui-good: #014b40;
+  --sui-good-light: #cdfed4;
+  --sui-good-icon: #047b5d;
+  --sui-warn: #4f4700;
+  --sui-warn-light: #fff8db;
+  --sui-warn-icon: #998a00;
+  --sui-danger: #8e0b21;
+  --sui-danger-light: #fee8eb;
+  --sui-danger-icon: #e22c38;
+  --sui-danger-fill: #c70a24;
+  --sui-danger-fill-hover: #a3071c;
+  --sui-info: #003a5a;
+  --sui-info-light: #eaf4ff;
+  --sui-info-icon: #0094d5;
+
+  /* Attention (Unfulfilled / Partially paid / On hold) */
+  --sui-attention: #ffc453;
+  --sui-on-attention: #5c4000;
+
+  /* Neutral / resolved status */
+  --sui-neutral: #8a8a8a;
+  --sui-neutral-light: rgba(0, 0, 0, .06);
+
+  --sui-shadow-card: 0 1px 0 0 rgba(26, 26, 26, .07), 0 3px 1px -1px rgba(26, 26, 26, .07);
+}
