@@ -36,10 +36,10 @@ bin/dev          # http://localhost:4000
 `bin/dev` builds the CSS with Tailwind (the `tailwindcss-ruby` gem, so no Node is needed) and
 starts the gallery. Refresh the page after changes.
 
-To add a component to the gallery, create `dev/app/views/components/_<name>.html.erb` with its
+To add a component to the gallery, create `preview/components/_<name>.html.erb` with its
 variants; it appears on the page automatically.
 
-The `Gemfile` and `dev/` are for the gallery only. Rails apps using shopify-ui never load them,
+The `Gemfile`, `bin/dev` and `preview/` are for the gallery only. Rails apps using shopify-ui never load them,
 and nothing here is deployed.
 
 ## Usage in a Rails app

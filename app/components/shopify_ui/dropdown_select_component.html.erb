@@ -1,0 +1,17 @@
+<div class="<%= ShopifyUI::DropdownSelectComponent::WRAPPER %>">
+  <% if @label %>
+    <label for="<%= @id %>" class="<%= label_classes %>"><%= @label %></label>
+  <% end %>
+  <div class="<%= ShopifyUI::DropdownSelectComponent::FIELD %>">
+    <select <%= tag.attributes(select_attributes) %>><%= option_tags %></select>
+    <svg class="<%= chevron_classes %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+  </div>
+  <% if @error.present? %>
+    <p id="<%= @id %>-description" class="<%= ShopifyUI::DropdownSelectComponent::ERROR %>">
+      <svg class="<%= ShopifyUI::DropdownSelectComponent::ERROR_ICON %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-.75 4.5a.75.75 0 0 1 1.5 0v4a.75.75 0 0 1-1.5 0v-4ZM10 14.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>
+      <%= @error %>
+    </p>
+  <% elsif @help_text.present? %>
+    <p id="<%= @id %>-description" class="<%= ShopifyUI::DropdownSelectComponent::HELP_TEXT %>"><%= @help_text %></p>
+  <% end %>
+</div>

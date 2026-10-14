@@ -1,0 +1,51 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% link_class = "tw:font-mono tw:font-medium tw:text-link tw:no-underline tw:hover:underline" %>
+<% orders = [
+     { id: 1608, date: "Today at 8:35 am", customer: "Test user two", total: "$0.00", payment: [:dot, "Refunded"], fulfillment: [:dot, "Not required"], muted: true },
+     { id: 1607, date: "Today at 7:59 am", customer: "Test user two", total: "$89.25", payment: [:dot, "Paid"], fulfillment: [:fill, "Unfulfilled"] },
+     { id: 1602, date: "Friday at 6:03 am", customer: "Test user two", total: "$81.29", payment: [:fill, "Partially paid"], fulfillment: [:outline, "On hold"], selected: true },
+     { id: 1601, date: "Friday at 6:03 am", customer: "Test user two", total: "$59.24", payment: [:outline, "Partially refunded"], fulfillment: [:fill, "Partially fulfilled"] },
+     { id: 1599, date: "Friday at 5:50 am", customer: "Test user two", total: "$77.70", payment: [:dot, "Paid"], fulfillment: [:dot, "Fulfilled"] }
+   ] %>
+<% badge = ->(appearance, label) { render(ShopifyUI::BadgeComponent.new(tone: appearance == :dot ? :neutral : :attention, appearance: appearance)) { label } } %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Index table: selectable rows, links, badges, muted and selected rows</p>
+    <%= render(ShopifyUI::TableComponent.new(
+          selectable: true,
+          columns: ["Order", "Date", "Customer", { label: "Total", numeric: true }, "Payment status", "Fulfillment status"]
+        )) do |table| %>
+      <% orders.each do |order| %>
+        <% table.with_row(id: order[:id], muted: order[:muted], selected: order[:selected]) do |row| %>
+          <% row.with_cell { link_to("##{order[:id]}", "#", class: link_class) } %>
+          <% row.with_cell { order[:date] } %>
+          <% row.with_cell { order[:customer] } %>
+          <% row.with_cell { order[:total] } %>
+          <% row.with_cell { badge.call(*order[:payment]) } %>
+          <% row.with_cell { badge.call(*order[:fulfillment]) } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Data table: no selection, numeric columns right-aligned</p>
+    <%= render(ShopifyUI::TableComponent.new(
+          columns: ["Product", { label: "Price", numeric: true }, { label: "Available", numeric: true }, { label: "Sales", numeric: true }]
+        )) do |table| %>
+      <% [["Emerald Silk Gown", "$875.00", 124, "$122,500.00"], ["Mauve Cashmere Scarf", "$230.00", 34, "$19,090.00"], ["Navy Merino Wool Blazer", "$445.00", 140, "$14,240.00"]].each do |product| %>
+        <% table.with_row do |row| %>
+          <% product.each do |value| %>
+            <% row.with_cell { value.to_s } %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Empty</p>
+    <%= render(ShopifyUI::TableComponent.new(selectable: true, columns: ["Order", "Date", "Customer"], empty: "No orders found")) %>
+  </div>
+</div>

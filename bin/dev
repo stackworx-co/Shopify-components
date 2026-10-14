@@ -6,8 +6,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PORT="${PORT:-4000}"
-CSS_IN="dev/tailwind.css"
-CSS_OUT="dev/public/assets/preview.css"
+CSS_IN="preview/tailwind.css"
+CSS_OUT="preview/build/preview.css"
 
 bundle exec tailwindcss -i "$CSS_IN" -o "$CSS_OUT"
 bundle exec tailwindcss -i "$CSS_IN" -o "$CSS_OUT" --watch=always &
@@ -15,4 +15,4 @@ TAILWIND_PID=$!
 trap 'kill "$TAILWIND_PID" 2>/dev/null || true' EXIT INT TERM
 
 echo "shopify-ui components: http://localhost:${PORT}"
-bundle exec puma --port "$PORT" dev/config.ru
+bundle exec puma --port "$PORT" preview/config.ru

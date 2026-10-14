@@ -1,0 +1,30 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row_class = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
+<% tones = ShopifyUI::BadgeComponent::FILLS.keys %>
+
+<div class="tw:flex tw:flex-col tw:gap-5">
+  <% ShopifyUI::BadgeComponent::APPEARANCES.each do |appearance| %>
+    <div>
+      <p class="<%= label_class %>"><%= appearance.to_s.humanize %></p>
+      <div class="<%= row_class %>">
+        <% tones.each do |tone| %>
+          <%= render(ShopifyUI::BadgeComponent.new(tone: tone, appearance: appearance)) { tone.to_s.humanize } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <p class="<%= label_class %>">As used on the Orders page</p>
+    <div class="<%= row_class %>">
+      <%= render(ShopifyUI::BadgeComponent.new(tone: :attention)) { "Unfulfilled" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(tone: :attention)) { "Partially paid" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(tone: :attention, appearance: :outline)) { "On hold" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(tone: :attention, appearance: :outline)) { "Partially refunded" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(appearance: :dot)) { "Paid" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(appearance: :dot)) { "Fulfilled" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(appearance: :dot)) { "Delivered" } %>
+      <%= render(ShopifyUI::BadgeComponent.new(appearance: :dot)) { "Refunded" } %>
+    </div>
+  </div>
+</div>

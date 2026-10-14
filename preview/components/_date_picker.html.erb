@@ -1,0 +1,39 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% today = Date.current %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Date range with presets (Analytics style), preset selected</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(url: "#", start_date: today - 30, end_date: today - 1)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Date range with presets, custom range</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(url: "#", start_date: today.beginning_of_month - 10, end_date: today.beginning_of_month + 4)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Date range without presets, nothing selected</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(url: "#", presets: false)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Single date</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(url: "#", mode: :single, start_date: today, start_name: :date)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Limited dates (only the last 60 days can be picked), slim tertiary trigger</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(url: "#", min: today - 60, max: today, presets: false, variant: :tertiary, size: :slim, label: "Fulfilled date")) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Inline range (inside a form, no popup)</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(inline: true, presets: false, start_date: today - 3, end_date: today + 3)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Inline single date</p>
+    <%= render(ShopifyUI::DatePickerComponent.new(inline: true, mode: :single, start_date: today, start_name: :ship_on)) %>
+  </div>
+</div>

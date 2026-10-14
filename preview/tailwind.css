@@ -1,0 +1,9 @@
+/* Preview's Tailwind entry. Mirrors the entry file a host app uses (docs/setup.md):
+   tw: prefix, no Preflight, !important. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) important;
+
+@import "../app/assets/stylesheets/shopify_ui/theme.css";
+
+@source "./";

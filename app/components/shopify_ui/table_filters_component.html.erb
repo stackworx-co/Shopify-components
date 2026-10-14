@@ -1,0 +1,60 @@
+<div <%= tag.attributes(wrapper_attributes) %>>
+  <div class="<%= ShopifyUI::TableFiltersComponent::BAR %>">
+    <% if @views.any? && @view_style == :menu %>
+      <%= render(ShopifyUI::DropdownMenuComponent.new(label: selected_view[:label], variant: :tertiary, size: :slim)) do |menu| %>
+        <% @views.each do |view| %>
+          <% menu.with_action(href: view[:href], icon: (view[:selected] ? check_icon : blank_icon)) { view[:label] } %>
+        <% end %>
+      <% end %>
+    <% elsif @views.any? %>
+      <nav class="<%= ShopifyUI::TableFiltersComponent::TABS %>" aria-label="Views">
+        <% @views.each do |view| %>
+          <a href="<%= view[:href] %>" class="<%= tab_classes(view) %>" <%= "aria-current=page" if view[:selected] %>>
+            <%= view[:label] %>
+            <% if view[:count] %><span class="<%= ShopifyUI::TableFiltersComponent::COUNT %>"><%= view[:count] %></span><% end %>
+          </a>
+        <% end %>
+      </nav>
+    <% end %>
+
+    <form action="<%= @url %>" method="get" role="search" class="<%= ShopifyUI::TableFiltersComponent::SEARCH.join(" ") %>">
+      <% @params.each do |name, value| %>
+        <input type="hidden" name="<%= name %>" value="<%= value %>">
+      <% end %>
+      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m16 16-3.5-3.5"/></svg>
+      <input type="search" name="<%= @query_name %>" value="<%= @query %>" placeholder="<%= @placeholder %>" aria-label="<%= @placeholder %>" class="<%= ShopifyUI::TableFiltersComponent::SEARCH_INPUT.join(" ") %>">
+    </form>
+
+    <% if @sort.any? %>
+      <%= render(ShopifyUI::DropdownMenuComponent.new(icon: sort_icon, icon_label: "Sort", align: :end)) do |menu| %>
+        <% menu.with_heading("Sort by") %>
+        <% @sort.each do |option| %>
+          <% menu.with_action(href: option[:href], icon: (option[:selected] ? check_icon : blank_icon)) { option[:label] } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if pills? %>
+    <div class="<%= ShopifyUI::TableFiltersComponent::PILLS %>">
+      <% @applied.each do |filter| %>
+        <span class="<%= ShopifyUI::TableFiltersComponent::PILL.join(" ") %>">
+          <%= filter[:label] %>
+          <a href="<%= filter[:remove_href] %>" class="<%= ShopifyUI::TableFiltersComponent::PILL_REMOVE.join(" ") %>" aria-label="Remove <%= filter[:label] %>">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8"/></svg>
+          </a>
+        </span>
+      <% end %>
+      <% if @add_filters.any? %>
+        <%= render(ShopifyUI::DropdownMenuComponent.new(label: "Add filter", variant: :tertiary, size: :slim)) do |menu| %>
+          <% @add_filters.each do |filter| %>
+            <% menu.with_action(href: filter[:href]) { filter[:label] } %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if @clear_href && @applied.any? %>
+        <a href="<%= @clear_href %>" class="<%= ShopifyUI::TableFiltersComponent::CLEAR %>">Clear all</a>
+      <% end %>
+    </div>
+  <% end %>
+</div>

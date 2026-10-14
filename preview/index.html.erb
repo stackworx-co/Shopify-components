@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>shopify-ui components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@450;550;650;700&display=swap">
+    <link rel="stylesheet" href="/preview.css?v=<%= File.mtime(Rails.root.join("build/preview.css")).to_i rescue 0 %>">
+    <style>
+      body { margin: 0; background: var(--sui-page); color: var(--sui-ink);
+             font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="tw:mx-auto tw:max-w-5xl tw:px-6 tw:py-10">
+      <header class="tw:mb-8">
+        <h1 class="tw:m-0 tw:text-[24px] tw:font-semibold tw:text-ink">shopify-ui components</h1>
+        <p class="tw:mt-1 tw:mb-0 tw:text-muted">Version <%= ShopifyUISetup.version %></p>
+        <nav class="tw:mt-4 tw:flex tw:flex-wrap tw:gap-2">
+          <a href="/" class="tw:text-link tw:no-underline tw:hover:underline">All</a>
+          <% @all_sections.each do |name| %>
+            <a href="/<%= name %>" class="tw:text-link tw:no-underline tw:hover:underline"><%= name.humanize %></a>
+          <% end %>
+        </nav>
+      </header>
+
+      <div class="tw:flex tw:flex-col tw:gap-6">
+        <% @sections.each do |name| %>
+          <section id="<%= name %>" class="tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:p-6 tw:shadow-card">
+            <h2 class="tw:m-0 tw:mb-4 tw:text-[16px] tw:font-semibold tw:text-ink"><%= name.humanize %></h2>
+            <%= render "components/#{name}" %>
+          </section>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>

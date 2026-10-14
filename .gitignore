@@ -9,6 +9,6 @@ node_modules/
 .vscode/
 
 # Preview server
-/dev/public/assets/
-/dev/tmp/
-/dev/log/
+/preview/build/
+/preview/tmp/
+/preview/log/

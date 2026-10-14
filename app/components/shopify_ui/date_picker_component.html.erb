@@ -1,0 +1,203 @@
+<sui-date-picker <%= tag.attributes(root_attributes) %>>
+  <% unless inline? %>
+    <%= render(ShopifyUI::ButtonComponent.new(variant: @variant, size: @size, popovertarget: @popover_id, aria: { haspopup: "dialog" })) do %>
+      <%= calendar_icon %><%= trigger_label %>
+    <% end %>
+  <% end %>
+  <% panel = capture do %>
+    <% @params.each do |name, value| %>
+      <input type="hidden" name="<%= name %>" value="<%= value %>">
+    <% end %>
+    <div class="<%= ShopifyUI::DatePickerComponent::BODY %>">
+      <% if preset_list.any? %>
+        <div class="<%= ShopifyUI::DatePickerComponent::PRESETS.join(" ") %>">
+          <% preset_list.each do |name, from, to| %>
+            <button type="button" class="<%= ShopifyUI::DatePickerComponent::PRESET.join(" ") %>" data-preset data-start="<%= iso(from) %>" data-end="<%= iso(to) %>" aria-pressed="<%= preset_selected?([name, from, to]) %>"><%= name %></button>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="<%= ShopifyUI::DatePickerComponent::MAIN %>">
+        <% if range? %>
+          <div class="<%= ShopifyUI::DatePickerComponent::INPUTS %>">
+            <label class="<%= ShopifyUI::DatePickerComponent::FIELD %>">
+              <span class="<%= ShopifyUI::DatePickerComponent::FIELD_LABEL %>">Start date</span>
+              <input type="text" name="<%= @start_name %>" value="<%= iso(@start_date) %>" placeholder="YYYY-MM-DD" inputmode="numeric" autocomplete="off" class="<%= ShopifyUI::DatePickerComponent::INPUT.join(" ") %>" data-start-input>
+            </label>
+            <span class="<%= ShopifyUI::DatePickerComponent::ARROW %>" aria-hidden="true">→</span>
+            <label class="<%= ShopifyUI::DatePickerComponent::FIELD %>">
+              <span class="<%= ShopifyUI::DatePickerComponent::FIELD_LABEL %>">End date</span>
+              <input type="text" name="<%= @end_name %>" value="<%= iso(@end_date) %>" placeholder="YYYY-MM-DD" inputmode="numeric" autocomplete="off" class="<%= ShopifyUI::DatePickerComponent::INPUT.join(" ") %>" data-end-input>
+            </label>
+          </div>
+        <% else %>
+          <label class="<%= ShopifyUI::DatePickerComponent::FIELD %>">
+            <span class="<%= ShopifyUI::DatePickerComponent::FIELD_LABEL %>">Date</span>
+            <input type="text" name="<%= @start_name %>" value="<%= iso(@start_date) %>" placeholder="YYYY-MM-DD" inputmode="numeric" autocomplete="off" class="<%= ShopifyUI::DatePickerComponent::INPUT.join(" ") %>" data-start-input>
+          </label>
+        <% end %>
+        <div data-calendar></div>
+      </div>
+    </div>
+    <% unless inline? %>
+      <div class="<%= ShopifyUI::DatePickerComponent::FOOTER %>">
+        <%= render(ShopifyUI::ButtonComponent.new(size: :slim, popovertarget: @popover_id, popovertargetaction: "hide")) { "Cancel" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :primary, size: :slim, type: "submit")) { "Apply" } %>
+      </div>
+    <% end %>
+  <% end %>
+  <% if inline? %>
+    <%= panel %>
+  <% else %>
+    <%= tag.div(**popover_attributes) { tag.form(panel, action: @url, method: "get") } %>
+  <% end %>
+</sui-date-picker>
+<script>
+(function () {
+  if (window.customElements.get("sui-date-picker")) return;
+
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function parse(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || "");
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  function same(a, b) { return !!(a && b && a.getTime() === b.getTime()); }
+
+  window.customElements.define("sui-date-picker", class extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return;
+      if (!this.querySelector("[data-calendar]")) {
+        document.addEventListener("DOMContentLoaded", this.connectedCallback.bind(this), { once: true });
+        return;
+      }
+      this.ready = true;
+      this.c = JSON.parse(this.dataset.classes);
+      this.range = this.dataset.mode === "range";
+      this.min = parse(this.dataset.min);
+      this.max = parse(this.dataset.max);
+      this.startInput = this.querySelector("[data-start-input]");
+      this.endInput = this.querySelector("[data-end-input]");
+      this.calendar = this.querySelector("[data-calendar]");
+      this.start = parse(this.startInput.value);
+      this.end = this.endInput ? parse(this.endInput.value) : this.start;
+      this.showMonth(this.end || this.start || new Date());
+      this.addEventListener("click", this.onClick.bind(this));
+      this.addEventListener("change", this.onInput.bind(this));
+      var popover = this.querySelector("[popover]");
+      if (popover) popover.addEventListener("toggle", this.onToggle.bind(this, popover));
+      this.render();
+    }
+
+    months() {
+      return this.range && window.matchMedia("(min-width: 640px)").matches ? 2 : 1;
+    }
+
+    showMonth(date) {
+      this.view = new Date(date.getFullYear(), date.getMonth() - (this.months() - 1), 1);
+    }
+
+    onToggle(popover, event) {
+      if (event.newState !== "open") return;
+      this.render();
+      var r = this.querySelector("[popovertarget]").getBoundingClientRect();
+      popover.style.left = Math.max(8, Math.min(r.left, window.innerWidth - popover.offsetWidth - 8)) + "px";
+      popover.style.top = (r.bottom + 4) + "px";
+      popover.style.right = popover.style.bottom = "auto";
+    }
+
+    onClick(event) {
+      var nav = event.target.closest("[data-nav]");
+      var day = event.target.closest("[data-day]");
+      var preset = event.target.closest("[data-preset]");
+      if (nav) {
+        this.view = new Date(this.view.getFullYear(), this.view.getMonth() + (+nav.dataset.nav), 1);
+      } else if (day) {
+        this.pick(parse(day.dataset.day));
+      } else if (preset) {
+        this.start = parse(preset.dataset.start);
+        this.end = parse(preset.dataset.end);
+        this.showMonth(this.end);
+        this.sync(preset);
+      } else {
+        return;
+      }
+      this.render();
+    }
+
+    onInput(event) {
+      if (event.target !== this.startInput && event.target !== this.endInput) return;
+      var date = parse(event.target.value);
+      if (!date) return;
+      if (event.target === this.startInput) this.start = date; else this.end = date;
+      if (!this.range) this.end = date;
+      this.showMonth(date);
+      this.sync(null);
+      this.render();
+    }
+
+    pick(date) {
+      if (!this.range) {
+        this.start = this.end = date;
+      } else if (!this.start || this.end || date < this.start) {
+        this.start = date;
+        this.end = null;
+      } else {
+        this.end = date;
+      }
+      this.sync(null);
+    }
+
+    sync(activePreset) {
+      this.startInput.value = this.start ? iso(this.start) : "";
+      if (this.endInput) this.endInput.value = this.end ? iso(this.end) : "";
+      this.querySelectorAll("[data-preset]").forEach(function (button) {
+        button.setAttribute("aria-pressed", button === activePreset ? "true" : "false");
+      });
+    }
+
+    render() {
+      var html = "";
+      var count = this.months();
+      for (var i = 0; i < count; i++) {
+        html += this.month(new Date(this.view.getFullYear(), this.view.getMonth() + i, 1), i === 0, i === count - 1);
+      }
+      this.calendar.innerHTML = '<div class="' + this.c.months + '">' + html + "</div>";
+    }
+
+    month(first, showPrev, showNext) {
+      var c = this.c;
+      var title = first.toLocaleString("en-US", { month: "long", year: "numeric" });
+      var prev = showPrev ? '<button type="button" class="' + c.nav + '" data-nav="-1" aria-label="Previous month">' + this.chevron("m12 5-5 5 5 5") + "</button>" : '<span class="' + c.spacer + '"></span>';
+      var next = showNext ? '<button type="button" class="' + c.nav + '" data-nav="1" aria-label="Next month">' + this.chevron("m8 5 5 5-5 5") + "</button>" : '<span class="' + c.spacer + '"></span>';
+      var weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(function (d) { return "<span>" + d + "</span>"; }).join("");
+      var days = "";
+      for (var b = 0; b < first.getDay(); b++) days += "<span></span>";
+      var total = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+      for (var d = 1; d <= total; d++) days += this.day(new Date(first.getFullYear(), first.getMonth(), d));
+      return '<div class="' + c.month + '"><div class="' + c.header + '">' + prev + '<span class="' + c.title + '">' + title + "</span>" + next + "</div>" +
+        '<div class="' + c.weekdays + '">' + weekdays + '</div><div class="' + c.days + '" role="grid">' + days + "</div></div>";
+    }
+
+    day(date) {
+      var c = this.c;
+      var isStart = same(date, this.start);
+      var isEnd = same(date, this.end);
+      var spans = this.range && this.start && this.end && !same(this.start, this.end);
+      var cell = c.cell;
+      if (spans && date > this.start && date < this.end) cell += " " + c.cell_in_range;
+      if (spans && isStart) cell += " " + c.cell_start;
+      if (spans && isEnd) cell += " " + c.cell_end;
+      var button = c.day;
+      if (isStart || isEnd) button += " " + c.day_selected;
+      else button += " " + c.day_default + (same(date, parse(iso(new Date()))) ? " " + c.day_today : "");
+      var disabled = (this.min && date < this.min) || (this.max && date > this.max);
+      return '<span class="' + cell + '"><button type="button" class="' + button + '" data-day="' + iso(date) + '"' +
+        (disabled ? " disabled" : "") + ' aria-pressed="' + (isStart || isEnd) + '" aria-label="' + date.toDateString() + '">' + date.getDate() + "</button></span>";
+    }
+
+    chevron(path) {
+      return '<svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + path + '"/></svg>';
+    }
+  });
+})();
+</script>

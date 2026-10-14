@@ -1,0 +1,32 @@
+<div <%= tag.attributes(wrapper_attributes) %>>
+  <% if filters? %>
+    <div class="<%= ShopifyUI::TableComponent::HEAD_ROW %>"><%= filters %></div>
+  <% end %>
+  <div class="tw:overflow-x-auto">
+    <table class="<%= ShopifyUI::TableComponent::TABLE %>">
+      <thead>
+        <tr class="<%= ShopifyUI::TableComponent::HEAD_ROW %>">
+          <% if selectable %>
+            <th class="<%= check_cell_classes %>">
+              <%= render(ShopifyUI::CheckboxComponent.new(aria: { label: "Select all" }, onchange: ShopifyUI::TableComponent::SELECT_ALL)) %>
+            </th>
+          <% end %>
+          <% @columns.each do |column| %>
+            <th class="<%= head_cell_classes(column) %>"><%= column[:label] %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if rows? %>
+          <% rows.each do |row| %>
+            <%= row %>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="<%= column_count %>" class="<%= ShopifyUI::TableComponent::EMPTY_CELL %>"><%= @empty %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

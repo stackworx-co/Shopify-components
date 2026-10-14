@@ -1,0 +1,58 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% views = [
+     { label: "All", href: "#", selected: true },
+     { label: "Unfulfilled", href: "#", count: 12 },
+     { label: "Unpaid", href: "#", count: 3 },
+     { label: "Open", href: "#" },
+     { label: "Archived", href: "#" }
+   ] %>
+<% sort = [
+     { label: "Date (newest first)", href: "#", selected: true },
+     { label: "Date (oldest first)", href: "#" },
+     { label: "Total (high to low)", href: "#" },
+     { label: "Customer name (A–Z)", href: "#" }
+   ] %>
+<% add_filters = [{ label: "Payment status", href: "#" }, { label: "Fulfillment status", href: "#" }, { label: "Tagged with", href: "#" }] %>
+<% applied = [{ label: "Fulfillment status is Unfulfilled", remove_href: "#" }, { label: "Tagged with VIP", remove_href: "#" }] %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Views as tabs, search, sort</p>
+    <%= render(ShopifyUI::TableFiltersComponent.new(url: "#", card: true, views: views, sort: sort)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Views as a dropdown (as on the Orders page)</p>
+    <%= render(ShopifyUI::TableFiltersComponent.new(url: "#", card: true, views: views, view_style: :menu, sort: sort)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Search only</p>
+    <%= render(ShopifyUI::TableFiltersComponent.new(url: "#", card: true, placeholder: "Search products")) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Add filter, no filters applied</p>
+    <%= render(ShopifyUI::TableFiltersComponent.new(url: "#", card: true, views: views, sort: sort, add_filters: add_filters)) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Search text and applied filters, with clear all</p>
+    <%= render(ShopifyUI::TableFiltersComponent.new(url: "#", card: true, views: views, sort: sort, query: "nike", applied: applied, add_filters: add_filters, clear_href: "#")) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Inside a table</p>
+    <%= render(ShopifyUI::TableComponent.new(selectable: true, columns: ["Order", "Customer", { label: "Total", numeric: true }, "Fulfillment status"])) do |table| %>
+      <% table.with_filters(url: "#", views: views, view_style: :menu, sort: sort, applied: applied.first(1), add_filters: add_filters, clear_href: "#") %>
+      <% [[1607, "Test user two", "$89.25"], [1601, "Test user two", "$59.24"]].each do |id, customer, total| %>
+        <% table.with_row(id: id) do |row| %>
+          <% row.with_cell { link_to("##{id}", "#", class: "tw:font-mono tw:font-medium tw:text-link tw:no-underline tw:hover:underline") } %>
+          <% row.with_cell { customer } %>
+          <% row.with_cell { total } %>
+          <% row.with_cell { render(ShopifyUI::BadgeComponent.new(tone: :attention)) { "Unfulfilled" } } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

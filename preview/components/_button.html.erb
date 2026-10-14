@@ -1,0 +1,35 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row_class = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
+
+<div class="tw:flex tw:flex-col tw:divide-y tw:divide-border">
+  <% ShopifyUI::ButtonComponent::VARIANTS.each_key do |variant| %>
+    <div class="tw:py-5 tw:first:pt-0 tw:last:pb-0">
+      <h3 class="tw:m-0 tw:mb-3 tw:text-[14px] tw:font-semibold tw:text-ink"><%= variant.to_s.humanize %></h3>
+
+      <div class="tw:grid tw:gap-4 tw:sm:grid-cols-2">
+        <div>
+          <p class="<%= label_class %>">Sizes</p>
+          <div class="<%= row_class %>">
+            <% ShopifyUI::ButtonComponent::TEXT_SIZES.each_key do |size| %>
+              <%= render(ShopifyUI::ButtonComponent.new(variant: variant, size: size)) { size.to_s.humanize } %>
+            <% end %>
+          </div>
+        </div>
+
+        <div>
+          <p class="<%= label_class %>">States</p>
+          <div class="<%= row_class %>">
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, disabled: true)) { "Disabled" } %>
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, href: "#button")) { "Link" } %>
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, href: "#button", disabled: true)) { "Disabled link" } %>
+          </div>
+        </div>
+
+        <div class="tw:sm:col-span-2">
+          <p class="<%= label_class %>">Full width</p>
+          <%= render(ShopifyUI::ButtonComponent.new(variant: variant, full_width: true)) { "Full width" } %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
