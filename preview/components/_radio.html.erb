@@ -1,0 +1,54 @@
+<% cl = ShopifyUI::ChoiceListComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Single radio buttons</p>
+      <div class="tw:flex tw:flex-col tw:gap-2">
+        <%= render(ShopifyUI::RadioComponent.new(name: "solo", value: "a", label: "Checked", checked: true)) %>
+        <%= render(ShopifyUI::RadioComponent.new(name: "solo", value: "b", label: "Unchecked")) %>
+        <%= render(ShopifyUI::RadioComponent.new(name: "solo2", value: "c", label: "Disabled", disabled: true)) %>
+        <%= render(ShopifyUI::RadioComponent.new(name: "solo3", value: "d", label: "Disabled checked", disabled: true, checked: true)) %>
+      </div></div>
+    <div><p class="<%= label_class %>">Choice list — title, help text per choice</p>
+      <%= render(cl.new(name: "visibility", title: "Customer accounts", selected: "optional", choices: [
+            { label: "Accounts are disabled", value: "disabled", help_text: "Customers will only be able to check out as guests." },
+            { label: "Accounts are optional", value: "optional", help_text: "Customers will be able to check out with a customer account or as a guest." },
+            { label: "Accounts are required", value: "required", help_text: "Customers will only be able to check out if they have a customer account." }
+          ])) %></div>
+  </div>
+
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Revealed content under the selected choice (no JavaScript)</p>
+      <%= render(cl.new(name: "discount", title: "Discount value", selected: "percentage", choices: [
+            { label: "Percentage", value: "percentage", reveal: render(ShopifyUI::TextFieldComponent.new(name: "pct", label: "Percentage", label_hidden: true, suffix: "%", type: :number, value: "10")) },
+            { label: "Fixed amount", value: "fixed", reveal: render(ShopifyUI::TextFieldComponent.new(name: "amt", label: "Amount", label_hidden: true, prefix: "$", type: :currency, placeholder: "0.00")) },
+            { label: "Free shipping", value: "shipping" }
+          ])) %></div>
+    <div><p class="<%= label_class %>">Allow multiple (checkboxes), error, disabled choice</p>
+      <%= render(cl.new(name: "channels", title: "Sales channels", allow_multiple: true, selected: %w[online], error: "Select at least two channels", choices: [
+            { label: "Online Store", value: "online" }, { label: "Point of Sale", value: "pos" },
+            { label: "Shop app", value: "shop" }, { label: "Facebook (not connected)", value: "fb", disabled: true }
+          ])) %></div>
+  </div>
+
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Horizontal (stacks on phones), hidden title, help text</p>
+      <%= render(cl.new(name: "unit", title: "Weight unit", title_hidden: true, layout: :horizontal, selected: "kg", choices: [["Kilograms", "kg"], ["Pounds", "lb"], ["Ounces", "oz"], ["Grams", "g"]], help_text: "Used for shipping rate calculations.")) %></div>
+    <div><p class="<%= label_class %>">Whole group disabled</p>
+      <%= render(cl.new(name: "locked", title: "Fulfillment method", disabled: true, selected: "ship", choices: [["Ship", "ship"], ["Local pickup", "pickup"]])) %></div>
+  </div>
+
+  <div><p class="<%= label_class %>">Card appearance — vertical and horizontal (columns become a stack on phones)</p>
+    <div class="tw:flex tw:flex-col tw:gap-5">
+      <%= render(cl.new(name: "plan", title: "Shipping speed", appearance: :card, selected: "standard", choices: [
+            { label: "Standard · $4.99", value: "standard", help_text: "3–5 business days" },
+            { label: "Express · $14.99", value: "express", help_text: "1–2 business days" },
+            { label: "Overnight · $29.99", value: "overnight", help_text: "Unavailable for this address", disabled: true }
+          ])) %>
+      <%= render(cl.new(name: "theme", title: "Checkout style", appearance: :card, layout: :horizontal, selected: "one", allow_multiple: false, choices: [
+            { label: "One-page checkout", value: "one", help_text: "Faster, all steps on one page" },
+            { label: "Three-page checkout", value: "three", help_text: "Information, shipping, payment" }
+          ])) %>
+    </div></div>
+</div>

@@ -1,0 +1,39 @@
+<% sw = ShopifyUI::SwitchComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% col = "tw:flex tw:flex-col tw:gap-3" %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">On / off, label right (default) / left, hidden label</p>
+      <div class="<%= col %>">
+        <%= render(sw.new(name: "a", label: "Track inventory", checked: true)) %>
+        <%= render(sw.new(name: "b", label: "Charge tax on this product")) %>
+        <%= render(sw.new(name: "c", label: "Label on the left", label_position: :left, checked: true)) %>
+        <div class="tw:flex tw:items-center tw:gap-2 tw:text-[13px]">Hidden label → <%= render(sw.new(name: "d", label: "Show in online store", label_hidden: true, checked: true)) %></div>
+      </div></div>
+    <div><p class="<%= label_class %>">Help text, error, sizes</p>
+      <div class="<%= col %>">
+        <%= render(sw.new(name: "e", label: "Continue selling when out of stock", help_text: "Customers can still buy when inventory reaches zero.")) %>
+        <%= render(sw.new(name: "f", label: "Accept terms", error: "You must accept the terms to continue")) %>
+        <div class="tw:flex tw:items-center tw:gap-5">
+          <%= render(sw.new(name: "g", label: "Small", size: :small, checked: true)) %>
+          <%= render(sw.new(name: "h", label: "Medium", checked: true)) %>
+        </div>
+      </div></div>
+  </div>
+
+  <div><p class="<%= label_class %>">States — disabled off · disabled on · pending (saving)</p>
+    <div class="tw:flex tw:flex-wrap tw:gap-6">
+      <%= render(sw.new(name: "i", label: "Disabled off", disabled: true)) %>
+      <%= render(sw.new(name: "j", label: "Disabled on", disabled: true, checked: true)) %>
+      <%= render(sw.new(name: "k", label: "Saving…", pending: true, checked: true)) %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Settings rows inside a card — label + help left, switch right</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Checkout")) do |card| %>
+      <% card.with_section { render(sw.new(name: "s1", label: "Require a confirmation step", help_text: "Customers must review their order details before purchasing.", layout: :setting, checked: true)) } %>
+      <% card.with_section { render(sw.new(name: "s2", label: "Show tipping options", help_text: "Let customers add a tip at checkout.", layout: :setting)) } %>
+      <% card.with_section { render(sw.new(name: "s3", label: "Express checkout (requires Shopify Payments)", help_text: "Unavailable until payments are set up.", layout: :setting, disabled: true)) } %>
+    <% end %>
+  </div>
+</div>
