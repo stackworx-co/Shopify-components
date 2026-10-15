@@ -1,0 +1,35 @@
+<% sk = ShopifyUI::SkeletonComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Body text (3 lines / 5 lines)</p>
+      <div class="tw:flex tw:flex-col tw:gap-5"><%= render(sk.new(type: :body_text)) %><%= render(sk.new(type: :body_text, lines: 5)) %></div></div>
+    <div><p class="<%= label_class %>">Display text — small · medium · large · extra large</p>
+      <div class="tw:flex tw:flex-col tw:gap-3"><% %i[small medium large extra_large].each do |s| %><%= render(sk.new(type: :display_text, size: s)) %><% end %></div></div>
+  </div>
+
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Thumbnails</p>
+      <div class="tw:flex tw:items-end tw:gap-3"><% %i[extra_small small medium large].each do |s| %><%= render(sk.new(type: :thumbnail, size: s)) %><% end %></div></div>
+    <div><p class="<%= label_class %>">Buttons</p>
+      <div class="tw:flex tw:items-center tw:gap-2"><% %i[slim medium large].each do |s| %><%= render(sk.new(type: :button, size: s)) %><% end %></div></div>
+  </div>
+
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Tabs</p><%= render(sk.new(type: :tabs, count: 5)) %></div>
+    <div><p class="<%= label_class %>">Tabs — fitted</p><%= render(sk.new(type: :tabs, count: 3, fitted: true)) %></div>
+  </div>
+
+  <div class="tw:-mx-6 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0 tw:flex tw:flex-col tw:gap-6">
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Stats strip</p><%= render(sk.new(type: :stats, count: 5)) %></div>
+    <div class="tw:grid tw:gap-4 tw:lg:grid-cols-2">
+      <div><p class="<%= label_class %> tw:max-sm:px-4">Card</p><%= render(sk.new(type: :card)) %></div>
+      <div><p class="<%= label_class %> tw:max-sm:px-4">Card — 3 sections, no title</p><%= render(sk.new(type: :card, title: false, sections: 3, lines: 2)) %></div>
+    </div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Table — thumbnail column, checkboxes (extra columns hide on phones)</p><%= render(sk.new(type: :table, rows: 4, columns: 6)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Page — index (one column, actions)</p><%= render(sk.new(type: :page, secondary_actions: 2)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Page — detail (back, two columns; stacks on phones)</p><%= render(sk.new(type: :page, back: true, layout: :two_column, primary_action: false, secondary_actions: 1)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Page — narrow width</p><%= render(sk.new(type: :page, page_width: :narrow, back: true)) %></div>
+  </div>
+</div>

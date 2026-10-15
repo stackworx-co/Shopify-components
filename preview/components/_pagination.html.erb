@@ -1,0 +1,35 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% pager = ShopifyUI::PaginationComponent %>
+
+<div class="tw:flex tw:flex-col tw:gap-6">
+  <div>
+    <p class="<%= label_class %>">Table — first page (previous disabled)</p>
+    <%= render(pager.new(label: "1–50", next_url: "?page=2")) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Table — middle page, tooltips + J/K shortcuts (desktop)</p>
+    <%= render(pager.new(label: "51–100", previous_url: "?page=1", next_url: "?page=3",
+                     previous_tooltip: "Previous (K)", next_tooltip: "Next (J)",
+                     previous_keys: %w[k], next_keys: %w[j])) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Table — attached footer style</p>
+    <div class="tw:overflow-hidden tw:rounded-surface tw:border tw:border-border">
+      <div class="tw:px-4 tw:py-6 tw:text-muted">Table rows…</div>
+      <%= render(pager.new(label: "101–132 of 132", footer: true, has_previous: true, has_next: false)) %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Table — no label</p>
+    <%= render(pager.new(has_previous: true, has_next: true)) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Page — segmented with label</p>
+    <%= render(pager.new(type: :page, label: "Results 1–20", previous_url: "?page=1", next_url: "?page=3",
+                     previous_tooltip: "Previous", next_tooltip: "Next")) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Page — segmented, no label, first page</p>
+    <%= render(pager.new(type: :page, has_previous: false, has_next: true)) %>
+  </div>
+</div>

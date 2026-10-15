@@ -1,0 +1,55 @@
+<% t = ShopifyUI::TabsComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% view_actions = [ { label: "Rename view" }, { label: "Duplicate view" }, { label: "Edit columns" }, { label: "Delete view", destructive: true } ] %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Admin views — link tabs, counts, actions on selected tab (click "All"), "+" create view</p>
+    <%= render(t.new(selected: "all", add_view: { label: "Create view", href: "#" }, tabs: [
+      { id: "all", label: "All", href: "#", actions: view_actions },
+      { id: "unfulfilled", label: "Unfulfilled", href: "#", count: 12 },
+      { id: "unpaid", label: "Unpaid", href: "#", count: 3 },
+      { id: "open", label: "Open", href: "#" },
+      { id: "archived", label: "Archived", href: "#" }
+    ])) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Many views — "More views" menu on desktop, sideways scroll on phones</p>
+    <%= render(t.new(selected: "local", add_view: { label: "Create view" }, tabs: %w[All Unfulfilled Unpaid Open Archived Local\ delivery Local\ pickup Ready\ to\ ship Returns High\ risk International Wholesale].map { |l| { id: l.parameterize(separator: "_"), label: l, href: "#" } }.tap { |a| a[6][:id] = "local" })) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Panel tabs — client-side, arrow keys move, badge and disabled tab</p>
+    <%= render(t.new(selected: "details", tabs: [
+      { id: "details", label: "Details" },
+      { id: "inventory", label: "Inventory", count: 4 },
+      { id: "variants", label: "Variants", badge: { label: "New", tone: :info } },
+      { id: "analytics", label: "Analytics", disabled: true }
+    ])) do |c| %>
+      <% c.with_panel(id: "details") { tag.p("Product details panel.", class: "tw:m-0 tw:text-[13px]") } %>
+      <% c.with_panel(id: "inventory") { tag.p("Inventory across 4 locations.", class: "tw:m-0 tw:text-[13px]") } %>
+      <% c.with_panel(id: "variants") { tag.p("Size and colour variants.", class: "tw:m-0 tw:text-[13px]") } %>
+      <% c.with_panel(id: "analytics") { tag.p("Analytics.", class: "tw:m-0 tw:text-[13px]") } %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Underline variant — settings/page sections</p>
+    <%= render(t.new(variant: :underline, selected: "general", tabs: [
+      { id: "general", label: "General" }, { id: "notifications", label: "Notifications" }, { id: "billing", label: "Billing", count: 1 }
+    ])) do |c| %>
+      <% c.with_panel(id: "general") { tag.p("General settings.", class: "tw:m-0 tw:text-[13px]") } %>
+      <% c.with_panel(id: "notifications") { tag.p("Notification settings.", class: "tw:m-0 tw:text-[13px]") } %>
+      <% c.with_panel(id: "billing") { tag.p("Billing settings.", class: "tw:m-0 tw:text-[13px]") } %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Fitted — equal widths (pills and underline)</p>
+    <div class="tw:flex tw:flex-col tw:gap-4 tw:max-w-md">
+      <%= render(t.new(fitted: true, selected: "a", tabs: [ { id: "a", label: "Orders", href: "#" }, { id: "b", label: "Drafts", href: "#" }, { id: "c", label: "Abandoned", href: "#" } ])) %>
+      <%= render(t.new(fitted: true, variant: :underline, selected: "x", tabs: [ { id: "x", label: "Day", href: "#" }, { id: "y", label: "Week", href: "#" }, { id: "z", label: "Month", href: "#" } ])) %>
+    </div>
+  </div>
+</div>

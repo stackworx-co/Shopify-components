@@ -1,0 +1,84 @@
+<% c = ShopifyUI::CardComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% muted = "tw:m-0 tw:text-muted" %>
+
+<div class="tw:-mx-6 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0">
+<div class="tw:grid tw:gap-5 tw:lg:grid-cols-2">
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Plain — content only</p>
+    <%= render(c.new) { tag.p("Card content goes here. Cards group related information.", class: "tw:m-0") } %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Title + subtitle + header action</p>
+    <%= render(c.new(title: "Customer", subtitle: "Test user two", actions: [ { label: "Edit", href: "#" } ])) do %>
+      <p class="tw:m-0">3 orders · <a class="tw:text-link" href="#">test@example.com</a></p>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Badge + "…" menu + footer actions (Order fulfillment)</p>
+    <%= render(c.new(title: "Unfulfilled (2)", badge: { label: "Unfulfilled", tone: :attention },
+          menu_actions: [ { label: "Change location" }, { label: "Cancel fulfillment", destructive: true } ],
+          secondary_footer_actions: [ { label: "Create shipping label" } ], primary_footer_action: { label: "Mark as fulfilled" })) do %>
+      <p class="tw:m-0">Snowboard × 1 · Ski Wax × 1</p>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Sections with titles, actions, subdued section</p>
+    <%= render(c.new(title: "Customer")) do |card| %>
+      <% card.with_section(title: "Contact information", actions: [ { label: "Edit", href: "#" } ]) { tag.p("test@example.com · +1 555 123 4567", class: "tw:m-0") } %>
+      <% card.with_section(title: "Shipping address") { tag.p("150 Elgin Street, Ottawa ON K2P 1L4, Canada", class: "tw:m-0") } %>
+      <% card.with_section(subdued: true) { tag.p("No billing address provided", class: muted) } %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Flush section — list with no padding</p>
+    <%= render(c.new(title: "Locations")) do |card| %>
+      <% card.with_section(flush: true) do %>
+        <ul class="tw:m-0 tw:list-none tw:p-0">
+          <% ["Main warehouse", "Ottawa store", "Toronto pop-up"].each do |loc| %>
+            <li class="tw:border-t tw:border-border-secondary tw:first:border-t-0 tw:px-4 tw:py-3 tw:max-sm:px-3.5 tw:hover:bg-surface-hover"><%= loc %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Subdued background + tight padding</p>
+    <%= render(c.new(title: "Notes", background: :subdued, padding: :tight, actions: [ { label: "Edit" } ])) { tag.p("No notes from customer", class: muted) } %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Collapsible (closed / open)</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <%= render(c.new(title: "Search engine listing", subtitle: "Add a title and description to see how this product might appear", collapsible: true)) { tag.p("SEO fields go here.", class: "tw:m-0") } %>
+      <%= render(c.new(title: "Tags", collapsible: :open)) { tag.p("snowboard, winter, sale", class: "tw:m-0") } %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Custom header slot + destructive footer, no edge-to-edge</p>
+    <%= render(c.new(edge_to_edge: false, primary_footer_action: { label: "Delete store", destructive: true })) do |card| %>
+      <% card.with_header { tag.div(safe_join([tag.h2("Danger zone", class: "tw:m-0 tw:text-[14px] tw:font-semibold tw:text-danger"), tag.p("These actions can't be undone.", class: "tw:m-0 tw:text-muted")]), class: "tw:flex tw:flex-col tw:gap-0.5") } %>
+      <p class="tw:m-0">Deleting your store removes all products, orders and customers.</p>
+    <% end %>
+  </div>
+
+  <div class="tw:lg:col-span-2">
+    <p class="<%= label_class %> tw:max-sm:px-4">Card wrapping a flush table, loose padding header</p>
+    <%= render(c.new(title: "Recent orders", padding: :loose, actions: [ { label: "View all", href: "#" } ])) do |card| %>
+      <% card.with_section(flush: true) do %>
+        <%= render(ShopifyUI::TableComponent.new(flush: true, columns: ["Order", "Customer", { label: "Total", numeric: true }])) do |t| %>
+          <% [["#1608", "Test user two", "$0.00"], ["#1607", "Test user two", "$89.25"]].each do |row| %>
+            <% t.with_row { |r| row.each { |v| r.with_cell { v } } } %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+</div>

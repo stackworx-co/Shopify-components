@@ -14,6 +14,8 @@ module ShopifyUI
     CELL = "tw:px-2.5 tw:py-[9px] tw:align-middle tw:text-[13px] tw:text-ink tw:whitespace-nowrap"
     MUTED_CELL = "tw:px-2.5 tw:py-[9px] tw:align-middle tw:text-[13px] tw:text-disabled tw:whitespace-nowrap"
     CHECK_CELL = "tw:w-px tw:pl-3 tw:pr-1 tw:py-[9px] tw:align-middle"
+    # Flush tables: hover/selected highlight reads as a rounded bar.
+    FLUSH_CELL_ENDS = "tw:first:rounded-l-lg tw:last:rounded-r-lg"
 
     def initialize(table:, id: nil, selected: false, muted: false, **html_attributes)
       @table = table
@@ -30,8 +32,16 @@ module ShopifyUI
     end
 
     def cell_classes(index)
-      [ (@muted ? MUTED_CELL : CELL), (ShopifyUI::TableComponent::NUMERIC if @table.numeric?(index)) ]
+      [ (@muted ? MUTED_CELL : CELL), (ShopifyUI::TableComponent::NUMERIC if @table.numeric?(index)), flush_ends ]
         .compact.join(" ")
+    end
+
+    def check_cell_classes
+      [ CHECK_CELL, flush_ends ].compact.join(" ")
+    end
+
+    def flush_ends
+      FLUSH_CELL_ENDS if @table.flush?
     end
 
     def checkbox

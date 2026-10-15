@@ -1,0 +1,39 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% orders = [[1608, "Test user two", "$0.00"], [1607, "Test user two", "$89.25"], [1602, "Test user two", "$81.29"], [1601, "Test user two", "$59.24"]] %>
+<% more = [ { label: "Add tags" }, { label: "Remove tags" }, { label: "Archive orders" }, { label: "Delete orders", destructive: true } ] %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Inline — tick a row: the header becomes the bulk bar (select all 414 across pages, promoted buttons, "…" menu)</p>
+    <%= render(ShopifyUI::TableComponent.new(selectable: true, columns: ["Order", "Customer", { label: "Total", numeric: true }])) do |table| %>
+      <% table.with_bulk_actions(total: 414, resource_name: { singular: "order", plural: "orders" },
+            promoted_actions: [ { label: "Mark as fulfilled" }, { label: "Capture payments" } ], actions: more) %>
+      <% orders.each do |id, customer, total| %>
+        <% table.with_row(id: id) do |row| %>
+          <% row.with_cell { "##{id}" } %><% row.with_cell { customer } %><% row.with_cell { total } %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <p id="bulk-log" class="tw:mt-2 tw:mb-0 tw:text-[12px] tw:text-muted">Click an action to see the sui:bulk-action event here.</p>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Floating — pill bar at the bottom of the screen, for card grids or any list</p>
+    <div id="product-grid" class="tw:grid tw:grid-cols-2 tw:gap-3 tw:sm:grid-cols-4">
+      <% ["Gift Card", "Ski Wax", "Hydrogen Snowboard", "Draft Snowboard"].each_with_index do |name, i| %>
+        <label data-sui-selectable class="tw:flex tw:cursor-pointer tw:items-center tw:gap-2 tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:p-3 tw:text-[13px] tw:has-checked:bg-surface-sunken">
+          <%= render(ShopifyUI::CheckboxComponent.new(name: "product_ids[]", value: i)) %> <%= name %>
+        </label>
+      <% end %>
+    </div>
+    <%= render(ShopifyUI::BulkActionsComponent.new(variant: :floating, for: "product-grid",
+          promoted_actions: [ { label: "Bulk edit" }, { label: "Set as active" } ],
+          actions: [ { label: "Set as draft" }, { label: "Add to collection" }, { label: "Delete products", destructive: true } ])) %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("sui:bulk-action", function (e) {
+    document.getElementById("bulk-log").textContent = "sui:bulk-action → " + JSON.stringify(e.detail);
+  });
+</script>

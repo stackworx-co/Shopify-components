@@ -1,0 +1,44 @@
+<% th = ShopifyUI::ThumbnailComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row = "tw:flex tw:flex-wrap tw:items-end tw:gap-4" %>
+<% img = ->(seed) { "https://picsum.photos/seed/#{seed}/160/160" } %>
+
+<div class="tw:flex tw:flex-col tw:gap-7">
+  <div>
+    <p class="<%= label_class %>">Sizes — extra small 24 · small 40 · medium 60 · large 80</p>
+    <div class="<%= row %>">
+      <% %i[extra_small small medium large].each do |s| %><%= render(th.new(source: img.call("snow"), alt: "Snowboard", size: s)) %><% end %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Placeholders (no image) — image, product, file, collection, customer</p>
+    <div class="<%= row %>">
+      <% %i[image product file collection customer].each do |p| %><%= render(th.new(placeholder: p, size: :medium, alt: "No #{p} image")) %><% end %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Fit, background, broken image fallback</p>
+    <div class="<%= row %>">
+      <%= render(th.new(source: "https://picsum.photos/seed/wide/320/120", alt: "Contain (default)", size: :large)) %>
+      <%= render(th.new(source: "https://picsum.photos/seed/wide/320/120", alt: "Cover", size: :large, fit: :cover)) %>
+      <%= render(th.new(source: img.call("wax"), alt: "Subdued background", size: :large, background: :subdued)) %>
+      <%= render(th.new(source: "/broken-image.png", alt: "Broken image", size: :large, placeholder: :product)) %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Quantity badge, "+N" overlay, link, stacked group</p>
+    <div class="<%= row %> tw:items-center">
+      <%= render(th.new(source: img.call("board"), alt: "Snowboard ×2", size: :medium, quantity: 2)) %>
+      <%= render(th.new(source: img.call("card"), alt: "3 more", size: :medium, more: 3)) %>
+      <%= render(th.new(source: img.call("link"), alt: "View product", size: :medium, href: "#")) %>
+      <%= render(ShopifyUI::ThumbnailGroupComponent.new(size: :medium, max: 3, items: %w[a b c d e].map { |s| { source: img.call(s), alt: "Item #{s}" } })) %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Responsive — large on desktop, small on phones (resize)</p>
+    <div class="tw:flex tw:items-center tw:gap-3 tw:text-[13px]">
+      <%= render(th.new(source: img.call("hydrogen"), alt: "Hydrogen", size: :large, mobile_size: :small)) %>
+      <span class="tw:min-w-0"><strong>The Collection Snowboard: Hydrogen</strong><br><span class="tw:text-muted">Snowboard Vendor</span></span>
+    </div>
+  </div>
+</div>

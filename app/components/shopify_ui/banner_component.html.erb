@@ -1,0 +1,21 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <% if titled? %>
+    <div class="<%= ShopifyUI::BannerComponent::HEADER %> <%= ShopifyUI::BannerComponent::HEADER_TONES[@tone] %>">
+      <%= icon_tag(colored: false) %>
+      <h2 id="<%= title_id %>" class="<%= ShopifyUI::BannerComponent::HEADER_TITLE %>"><%= @title %></h2>
+      <%= dismiss_tag %>
+    </div>
+    <% if content.present? || @primary || @secondary %>
+      <div class="<%= ShopifyUI::BannerComponent::BODY_TITLED %>"><%= body_tag %></div>
+    <% end %>
+  <% else %>
+    <div class="<%= @in_card ? ShopifyUI::BannerComponent::ROW_IN_CARD : ShopifyUI::BannerComponent::ROW %>">
+      <%= icon_tag %>
+      <div class="<%= ShopifyUI::BannerComponent::CONTENT %>">
+        <% if @title.present? %><h2 id="<%= title_id %>" class="<%= ShopifyUI::BannerComponent::HEADER_TITLE %>"><%= @title %></h2><% end %>
+        <%= body_tag %>
+      </div>
+      <%= dismiss_tag %>
+    </div>
+  <% end %>
+</div>

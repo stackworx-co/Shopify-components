@@ -1,0 +1,26 @@
+<header <%= tag.attributes(wrapper_attributes) %>>
+  <div class="<%= ShopifyUI::PageHeaderComponent::TITLE_AREA %>">
+    <%= back_tag %>
+    <div class="<%= ShopifyUI::PageHeaderComponent::TITLE_STACK %>">
+      <div class="<%= ShopifyUI::PageHeaderComponent::TITLE_ROW %><%= " tw:sr-only" if @title_hidden && @badges.empty? %>">
+        <h1 class="<%= ShopifyUI::PageHeaderComponent::TITLE %><%= " tw:sr-only" if @title_hidden %>"><%= @title %></h1>
+        <%= badge_tags %>
+      </div>
+      <% if @subtitle.present? %><p class="<%= ShopifyUI::PageHeaderComponent::SUBTITLE %>"><%= @subtitle %></p><% end %>
+      <% if metadata? %><div class="<%= ShopifyUI::PageHeaderComponent::METADATA %>"><%= metadata %></div><% end %>
+    </div>
+  </div>
+  <% if actions? %>
+    <div class="<%= ShopifyUI::PageHeaderComponent::ACTIONS %>">
+      <% if collapsible? %>
+        <div class="<%= ShopifyUI::PageHeaderComponent::DESKTOP_ONLY %> tw:flex tw:items-center tw:gap-2">
+          <% @secondary.each do |action| %><%= button_for(action) %><% end %>
+          <% @groups.each do |group| %><%= group_menu(group) %><% end %>
+        </div>
+        <div class="<%= ShopifyUI::PageHeaderComponent::MOBILE_ONLY %>"><%= mobile_menu %></div>
+      <% end %>
+      <% if @primary %><%= button_for(@primary, variant: :primary) %><% end %>
+      <%= pagination_tag %>
+    </div>
+  <% end %>
+</header>

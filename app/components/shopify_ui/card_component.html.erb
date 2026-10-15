@@ -1,0 +1,13 @@
+<% if @collapsible %>
+<details <%= tag.attributes(root_attributes.merge(open: (@collapsible == :open || nil), class: "#{root_attributes[:class]} tw:group")) %>>
+  <summary class="<%= ShopifyUI::CardComponent::SUMMARY %> <%= pad %> tw:block"><%= header_tag %></summary>
+  <%= body_tag %>
+  <% if footer_present? %><%= footer_tag %><% end %>
+</details>
+<% else %>
+<div <%= tag.attributes(root_attributes) %>>
+  <% if has_header? %><div class="<%= pad %><%= " tw:pb-3" if sections? || @sectioned %>"><%= header_tag %></div><% end %>
+  <%= body_tag %>
+  <% if footer_present? %><%= footer_tag %><% end %>
+</div>
+<% end %>

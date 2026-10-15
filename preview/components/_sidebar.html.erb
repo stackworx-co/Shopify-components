@@ -1,0 +1,34 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% sections = [
+  { items: [
+    { label: "Home", icon: :home, href: "#" },
+    { label: "Orders", icon: :orders, href: "#", count: 414, children: [
+      { label: "Drafts", href: "#" }, { label: "Shipping labels", href: "#", active: true },
+      { label: "Abandoned checkouts", href: "#" }
+    ] },
+    { label: "Products", icon: :products, href: "#", children: [ { label: "Collections", href: "#" }, { label: "Inventory", href: "#" } ] },
+    { label: "Customers", icon: :customers, href: "#" },
+    { label: "Marketing", icon: :growth, href: "#" },
+    { label: "Discounts", icon: :discounts, href: "#" },
+    { label: "Content", icon: :content, href: "#" },
+    { label: "Markets", icon: :markets, href: "#" },
+    { label: "Finance", icon: :finance, href: "#" },
+    { label: "Analytics", icon: :analytics, href: "#" }
+  ] },
+  { title: "Sales channels", title_href: "#", items: [ { label: "Online Store", icon: :online_store, href: "#" } ] },
+  { title: "Apps", title_href: "#", items: [ { label: "OOS Orders", icon: :orders, href: "#" } ] }
+] %>
+
+<p class="<%= label_class %>">Desktop: fixed black column. Below 1024px: black top bar + slide-in drawer (resize the window or open on a phone).</p>
+<div class="tw:overflow-hidden tw:rounded-[20px] tw:border tw:border-border tw:lg:flex tw:lg:h-[680px] tw:[transform:translateZ(0)]">
+  <%= render(ShopifyUI::SidebarComponent.new(
+    sections: sections,
+    footer_items: [ { label: "Settings", icon: :settings, href: "#" } ],
+    store: { name: "Stackworx Store", badge: "dev", href: "#", notifications_href: "#" },
+    contained: true
+  )) %>
+  <main class="tw:min-w-0 tw:flex-1 tw:overflow-y-auto tw:bg-page tw:p-5 tw:max-sm:p-4">
+    <h2 class="tw:m-0 tw:text-[20px] tw:font-semibold tw:text-ink">Shipping labels</h2>
+    <p class="tw:mt-2 tw:text-muted">Page content goes here.</p>
+  </main>
+</div>

@@ -1,0 +1,31 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <div class="<%= ShopifyUI::SidebarComponent::TOPBAR.join(" ") %>">
+    <button type="button" class="<%= ShopifyUI::SidebarComponent::ICON_BUTTON.join(" ") %>" aria-label="Open navigation" aria-controls="<%= @id %>" aria-expanded="false" data-sui-sidebar-toggle><%= icon(:menu, size: 20) %></button>
+    <span class="tw:flex tw:flex-1 tw:items-center tw:min-w-0"><%= logo %></span>
+    <%= search_tag(mobile: true) %>
+  </div>
+  <div class="<%= ShopifyUI::SidebarComponent::BACKDROP.join(" ") %>" data-sui-sidebar-backdrop aria-hidden="true"></div>
+  <aside id="<%= @id %>" class="<%= ShopifyUI::SidebarComponent::PANEL.join(" ") %>">
+    <div class="<%= ShopifyUI::SidebarComponent::HEADER %>">
+      <span class="tw:flex tw:flex-1 tw:items-center tw:min-w-0"><%= logo %></span>
+      <button type="button" class="<%= ShopifyUI::SidebarComponent::ICON_BUTTON.join(" ") %> tw:lg:hidden" aria-label="Close navigation" data-sui-sidebar-close><%= icon(:close, size: 20) %></button>
+    </div>
+    <%= search_tag %>
+    <nav aria-label="<%= @label %>" class="<%= ShopifyUI::SidebarComponent::SCROLL %>">
+      <% @sections.each_with_index do |section, index| %>
+        <% if index.positive? %><hr class="<%= ShopifyUI::SidebarComponent::DIVIDER %>"><% end %>
+        <div class="<%= ShopifyUI::SidebarComponent::SECTION %>">
+          <%= section_title(section) %>
+          <%= items_tag(Array(section[:items])) %>
+        </div>
+      <% end %>
+    </nav>
+    <% if @footer_items.any? || @store %>
+      <div class="<%= ShopifyUI::SidebarComponent::FOOTER %>">
+        <nav aria-label="Settings" class="tw:flex tw:flex-col tw:gap-px"><%= items_tag(@footer_items) %></nav>
+        <%= store_tag %>
+      </div>
+    <% end %>
+  </aside>
+</div>
+<script><%= raw ShopifyUI::SidebarComponent::SCRIPT %></script>

@@ -5,6 +5,7 @@ module ShopifyUI
     strip_trailing_whitespace
 
     renders_one :filters, ->(**options) { TableFiltersComponent.new(**options) }
+    renders_one :bulk_actions, ->(**options) { BulkActionsComponent.new(variant: :inline, **options) }
     renders_many :rows, ->(**options) { TableRowComponent.new(table: self, **options) }
 
     CARD = %w[
@@ -13,7 +14,12 @@ module ShopifyUI
 
     TABLE = "tw:w-full tw:border-collapse tw:bg-surface tw:font-sans"
 
-    HEAD_ROW = "tw:border-b tw:border-border"
+    FILTERS_ROW = "tw:border-b tw:border-border"
+    HEAD_ROW = "tw:border-b tw:border-border tw:bg-surface-secondary"
+    # Flush: no card, full width; grey header reads as a rounded bar, no rule under it.
+    FLUSH_HEAD_ROW = "tw:bg-surface-secondary"
+    FLUSH_WRAPPER = "tw:w-full tw:bg-surface"
+    FLUSH_CELL_ENDS = "tw:first:rounded-l-lg tw:last:rounded-r-lg"
 
     HEAD_CELL = %w[
       tw:px-2.5 tw:py-2 tw:text-left tw:align-middle tw:text-[12px] tw:font-medium
@@ -31,14 +37,24 @@ module ShopifyUI
 
     attr_reader :selectable, :select_name
 
-    def initialize(columns:, selectable: false, select_name: "ids[]", card: true,
+    # flush: true -> full-width table with no outer border/radius (Products index style).
+    def initialize(columns:, selectable: false, select_name: "ids[]", card: true, flush: false,
                    empty: "No results found", **html_attributes)
       @columns = columns.map { |column| column.is_a?(Hash) ? column : { label: column } }
       @selectable = selectable
       @select_name = select_name
-      @card = card
+      @flush = flush
+      @card = card && !flush
       @empty = empty
       @html_attributes = html_attributes
+    end
+
+    def flush?
+      @flush
+    end
+
+    def head_row_classes
+      @flush ? FLUSH_HEAD_ROW : HEAD_ROW
     end
 
     def numeric?(index)
@@ -48,19 +64,19 @@ module ShopifyUI
     private
 
     def wrapper_classes
-      [ (CARD if @card), @html_attributes[:class] ].flatten.compact.join(" ")
+      [ (CARD if @card), (FLUSH_WRAPPER if @flush), @html_attributes[:class] ].flatten.compact.join(" ")
     end
 
     def wrapper_attributes
-      @html_attributes.merge(class: wrapper_classes.presence)
+      @html_attributes.merge(class: wrapper_classes.presence, data: { sui_table: "" }.merge(@html_attributes[:data] || {}))
     end
 
     def head_cell_classes(column)
-      [ HEAD_CELL, (NUMERIC if column[:numeric]) ].flatten.compact.join(" ")
+      [ HEAD_CELL, (NUMERIC if column[:numeric]), (FLUSH_CELL_ENDS if @flush) ].flatten.compact.join(" ")
     end
 
     def check_cell_classes
-      [ HEAD_CELL, CHECK_CELL ].flatten.join(" ")
+      [ HEAD_CELL, CHECK_CELL, (FLUSH_CELL_ENDS if @flush) ].flatten.compact.join(" ")
     end
 
     def column_count

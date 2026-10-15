@@ -1,0 +1,12 @@
+<% if strip? %>
+<div <%= tag.attributes(wrapper_attributes) %>>
+  <div class="<%= ShopifyUI::StatsCardComponent::STRIP.join(" ") %>">
+    <% if range? %><div class="<%= ShopifyUI::StatsCardComponent::STRIP_RANGE.join(" ") %>"><%= range %></div><% end %>
+    <% @metrics.each do |metric| %><%= metric_wrapper(metric) { metric_body(metric) } %><% end %>
+  </div>
+</div>
+<% else %>
+<div <%= tag.attributes(wrapper_attributes) %>>
+  <% @metrics.each do |metric| %><%= metric_wrapper(metric) { metric_body(metric) } %><% end %>
+</div>
+<% end %>

@@ -1,10 +1,21 @@
 <div class="<%= ShopifyUI::DropdownSelectComponent::WRAPPER %>">
   <% if @label %>
-    <label for="<%= @id %>" class="<%= label_classes %>"><%= @label %></label>
+    <label id="<%= label_id %>" for="<%= @id %>" class="<%= label_classes %>"><%= @label %></label>
   <% end %>
-  <div class="<%= ShopifyUI::DropdownSelectComponent::FIELD %>">
-    <select <%= tag.attributes(select_attributes) %>><%= option_tags %></select>
-    <svg class="<%= chevron_classes %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+  <div <%= tag.attributes(root_attributes) %>>
+    <button <%= tag.attributes(trigger_attributes) %>><span data-sui-select-value class="<%= ShopifyUI::DropdownSelectComponent::VALUE %><%= " #{ShopifyUI::DropdownSelectComponent::PLACEHOLDER}" unless display_text %>"><%= display_text || @placeholder || " " %></span></button>
+    <svg class="<%= "#{ShopifyUI::DropdownSelectComponent::CHEVRON} #{ShopifyUI::DropdownSelectComponent::CHEVRON_COLORS[state]}" %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+    <%= native_select %>
+    <% unless @disabled %>
+      <ul <%= tag.attributes(list_attributes) %>>
+        <% @groups.each_with_index do |(group, options), group_index| %>
+          <% if group %><li role="presentation" class="<%= ShopifyUI::DropdownSelectComponent::GROUP %>"><%= group %></li><% end %>
+          <% options.each_with_index do |option, index| %>
+            <li role="option" id="<%= option_id(group_index, index) %>" class="<%= ShopifyUI::DropdownSelectComponent::OPTION.join(" ") %>" data-value="<%= option[:value] %>" data-label="<%= option[:label] %>" aria-selected="<%= selected?(option) %>"<% if option[:disabled] %> aria-disabled="true"<% end %>><svg class="<%= ShopifyUI::DropdownSelectComponent::CHECK %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 10.5 3.2 3L15 6.5"/></svg><span class="<%= ShopifyUI::DropdownSelectComponent::OPTION_LABEL %>"><%= option[:label] %></span></li>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
   <% if @error.present? %>
     <p id="<%= @id %>-description" class="<%= ShopifyUI::DropdownSelectComponent::ERROR %>">
@@ -15,3 +26,4 @@
     <p id="<%= @id %>-description" class="<%= ShopifyUI::DropdownSelectComponent::HELP_TEXT %>"><%= @help_text %></p>
   <% end %>
 </div>
+<script><%= raw ShopifyUI::DropdownSelectComponent::SCRIPT %></script>

@@ -1,0 +1,66 @@
+<% tf = ShopifyUI::TextFieldComponent %>
+<% heading = "tw:m-0 tw:mb-3 tw:text-[13px] tw:font-semibold tw:text-ink" %>
+<% grid = "tw:grid tw:gap-5 tw:sm:grid-cols-2" %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <section>
+    <h3 class="<%= heading %>">Basics</h3>
+    <div class="<%= grid %>">
+      <%= render(tf.new(name: "title", label: "Title", placeholder: "Short sleeve t-shirt")) %>
+      <%= render(tf.new(name: "store_name", label: "Store name", value: "Stackworx Store", help_text: "Appears on your storefront and emails.")) %>
+      <%= render(tf.new(name: "sku", label: "SKU (Stock Keeping Unit)", required: true, required_indicator: true, monospaced: true, placeholder: "SKU-0001")) %>
+      <%= render(tf.new(name: "email", label: "Email", type: :email, label_action: { label: "Edit", href: "#" }, value: "owner@example.com", autocomplete: "email")) %>
+      <%= render(tf.new(name: "hidden", label: "Search orders", label_hidden: true, placeholder: "Label hidden (still read by screen readers)")) %>
+      <%= render(tf.new(name: "slim", label: "Slim size", size: :slim, placeholder: "Compact field for filters")) %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">States</h3>
+    <div class="<%= grid %>">
+      <%= render(tf.new(name: "vendor", label: "Vendor", error: "Vendor is required")) %>
+      <%= render(tf.new(name: "handle", label: "URL handle", value: "Bad handle!", error: "Use only lowercase letters, numbers and hyphens")) %>
+      <%= render(tf.new(name: "disabled", label: "Disabled", value: "Can't edit this", disabled: true)) %>
+      <%= render(tf.new(name: "readonly", label: "Read only", value: "gid://shopify/Product/1001", read_only: true, monospaced: true)) %>
+      <%= render(tf.new(name: "borderless", label: "Borderless", variant: :borderless, placeholder: "Inline editing")) %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">Prefix, suffix and types</h3>
+    <div class="<%= grid %>">
+      <%= render(tf.new(name: "price", label: "Price", type: :currency, prefix: "$", placeholder: "0.00", align: :right)) %>
+      <%= render(tf.new(name: "weight", label: "Weight", type: :number, suffix: "kg", value: "0.5", step: 0.1, min: 0)) %>
+      <%= render(tf.new(name: "quantity", label: "Quantity", type: :number, value: "1", min: 0, step: 1)) %>
+      <%= render(tf.new(name: "discount", label: "Discount", type: :integer, suffix: "%", placeholder: "10")) %>
+      <%= render(tf.new(name: "q", label: "Search", label_hidden: true, type: :search, prefix: :search, placeholder: "Search products", clear_button: true, value: "snowboard")) %>
+      <%= render(tf.new(name: "website", label: "Website", type: :url, prefix: "https://", placeholder: "example.com")) %>
+      <%= render(tf.new(name: "contact", label: "Contact email", type: :email, prefix: :email, placeholder: "you@example.com")) %>
+      <%= render(tf.new(name: "phone", label: "Phone", type: :tel, placeholder: "+1 555 123 4567", autocomplete: "tel")) %>
+      <%= render(tf.new(name: "password", label: "Password", type: :password, value: "secret123", autocomplete: "current-password")) %>
+      <%= render(tf.new(name: "date", label: "Date", type: :date)) %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">Multiline and character count</h3>
+    <div class="<%= grid %>">
+      <%= render(tf.new(name: "description", label: "Description", multiline: 4, placeholder: "Fixed 4 rows, resizable")) %>
+      <%= render(tf.new(name: "note", label: "Note", multiline: true, placeholder: "Grows as you type", help_text: "Only visible to staff.")) %>
+      <%= render(tf.new(name: "seo_title", label: "Page title", max_length: 70, show_character_count: true, value: "Winter snowboards")) %>
+      <%= render(tf.new(name: "seo_desc", label: "Meta description", multiline: 3, max_length: 160, show_character_count: true)) %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">Connected fields</h3>
+    <div class="<%= grid %>">
+      <%= render(tf.new(name: "tag", label: "Tags", placeholder: "Find or create tags")) do |c| %>
+        <% c.with_connected_right { render(ShopifyUI::ButtonComponent.new) { "Add" } } %>
+      <% end %>
+      <%= render(tf.new(name: "amount", label: "Amount", type: :currency, prefix: "$", placeholder: "0.00")) do |c| %>
+        <% c.with_connected_left { render(ShopifyUI::DropdownSelectComponent.new(name: "cur", label: "Currency", label_hidden: true, options: %w[USD CAD EUR])) } %>
+      <% end %>
+    </div>
+  </section>
+</div>

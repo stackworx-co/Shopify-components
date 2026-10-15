@@ -1,0 +1,18 @@
+<% cb = ShopifyUI::ComboboxComponent %>
+<% vendors = ["Snowboard Vendor", "Hydrogen Vendor", "TestStore", "solefly", "Burton", "Salomon", "K2", "Rossignol", "Never Summer", "Lib Tech"] %>
+<% collections = { "Smart collections" => ["Home page", "Best sellers", "New arrivals"], "Manual collections" => ["Winter 2026", "Gift ideas", "Clearance"] } %>
+<% countries = [
+     { label: "Canada", value: "CA", description: "CAD $" }, { label: "United States", value: "US", description: "USD $" },
+     { label: "United Kingdom", value: "GB", description: "GBP £" }, { label: "Germany", value: "DE", description: "EUR €" },
+     { label: "Bosnia & Herzegovina", value: "BA", description: "BAM KM" }, { label: "North Korea", value: "KP", description: "Not available", disabled: true }
+   ] %>
+
+<div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+  <%= render(cb.new(name: "vendor", label: "Vendor", options: vendors, selected: "Burton", placeholder: "Search vendors")) %>
+  <%= render(cb.new(name: "vendor_new", label: "Product type (create new)", options: %w[snowboard accessories giftcard], allow_create: true, placeholder: "Search or create", help_text: "Type a new value and choose “Add …”.")) %>
+  <%= render(cb.new(name: "collections", label: "Collections (multi-select, grouped)", options: collections, multiple: true, selected: ["Best sellers", "Winter 2026"], placeholder: "Search collections")) %>
+  <%= render(cb.new(name: "market", label: "Market (descriptions, disabled option)", options: countries, selected: "CA", placeholder: "Search countries")) %>
+  <%= render(cb.new(name: "products", label: "Products (remote search, min 1 character)", url: "/_search", min_chars: 1, multiple: true, allow_create: false, placeholder: "Search products", empty_text: "No products found")) %>
+  <%= render(cb.new(name: "assignee", label: "Staff (error)", options: ["Farooq", "Alex", "Sam"], error: "Choose a staff member")) %>
+  <%= render(cb.new(name: "locked", label: "Location (disabled)", options: ["Main warehouse"], selected: "Main warehouse", disabled: true)) %>
+</div>

@@ -64,4 +64,23 @@
   --sui-neutral-light: rgba(0, 0, 0, .06);
 
   --sui-shadow-card: 0 1px 0 0 rgba(26, 26, 26, .07), 0 3px 1px -1px rgba(26, 26, 26, .07);
+
+  /* Banner header bars (titled banners) */
+  --sui-good-strong: #29845a;
+  --sui-info-strong: #91d0ff;
+  --sui-warn-strong: #ffb800;
+  --sui-danger-strong: #e51c00;
+  --sui-on-strong-dark: #fff;
+  --sui-on-strong-light: #303030;
+
+  /* Admin frame (sidebar) — true black chrome, stays dark regardless of content theme */
+  --sui-frame: #000;
+  --sui-frame-hover: #232324;
+  --sui-frame-active: #2d2d2e;
+  --sui-frame-input: rgba(255, 255, 255, .08);
+  --sui-frame-ink: #f1f1f1;
+  --sui-frame-muted: #9a9a9c;
+  --sui-frame-border: #262627;
+  --sui-frame-logo: #95bf47;
+  --sui-frame-on-logo: #0d2b05;
 }

@@ -1,0 +1,20 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <%= check_tag %>
+  <span class="<%= ShopifyUI::BulkActionsComponent::COUNT %>" data-bulk-count aria-live="polite">0 selected</span>
+  <% if @total %>
+    <button type="button" class="<%= ShopifyUI::BulkActionsComponent::SELECT_ALL %>" data-bulk-select-all data-hidden></button>
+    <input type="hidden" name="select_all" value="true" disabled data-bulk-all-input>
+  <% end %>
+  <div class="<%= ShopifyUI::BulkActionsComponent::ACTIONS %>">
+    <div class="<%= ShopifyUI::BulkActionsComponent::DESKTOP %> tw:flex tw:items-center tw:gap-1.5">
+      <% @promoted.each do |a| %><%= button_tag(a) %><% end %>
+      <%= menu_tag(@actions) %>
+    </div>
+    <div class="<%= ShopifyUI::BulkActionsComponent::MOBILE %> tw:flex tw:items-center tw:gap-1.5">
+      <% if @promoted.first %><%= button_tag(@promoted.first) %><% end %>
+      <%= menu_tag(@promoted.drop(1) + @actions) %>
+    </div>
+    <%= clear_tag %>
+  </div>
+</div>
+<script><%= raw ShopifyUI::BulkActionsComponent::SCRIPT %></script>

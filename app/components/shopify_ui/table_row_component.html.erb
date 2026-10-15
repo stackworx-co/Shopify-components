@@ -1,6 +1,6 @@
 <tr <%= tag.attributes(row_attributes) %>>
   <% if @table.selectable %>
-    <td class="<%= ShopifyUI::TableRowComponent::CHECK_CELL %>"><%= render(checkbox) %></td>
+    <td class="<%= check_cell_classes %>"><%= render(checkbox) %></td>
   <% end %>
   <% cells.each_with_index do |cell, index| %>
     <td class="<%= cell_classes(index) %>"><%= cell %></td>

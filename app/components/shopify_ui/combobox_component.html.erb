@@ -1,0 +1,29 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <% if @label %><label for="<%= @id %>" class="<%= ShopifyUI::ComboboxComponent::LABEL %><%= " tw:sr-only" if @label_hidden %>"><%= @label %></label><% end %>
+  <div class="<%= ShopifyUI::ComboboxComponent::BOX.join(" ") %> <%= ShopifyUI::ComboboxComponent::STATES[state] %>" data-box>
+    <%= svg('<circle cx="8.5" cy="8.5" r="5.5"/><path d="m16 16-3.5-3.5"/>', ShopifyUI::ComboboxComponent::ICON, width: 1.6) %>
+    <input <%= tag.attributes(input_attributes) %>>
+    <%= svg('<circle cx="10" cy="10" r="7" stroke-dasharray="32 12"/>', ShopifyUI::ComboboxComponent::SPINNER, width: 2) %>
+    <%= svg('<path d="m6 8 4 4 4-4"/>', ShopifyUI::ComboboxComponent::CHEVRON, width: 1.6) %>
+  </div>
+  <% unless @multiple %><input type="hidden" name="<%= @name %>" value="<%= selected_options.first&.dig(:value) %>" data-hidden-value <%= "disabled" if @disabled %>><% end %>
+  <ul id="<%= list_id %>" popover="manual" role="listbox" class="<%= ShopifyUI::ComboboxComponent::LIST.join(" ") %>"<% if @multiple %> aria-multiselectable="true"<% end %><% if @label %> aria-label="<%= @label %>"<% end %>>
+    <% if @allow_create %>
+      <li role="option" id="<%= @id %>-create" data-create data-hidden data-search="" class="<%= ShopifyUI::ComboboxComponent::OPTION.join(" ") %>" aria-selected="false"><%= svg('<path d="M10 4.5v11M4.5 10h11"/>', "tw:size-4 tw:shrink-0 tw:text-link", width: 1.6) %><span class="<%= ShopifyUI::ComboboxComponent::CREATE %>" data-text></span></li>
+    <% end %>
+    <% index = 0 %>
+    <% @groups.each do |group, options| %>
+      <% if group %><li role="presentation" data-group class="<%= ShopifyUI::ComboboxComponent::GROUP %>"><%= group %></li><% end %>
+      <% options.each do |option| %><%= option_tag(option, index) %><% index += 1 %><% end %>
+    <% end %>
+    <li data-empty class="<%= ShopifyUI::ComboboxComponent::EMPTY %>" role="presentation"><%= @empty_text %></li>
+  </ul>
+  <%= option_template %>
+  <% if @multiple %>
+    <%= tag_template %>
+    <div class="<%= ShopifyUI::ComboboxComponent::TAGS %>" data-tags><% selected_options.each do |o| %><%= render(ShopifyUI::TagComponent.new(o[:label], value: o[:value], removable: true, name: @name, disabled: @disabled)) %><% end %></div>
+  <% end %>
+  <% if @error.present? %><p id="<%= @id %>-help" class="<%= ShopifyUI::ComboboxComponent::ERROR %>"><%= @error %></p>
+  <% elsif @help_text.present? %><p id="<%= @id %>-help" class="<%= ShopifyUI::ComboboxComponent::HELP %>"><%= @help_text %></p><% end %>
+</div>
+<script><%= raw ShopifyUI::ComboboxComponent::SCRIPT %></script>

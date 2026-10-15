@@ -11,6 +11,34 @@
 
 <div class="tw:flex tw:flex-col tw:gap-8">
   <div>
+    <p class="<%= label_class %>">Flush table: full width, no outer border (Products index)</p>
+    <% products = [
+         ["Product on primary", [:success, "Active"], "6 in stock for 1 variant", "Baby Gift Sets", 3, 0, "", "solefly"],
+         ["Gift Card", [:success, "Active"], "40 in stock for 4 variants", "Gift Cards", 3, 0, "giftcard", "Snowboard Vendor"],
+         ["The Collection Snowboard: Hydrogen", [:success, "Active"], "0 in stock", "", 3, 0, "snowboard", "Hydrogen Vendor"],
+         ["The Archived Snowboard", [:neutral, "Archived"], "0 in stock", "", 2, 0, "snowboard", "Snowboard Vendor"],
+         ["The Draft Snowboard", [:info, "Draft"], "0 in stock", "", 2, 0, "snowboard", "Snowboard Vendor"]
+       ] %>
+    <%= render(ShopifyUI::TableComponent.new(
+          selectable: true, flush: true,
+          columns: ["Product", "Status", "Inventory", "Category", { label: "Channels", numeric: true }, { label: "Catalogs", numeric: true }, "Product type", "Vendor"]
+        )) do |table| %>
+      <% products.each_with_index do |(name, status, stock, category, channels, catalogs, type, vendor), i| %>
+        <% table.with_row(id: i) do |row| %>
+          <% row.with_cell { tag.span(name, class: "tw:font-semibold") } %>
+          <% row.with_cell { render(ShopifyUI::BadgeComponent.new(tone: status[0])) { status[1] } } %>
+          <% row.with_cell { stock.start_with?("0 ") || stock.start_with?("6 ") ? safe_join([tag.span(stock.split(" for ").first, class: "tw:text-danger-fill"), (" for " + stock.split(" for ").last if stock.include?(" for "))].compact) : stock } %>
+          <% row.with_cell { category } %>
+          <% row.with_cell { channels.to_s } %>
+          <% row.with_cell { catalogs.to_s } %>
+          <% row.with_cell { type } %>
+          <% row.with_cell { vendor } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
     <p class="<%= label_class %>">Index table: selectable rows, links, badges, muted and selected rows</p>
     <%= render(ShopifyUI::TableComponent.new(
           selectable: true,

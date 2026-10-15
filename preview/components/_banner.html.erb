@@ -1,0 +1,51 @@
+<% b = ShopifyUI::BannerComponent %>
+<% heading = "tw:m-0 tw:mb-3 tw:text-[13px] tw:font-semibold tw:text-ink" %>
+<% stack = "tw:flex tw:flex-col tw:gap-4" %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <section>
+    <h3 class="<%= heading %>">Titled — all tones, with actions and dismiss</h3>
+    <div class="<%= stack %>">
+      <%= render(b.new(tone: :info, title: "Shipping rates have changed", dismissible: true,
+            primary_action: { label: "Review rates", href: "#" }, secondary_action: { label: "Learn more", href: "#" })) do %>
+        <p>New carrier rates apply to orders placed after June 1. Review your shipping profiles to avoid undercharging.</p>
+      <% end %>
+      <%= render(b.new(tone: :success, title: "Your store is live", dismissible: true,
+            primary_action: { label: "View store", href: "#" })) do %>
+        <p>Customers can now find and buy your products.</p>
+      <% end %>
+      <%= render(b.new(tone: :warning, title: "Before you can purchase a shipping label, update your address",
+            primary_action: { label: "Edit address", href: "#" }, secondary_action: { label: "Learn more about shipping", href: "#" })) do %>
+        <p>The name of the city you entered doesn't match the given postal code.</p>
+      <% end %>
+      <%= render(b.new(tone: :critical, title: "High risk of fraud detected",
+            primary_action: { label: "Review risk analysis", href: "#" })) do %>
+        <p>Before fulfilling this order or capturing payment, please <a href="#">review the Risk Analysis</a> and determine if this order is fraudulent.</p>
+      <% end %>
+      <%= render(b.new(tone: :info, title: "Title only, no body", dismissible: true)) %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">Untitled — tinted, with lists and actions</h3>
+    <div class="<%= stack %>">
+      <%= render(b.new(tone: :info, dismissible: true)) { tag.p("Use your finance report to get detailed information about your business.") } %>
+      <%= render(b.new(tone: :success, dismissible: true)) { tag.p("Order archived.") } %>
+      <%= render(b.new(tone: :warning, primary_action: { label: "Fix errors" })) do %>
+        <p>3 products couldn't be imported:</p>
+        <ul><li>Row 4: missing title</li><li>Row 9: invalid price</li><li>Row 12: duplicate SKU</li></ul>
+      <% end %>
+      <%= render(b.new(tone: :critical)) { tag.p("This order was canceled and can no longer be edited.") } %>
+      <%= render(b.new(tone: :info, hide_icon: true)) { tag.p("Banner with the icon hidden.") } %>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="<%= heading %>">In card — compact, inside a card</h3>
+    <div class="tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:p-4 tw:shadow-card tw:flex tw:flex-col tw:gap-3">
+      <p class="tw:m-0 tw:text-[13px] tw:font-semibold">Payment</p>
+      <%= render(b.new(tone: :warning, in_card: true, primary_action: { label: "Capture payment" }, dismissible: true)) { tag.p("Payment authorization expires in 2 days.") } %>
+      <%= render(b.new(tone: :info, in_card: true, title: "Title inside an in-card banner")) { tag.p("In-card banners keep the tinted style even with a title.") } %>
+    </div>
+  </section>
+</div>

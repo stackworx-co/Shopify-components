@@ -1,0 +1,54 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% stats = ShopifyUI::StatsCardComponent %>
+<% calendar = capture do %><svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M3 8h14M7 2v4M13 2v4"></path></svg>Today<% end %>
+
+<div class="tw:flex tw:flex-col tw:gap-7">
+  <div>
+    <p class="<%= label_class %>">Strip — Orders page, no data yet</p>
+    <%= render(stats.new(metrics: [
+      { label: "Orders", value: "0" }, { label: "Items ordered", value: "0" },
+      { label: "Sales reversals", value: "$0" }, { label: "Orders fulfilled", value: "0" },
+      { label: "Orders delivered", value: "0" }
+    ])) { |c| c.with_range { calendar } } %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Strip — with data, trends, help tooltip and links</p>
+    <%= render(stats.new(metrics: [
+      { label: "Orders", value: "128", trend: 12, sparkline: [3, 5, 4, 8, 6, 9, 12], href: "#", help: "Orders placed in the selected range." },
+      { label: "Items ordered", value: "342", trend: -4.2, sparkline: [9, 8, 9, 6, 7, 5, 6] },
+      { label: "Returns", value: "6", trend: -30, trend_inverse: true, sparkline: [4, 3, 5, 2, 2, 1, 1] },
+      { label: "Orders fulfilled", value: "120", trend: 0, sparkline: [5, 5, 5, 5, 5, 5, 5] },
+      { label: "Orders delivered", value: "97", trend: 8, sparkline: [1, 3, 2, 4, 6, 5, 8] }
+    ])) { |c| c.with_range { calendar } } %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Strip — loading</p>
+    <%= render(stats.new(metrics: %w[Orders Items\ ordered Returns].map { |l| { label: l, loading: true } })) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Grid — Home / Analytics cards with comparison period</p>
+    <%= render(stats.new(variant: :grid, metrics: [
+      { label: "Total sales", value: "$12,480.20", trend: 18.4, sparkline: [2, 4, 3, 6, 5, 8, 9, 12], comparison: [2, 3, 3, 4, 4, 5, 5, 6], help: "Gross sales minus discounts and returns.", href: "#" },
+      { label: "Sessions", value: "4,912", trend: -6, sparkline: [8, 9, 7, 6, 7, 5, 6, 5], comparison: [7, 8, 8, 8, 7, 7, 8, 7] },
+      { label: "Conversion rate", value: "2.6%", trend: 0.4, sparkline: [2, 2.2, 2.1, 2.5, 2.4, 2.6] },
+      { label: "Returning customers", value: "—" }
+    ])) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Grid — 3 columns, loading</p>
+    <%= render(stats.new(variant: :grid, columns: 3, metrics: %w[Sales Orders Visitors].map { |l| { label: l, loading: true } })) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Single card</p>
+    <div class="tw:max-w-sm">
+      <%= render(stats.new(variant: :grid, metrics: [
+        { label: "Average order value", value: "$97.50", trend: -2.1, sparkline: [100, 98, 102, 99, 97, 96, 97.5], comparison: [95, 96, 97, 98, 99, 99, 99.6] }
+      ])) %>
+    </div>
+  </div>
+</div>

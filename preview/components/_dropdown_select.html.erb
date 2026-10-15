@@ -1,11 +1,19 @@
 <% statuses = [["Active", "active"], ["Draft", "draft"], ["Archived", "archived"]] %>
 <% grouped = { "North America" => ["Canada", "United States"], "Europe" => ["France", "Germany", "United Kingdom"] } %>
+<% currencies = ["Bermudan Dollar (BMD $)", "Bolivian Boliviano (BOB Bs)", "Bosnia-Herzegovina Convertible Mark (BAM KM)",
+                 "Botswanan Pula (BWP P)", "Brazilian Real (BRL R$)", "British Pound (GBP £)", "Brunei Dollar (BND $)",
+                 "Burundian Franc (BIF)", "Cambodian Riel (KHR ៛)", "Canadian Dollar (CAD $)", "Cape Verdean Escudo (CVE $)",
+                 "Cayman Islands Dollar (KYD $)", "Central African CFA Franc (XAF FCFA)", "Chilean Peso (CLP $)",
+                 "Chinese Yuan (CNY ¥)", "Colombian Peso (COP $)"] %>
 
 <div class="tw:grid tw:gap-5 tw:sm:grid-cols-2">
+  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "currency", label: "Currency", options: currencies, selected: "Canadian Dollar (CAD $)")) %>
+  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "currencies[]", label: "Currencies (multiple)", options: currencies, multiple: true,
+                                                    selected: ["Bosnia-Herzegovina Convertible Mark (BAM KM)", "Canadian Dollar (CAD $)"], placeholder: "Select currencies")) %>
   <%= render(ShopifyUI::DropdownSelectComponent.new(name: "status", label: "Status", options: statuses, selected: "active")) %>
   <%= render(ShopifyUI::DropdownSelectComponent.new(name: "status_placeholder", label: "With placeholder", options: statuses, placeholder: "Select a status")) %>
-  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "sort", label: "Sort by", options: ["Newest", "Oldest", "Total"], help_text: "Applies to the orders list only.")) %>
-  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "country", label: "Country", options: grouped_options_for_select(grouped, "Canada"))) %>
+  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "sort", label: "Sort by", options: ["Newest", "Oldest", ["Total", "total", { disabled: true }]], help_text: "Applies to the orders list only.")) %>
+  <%= render(ShopifyUI::DropdownSelectComponent.new(name: "country", label: "Country", options: grouped, selected: "Canada")) %>
   <%= render(ShopifyUI::DropdownSelectComponent.new(name: "vendor", label: "Vendor", options: ["Nike", "Adidas"], placeholder: "Choose a vendor", error: "Vendor is required")) %>
   <%= render(ShopifyUI::DropdownSelectComponent.new(name: "location", label: "Location", options: ["Main warehouse"], disabled: true)) %>
   <%= render(ShopifyUI::DropdownSelectComponent.new(name: "hidden_label", label: "Filter", label_hidden: true, options: ["All", "Unfulfilled", "Unpaid"])) %>

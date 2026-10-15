@@ -1,0 +1,25 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% btn = ->(label, js) { render(ShopifyUI::ButtonComponent.new(onclick: js)) { label } } %>
+
+<script><%= raw ShopifyUI::ToastComponent.script %></script>
+
+<div class="tw:flex tw:flex-col tw:gap-5">
+  <div>
+    <p class="<%= label_class %>">Triggered from JavaScript (ShopifyUI.toast)</p>
+    <div class="tw:flex tw:flex-wrap tw:gap-2">
+      <%= btn.call("Default", "ShopifyUI.toast('Product saved')") %>
+      <%= btn.call("Error", "ShopifyUI.toast('Server error — try again', { error: true })") %>
+      <%= btn.call("With action", "ShopifyUI.toast('3 orders archived', { action: { label: 'Undo', onAction: function () { ShopifyUI.toast('Archive undone') } } })") %>
+      <%= btn.call("With link", "ShopifyUI.toast('Draft order created', { action: { label: 'View', href: '#' } })") %>
+      <%= btn.call("Long message", "ShopifyUI.toast('Your export is being prepared. We will email you a download link when the CSV file with all 1,248 orders is ready.')") %>
+      <%= btn.call("Sticky (no timeout)", "ShopifyUI.toast('Connection lost. Reconnecting…', { duration: 0, error: true })") %>
+      <%= btn.call("No close button", "ShopifyUI.toast('Copied to clipboard', { dismissible: false, duration: 2000 })") %>
+      <%= btn.call("Stack 4 (max 3 shown)", "['One','Two','Three','Four'].forEach(function (m, i) { setTimeout(function () { ShopifyUI.toast('Toast ' + m) }, i * 250) })") %>
+    </div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Rendered from Rails on page load (e.g. flash[:notice])</p>
+    <p class="tw:m-0 tw:text-[13px] tw:text-muted">This page rendered <code>ToastComponent.new(message: "Welcome back")</code> — it appeared when the page loaded.</p>
+    <%= render(ShopifyUI::ToastComponent.new(message: "Welcome back")) %>
+  </div>
+</div>

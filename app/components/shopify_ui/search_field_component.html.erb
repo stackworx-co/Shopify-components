@@ -1,0 +1,20 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <%= wrapper_tag do %>
+    <% if @collapsible %>
+      <button type="button" class="<%= ShopifyUI::SearchFieldComponent::TOGGLE.join(" ") %>" aria-label="<%= @label %>" data-action="expand"><%= magnifier("tw:size-5") %></button>
+    <% end %>
+    <div class="<%= box_classes %>" data-box>
+      <%= magnifier %>
+      <input <%= tag.attributes(input_attributes) %>>
+      <%= spinner %>
+      <% if @clear_button %>
+        <button type="button" class="<%= ShopifyUI::SearchFieldComponent::CLEAR.join(" ") %>" aria-label="Clear search" data-action="clear"><%= clear_icon %></button>
+      <% end %>
+      <% if @shortcut %><kbd class="<%= ShopifyUI::SearchFieldComponent::KBD.join(" ") %>" aria-hidden="true">Ctrl K</kbd><% end %>
+    </div>
+    <% if @cancel_button %>
+      <button type="button" class="<%= cancel_classes %>" data-action="cancel">Cancel</button>
+    <% end %>
+  <% end %>
+</div>
+<script><%= raw ShopifyUI::SearchFieldComponent::SCRIPT %></script>

@@ -1,0 +1,31 @@
+<dialog <%= tag.attributes(dialog_attributes) %>>
+  <div class="<%= ShopifyUI::ModalComponent::INNER %>">
+    <div class="<%= header_classes %>">
+      <h2 id="<%= title_id %>" class="<%= ShopifyUI::ModalComponent::TITLE %><%= " tw:sr-only" if @title_hidden %>"><%= @title %></h2>
+      <button type="button" class="<%= ShopifyUI::ModalComponent::CLOSE.join(" ") %>" aria-label="<%= @close_label %>" data-sui-modal-close><%= close_icon %></button>
+    </div>
+    <div class="<%= body_classes %>">
+      <% if @loading %>
+        <div class="<%= ShopifyUI::ModalComponent::LOADING %>"><%= spinner(ShopifyUI::ModalComponent::SPINNER) %><span class="tw:sr-only">Loading</span></div>
+      <% elsif @sectioned && sections? %>
+        <% sections.each do |section| %><div class="<%= ShopifyUI::ModalComponent::SECTION %>"><%= section %></div><% end %>
+      <% elsif @sectioned %>
+        <div class="<%= ShopifyUI::ModalComponent::SECTION %>"><%= content %></div>
+      <% else %>
+        <%= content %>
+      <% end %>
+    </div>
+    <% if actions? || footer? %>
+      <div class="<%= ShopifyUI::ModalComponent::FOOTER.join(" ") %>">
+        <% if footer? %><div class="<%= ShopifyUI::ModalComponent::FOOTER_LEFT %>"><%= footer %></div><% end %>
+        <% if actions? %>
+          <div class="<%= ShopifyUI::ModalComponent::FOOTER_ACTIONS %>">
+            <% @secondary.each do |action| %><%= action_button(action, variant: :secondary) %><% end %>
+            <% if @primary %><%= action_button(@primary, variant: :primary) %><% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</dialog>
+<script><%= raw ShopifyUI::ModalComponent::SCRIPT %></script>

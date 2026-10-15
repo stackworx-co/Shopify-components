@@ -1,0 +1,48 @@
+<% es = ShopifyUI::EmptyStateComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted tw:max-sm:px-4" %>
+
+<div class="tw:-mx-6 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0 tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Page-level in a card — illustration, body, primary + secondary, footer link (Orders)</p>
+    <%= render(es.new(heading: "Your orders will show here", image: :orders, card: true,
+          primary_action: { label: "Create order", href: "#" }, secondary_action: { label: "Import orders", href: "#" })) do |c| %>
+      <% c.with_footer { safe_join(["Learn more about ", link_to("orders", "#")]) } %>
+      <p>This is where you'll fulfill orders, collect payments, and track order progress.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Full width — image beside text on wide screens, stacks on phones (Products)</p>
+    <%= render(es.new(heading: "Add your products", image: :products, layout: :full_width, card: true, large_image: true,
+          primary_action: { label: "Add product", href: "#" }, secondary_action: { label: "Import", href: "#" })) do %>
+      <p>Start by stocking your store with products your customers will love.</p>
+    <% end %>
+  </div>
+
+  <div class="tw:grid tw:gap-6 tw:lg:grid-cols-2">
+    <div>
+      <p class="<%= label_class %>">Compact in a card — contained image (Customers)</p>
+      <%= render(es.new(heading: "Everything customers-related in one place", image: :customers, size: :compact, card: true, image_contained: true,
+            primary_action: { label: "Add customer", href: "#" })) { tag.p("Manage customer details and see their order history.") } %>
+    </div>
+    <div>
+      <p class="<%= label_class %>">Compact in a card — files illustration</p>
+      <%= render(es.new(heading: "Upload and manage your files", image: :files, size: :compact, card: true,
+            primary_action: { label: "Upload files" })) { tag.p("Files can be images, videos, and documents.") } %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">No results — inside a table after searching / filtering</p>
+    <%= render(ShopifyUI::CardComponent.new(padding: :none)) do %>
+      <%= render(es.no_results(resource: "orders", clear_href: "#")) { tag.p("Try changing the filters or search term.") } %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Plain — no card, heading only, custom illustration slot</p>
+    <%= render(es.new(heading: "Nothing scheduled", size: :compact)) do |c| %>
+      <% c.with_illustration { tag.svg(tag.circle(cx: 24, cy: 24, r: 20, fill: "none", stroke: "currentColor", "stroke-width": 2), viewBox: "0 0 48 48", class: "tw:size-12 tw:text-faint", aria: { hidden: true }) } %>
+    <% end %>
+  </div>
+</div>

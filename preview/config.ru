@@ -45,6 +45,19 @@ class PreviewController < ActionController::Base
 
     render template: "index", layout: false
   end
+
+  # Fake remote search for the Combobox preview.
+  PRODUCTS = [
+    "Gift Card", "The Minimal Snowboard", "The Collection Snowboard: Hydrogen", "The Archived Snowboard",
+    "Selling Plans Ski Wax", "The Complete Snowboard", "The Out of Stock Snowboard", "The Compare at Price Snowboard",
+    "The Videographer Snowboard", "The Draft Snowboard", "The Inventory Not Tracked Snowboard"
+  ].freeze
+
+  def search
+    q = params[:q].to_s.downcase
+    hits = PRODUCTS.each_with_index.select { |name, _| name.downcase.include?(q) }.first(8)
+    render json: hits.map { |name, i| { label: name, value: "gid://shopify/Product/#{1000 + i}", description: "#{(i * 7) % 40} in stock" } }
+  end
 end
 
 run Rails.application

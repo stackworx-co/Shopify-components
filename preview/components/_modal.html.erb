@@ -1,0 +1,91 @@
+<% m = ShopifyUI::ModalComponent %>
+<% opener = ->(id, label) { render(ShopifyUI::ButtonComponent.new(**m.open_attributes(id))) { label } } %>
+<% cancel = { label: "Cancel", close: true } %>
+
+<div class="tw:flex tw:flex-wrap tw:gap-2">
+  <%= opener.call("modal-basic", "Basic") %>
+  <%= opener.call("modal-small", "Small confirm") %>
+  <%= opener.call("modal-leave", "Leave page (destructive)") %>
+  <%= opener.call("modal-large", "Large") %>
+  <%= opener.call("modal-fullscreen", "Fullscreen") %>
+  <%= opener.call("modal-sectioned", "Sectioned") %>
+  <%= opener.call("modal-flush", "Flush list") %>
+  <%= opener.call("modal-long", "Long scrolling") %>
+  <%= opener.call("modal-footer", "Footer content") %>
+  <%= opener.call("modal-loading", "Loading") %>
+  <%= opener.call("modal-saving", "Saving (primary loading)") %>
+  <%= opener.call("modal-no-title", "Hidden title") %>
+  <%= opener.call("modal-locked", "Not dismissible") %>
+</div>
+
+<%= render(m.new(id: "modal-basic", title: "Archive order #1602?",
+      primary_action: { label: "Archive", close: true }, secondary_actions: [ cancel ])) do %>
+  <p class="tw:m-0">Archived orders are hidden from the Orders list. You can unarchive them at any time.</p>
+<% end %>
+
+<%= render(m.new(id: "modal-small", title: "Delete 3 products?", size: :small,
+      primary_action: { label: "Delete", destructive: true, close: true }, secondary_actions: [ cancel ])) do %>
+  <p class="tw:m-0">This can't be undone.</p>
+<% end %>
+
+<%= render(m.new(id: "modal-leave", title: "Leave page with unsaved changes?", size: :small,
+      primary_action: { label: "Leave page", destructive: true, close: true }, secondary_actions: [ { label: "Stay", close: true } ])) do %>
+  <p class="tw:m-0">Leaving this page will delete all unsaved changes.</p>
+<% end %>
+
+<%= render(m.new(id: "modal-large", title: "Edit shipping address", size: :large,
+      primary_action: { label: "Save", close: true }, secondary_actions: [ cancel ])) do %>
+  <div class="tw:grid tw:gap-4 tw:sm:grid-cols-2">
+    <%= render(ShopifyUI::TextFieldComponent.new(name: "first", label: "First name", value: "Test")) %>
+    <%= render(ShopifyUI::TextFieldComponent.new(name: "last", label: "Last name", value: "User")) %>
+    <div class="tw:sm:col-span-2"><%= render(ShopifyUI::TextFieldComponent.new(name: "address", label: "Address", value: "150 Elgin Street")) %></div>
+    <%= render(ShopifyUI::TextFieldComponent.new(name: "city", label: "City", value: "Ottawa")) %>
+    <%= render(ShopifyUI::TextFieldComponent.new(name: "zip", label: "Postal code", value: "K2P 1L4")) %>
+  </div>
+<% end %>
+
+<%= render(m.new(id: "modal-fullscreen", title: "Preview email", size: :fullscreen,
+      primary_action: { label: "Send", close: true }, secondary_actions: [ cancel ])) do %>
+  <div class="tw:mx-auto tw:max-w-xl tw:rounded-surface tw:border tw:border-border tw:p-6">Email preview…</div>
+<% end %>
+
+<%= render(m.new(id: "modal-sectioned", title: "Export orders", sectioned: true,
+      primary_action: { label: "Export orders", close: true }, secondary_actions: [ cancel ])) do |c| %>
+  <% c.with_section { tag.p("Export: Current page · All orders · Selected: 0", class: "tw:m-0") } %>
+  <% c.with_section { tag.p("Export as: CSV for Excel, Numbers, or other spreadsheet programs", class: "tw:m-0") } %>
+<% end %>
+
+<%= render(m.new(id: "modal-flush", title: "Select location", flush: true, secondary_actions: [ cancel ])) do %>
+  <ul class="tw:m-0 tw:list-none tw:p-0">
+    <% ["Main warehouse", "Ottawa store", "Toronto pop-up", "Vancouver depot"].each do |loc| %>
+      <li class="tw:border-b tw:border-border-secondary tw:last:border-b-0"><button type="button" data-sui-modal-close class="tw:w-full tw:cursor-pointer tw:border-0 tw:bg-transparent tw:px-4 tw:py-3 tw:text-left tw:text-[13px] tw:hover:bg-surface-hover"><%= loc %></button></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render(m.new(id: "modal-long", title: "Terms of service",
+      primary_action: { label: "Accept", close: true }, secondary_actions: [ { label: "Decline", close: true } ])) do %>
+  <% 30.times do |i| %><p class="tw:mt-0 tw:mb-3">Section <%= i + 1 %>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Header and footer stay put while this scrolls.</p><% end %>
+<% end %>
+
+<%= render(m.new(id: "modal-footer", title: "Fulfill items",
+      primary_action: { label: "Fulfill items", close: true }, secondary_actions: [ cancel ])) do |c| %>
+  <% c.with_footer { tag.label(safe_join([render(ShopifyUI::CheckboxComponent.new(name: "notify", checked: true)), "Send shipment details to customer"]), class: "tw:flex tw:items-center tw:gap-2") } %>
+  <p class="tw:m-0">2 items will be marked as fulfilled.</p>
+<% end %>
+
+<%= render(m.new(id: "modal-loading", title: "Order timeline", loading: true, secondary_actions: [ { label: "Close", close: true } ])) %>
+
+<%= render(m.new(id: "modal-saving", title: "Save changes",
+      primary_action: { label: "Save", loading: true }, secondary_actions: [ cancel ])) do %>
+  <p class="tw:m-0">The primary button shows a spinner and is disabled while saving.</p>
+<% end %>
+
+<%= render(m.new(id: "modal-no-title", title: "Product image", title_hidden: true, flush: true, size: :small)) do %>
+  <div class="tw:flex tw:aspect-square tw:items-center tw:justify-center tw:bg-surface-sunken tw:text-muted">Image</div>
+<% end %>
+
+<%= render(m.new(id: "modal-locked", title: "Accept updated terms", size: :small, dismissible: false,
+      primary_action: { label: "Accept", close: true })) do %>
+  <p class="tw:m-0">Backdrop clicks and Esc don't close this one — only the buttons do.</p>
+<% end %>

@@ -1,0 +1,38 @@
+<% tg = ShopifyUI::TagComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
+
+<div class="tw:flex tw:flex-col tw:gap-7">
+  <div><p class="<%= label_class %>">Plain tags</p>
+    <div class="<%= row %>"><% %w[snowboard winter sale].each do |t| %><%= render(tg.new(t)) %><% end %></div></div>
+
+  <div><p class="<%= label_class %>">Removable (✕ removes it here; fires sui:tag-remove)</p>
+    <div class="<%= row %>"><% %w[VIP Wholesale Returning\ customer].each do |t| %><%= render(tg.new(t, removable: true)) %><% end %></div></div>
+
+  <div><p class="<%= label_class %>">Link, clickable button, link + removable, remove via URL</p>
+    <div class="<%= row %>">
+      <%= render(tg.new("View all snowboard products", href: "#")) %>
+      <%= render(tg.new("Clickable filter", clickable: true, onclick: "ShopifyUI.toast ? ShopifyUI.toast('Tag clicked') : alert('Tag clicked')")) %>
+      <%= render(tg.new("Linked + removable", href: "#", removable: true)) %>
+      <%= render(tg.new("Server remove", remove_url: "#", remove_attributes: { data: { turbo_method: :delete } })) %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Sizes and states — medium · large · disabled · long label truncated</p>
+    <div class="<%= row %>">
+      <%= render(tg.new("Medium", removable: true)) %>
+      <%= render(tg.new("Large", size: :large, removable: true)) %>
+      <%= render(tg.new("Disabled", removable: true, disabled: true)) %>
+      <%= render(tg.new("A very long tag name that keeps going past the maximum width", removable: true)) %>
+    </div></div>
+
+  <div class="tw:grid tw:gap-6 tw:sm:grid-cols-2">
+    <div><p class="<%= label_class %>">Tags field — type, Enter or comma to add, Backspace to remove</p>
+      <%= render(ShopifyUI::TagInputComponent.new(name: "product[tags]", label: "Tags", tags: %w[snowboard winter], help_text: "Paste a comma-separated list to add several.")) %></div>
+    <div><p class="<%= label_class %>">Max 3 tags · error · disabled</p>
+      <div class="tw:flex tw:flex-col tw:gap-4">
+        <%= render(ShopifyUI::TagInputComponent.new(name: "a", label: "Collections (max 3)", tags: %w[Summer Sale], max_tags: 3)) %>
+        <%= render(ShopifyUI::TagInputComponent.new(name: "b", label: "Required tags", error: "Add at least one tag")) %>
+        <%= render(ShopifyUI::TagInputComponent.new(name: "c", label: "Locked tags", tags: %w[imported], disabled: true)) %>
+      </div></div>
+  </div>
+</div>

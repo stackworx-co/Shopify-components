@@ -1,0 +1,16 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <% if (img = image_tag_html) %>
+    <div class="<%= ShopifyUI::EmptyStateComponent::IMAGE_WRAP %><%= " #{ShopifyUI::EmptyStateComponent::IMAGE_WRAP_FULL}" if full? %>"><%= img %></div>
+  <% end %>
+  <div class="<%= ShopifyUI::EmptyStateComponent::TEXT %><%= " #{ShopifyUI::EmptyStateComponent::TEXT_FULL}" if full? %>">
+    <h2 class="<%= ShopifyUI::EmptyStateComponent::HEADING[@size] %>"><%= @heading %></h2>
+    <% if content.present? %><div class="<%= ShopifyUI::EmptyStateComponent::BODY %>"><%= content %></div><% end %>
+    <% if @primary || @secondary %>
+      <div class="<%= ShopifyUI::EmptyStateComponent::ACTIONS %><%= " #{ShopifyUI::EmptyStateComponent::ACTIONS_FULL}" if full? %>">
+        <%= action_button(@secondary, :secondary) %>
+        <%= action_button(@primary, :primary) %>
+      </div>
+    <% end %>
+    <% if footer? %><div class="<%= ShopifyUI::EmptyStateComponent::FOOTER %>"><%= footer %></div><% end %>
+  </div>
+</div>

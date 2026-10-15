@@ -1,0 +1,50 @@
+<% ph = ShopifyUI::PageHeaderComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% box = "tw:rounded-surface tw:bg-page tw:p-4 tw:max-sm:p-3" %>
+<% chip = "tw:inline-flex tw:items-center tw:gap-1 tw:rounded-full tw:px-2 tw:py-0.5 tw:text-[13px] tw:font-medium tw:text-ink tw:hover:bg-fill-tertiary tw:cursor-pointer" %>
+<% duplicate = tag.svg(tag.path(d: "M7 7V4.5A1.5 1.5 0 0 1 8.5 3h7A1.5 1.5 0 0 1 17 4.5v7a1.5 1.5 0 0 1-1.5 1.5H13M4.5 7h7A1.5 1.5 0 0 1 13 8.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 15.5v-7A1.5 1.5 0 0 1 4.5 7Z"), viewBox: "0 0 20 20", width: 16, height: 16, fill: "none", stroke: "currentColor", "stroke-width": 1.5, "stroke-linejoin": "round") %>
+
+<div class="tw:flex tw:flex-col tw:gap-6">
+  <div>
+    <p class="<%= label_class %>">Index page — title, metadata chip, secondary actions, action group, primary (Orders)</p>
+    <div class="<%= box %>">
+      <%= render(ph.new(title: "Orders",
+            secondary_actions: [ { label: "Export", href: "#" } ],
+            action_groups: [ { label: "More actions", actions: [ { label: "Print packing slips" }, { label: "Archive orders" } ] } ],
+            primary_action: { label: "Create order", href: "#" })) do |c| %>
+        <% c.with_metadata { tag.span(safe_join(["All locations", tag.svg(tag.path(d: "m6 8 4 4 4-4"), viewBox: "0 0 20 20", width: 14, height: 14, fill: "none", stroke: "currentColor", "stroke-width": 1.6)]), class: chip) } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Detail page — back, badges, subtitle, icon actions, pagination (Order #1602)</p>
+    <div class="<%= box %>">
+      <%= render(ph.new(title: "#1602", back_url: "#",
+            badges: [ { label: "Partially paid", tone: :attention }, { label: "On hold", tone: :attention, appearance: :outline } ],
+            subtitle: "June 3, 2026 at 4:20 pm from Online Store",
+            secondary_actions: [ { label: "Refund", href: "#" }, { label: "Edit", href: "#" }, { label: "Duplicate", icon: duplicate } ],
+            action_groups: [ { label: "More actions", actions: [ { label: "Print order page" }, { label: "Cancel order", destructive: true } ] } ],
+            pagination: { previous_url: "#", next_url: "#" })) %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Edit page — long title wraps, primary + destructive secondary</p>
+    <div class="<%= box %>">
+      <%= render(ph.new(title: "The Collection Snowboard: Hydrogen — Limited Edition Winter 2026", back_url: "#",
+            badges: [ { label: "Active", tone: :success } ],
+            secondary_actions: [ { label: "Delete product", destructive: true }, { label: "Preview", href: "#" } ],
+            primary_action: { label: "Save" })) %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Minimal — title only / disabled primary / hidden title</p>
+    <div class="<%= box %> tw:flex tw:flex-col tw:gap-4">
+      <%= render(ph.new(title: "Settings")) %>
+      <%= render(ph.new(title: "Add product", back_url: "#", primary_action: { label: "Save", disabled: true })) %>
+      <%= render(ph.new(title: "Analytics dashboard", title_hidden: true, secondary_actions: [ { label: "Customize" } ], primary_action: { label: "New exploration" })) %>
+    </div>
+  </div>
+</div>

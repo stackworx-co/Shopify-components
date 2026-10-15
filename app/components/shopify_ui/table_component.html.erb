@@ -1,11 +1,13 @@
 <div <%= tag.attributes(wrapper_attributes) %>>
   <% if filters? %>
-    <div class="<%= ShopifyUI::TableComponent::HEAD_ROW %>"><%= filters %></div>
+    <div class="<%= ShopifyUI::TableComponent::FILTERS_ROW %>"><%= filters %></div>
   <% end %>
+  <div class="tw:relative">
+  <% if bulk_actions? %><%= bulk_actions %><% end %>
   <div class="tw:overflow-x-auto">
     <table class="<%= ShopifyUI::TableComponent::TABLE %>">
       <thead>
-        <tr class="<%= ShopifyUI::TableComponent::HEAD_ROW %>">
+        <tr class="<%= head_row_classes %>">
           <% if selectable %>
             <th class="<%= check_cell_classes %>">
               <%= render(ShopifyUI::CheckboxComponent.new(aria: { label: "Select all" }, onchange: ShopifyUI::TableComponent::SELECT_ALL)) %>
@@ -28,5 +30,6 @@
         <% end %>
       </tbody>
     </table>
+  </div>
   </div>
 </div>

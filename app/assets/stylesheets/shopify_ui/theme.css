@@ -51,6 +51,21 @@
   --color-on-attention: var(--sui-on-attention);
   --color-neutral: var(--sui-neutral);
   --color-neutral-light: var(--sui-neutral-light);
+  --color-good-strong: var(--sui-good-strong);
+  --color-info-strong: var(--sui-info-strong);
+  --color-warn-strong: var(--sui-warn-strong);
+  --color-danger-strong: var(--sui-danger-strong);
+  --color-on-strong-dark: var(--sui-on-strong-dark);
+  --color-on-strong-light: var(--sui-on-strong-light);
+  --color-frame: var(--sui-frame);
+  --color-frame-hover: var(--sui-frame-hover);
+  --color-frame-active: var(--sui-frame-active);
+  --color-frame-input: var(--sui-frame-input);
+  --color-frame-ink: var(--sui-frame-ink);
+  --color-frame-muted: var(--sui-frame-muted);
+  --color-frame-border: var(--sui-frame-border);
+  --color-frame-logo: var(--sui-frame-logo);
+  --color-frame-on-logo: var(--sui-frame-on-logo);
 
   /* Inter stands in for ShopifyInter, which is not publicly distributed. */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;

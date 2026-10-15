@@ -1,0 +1,31 @@
+<div class="<%= ShopifyUI::TextFieldComponent::WRAPPER %>" data-sui-text-field>
+  <% if @label || @label_action %>
+    <div class="<%= ShopifyUI::TextFieldComponent::LABEL_ROW %><%= " tw:sr-only" if @label_hidden && !@label_action %>">
+      <label for="<%= @id %>" class="<%= label_classes %>"><%= @label %><% if @required_indicator %><span class="<%= ShopifyUI::TextFieldComponent::REQUIRED %>" aria-hidden="true">*</span><% end %></label>
+      <% if @label_action %><%= link_to(@label_action[:label], @label_action[:href] || "#", class: ShopifyUI::TextFieldComponent::LABEL_ACTION) %><% end %>
+    </div>
+  <% end %>
+  <div class="<%= ShopifyUI::TextFieldComponent::ROW %>">
+    <% if connected_left? %><div class="tw:shrink-0"><%= connected_left %></div><% end %>
+    <div <%= tag.attributes(box_attributes) %>>
+      <%= affix(@prefix) %>
+      <%= field_tag %>
+      <%= count_tag if multiline? %>
+      <%= clear_tag %>
+      <%= count_tag unless multiline? %>
+      <%= affix(@suffix) %>
+      <%= reveal_tag %>
+      <%= stepper_tag %>
+    </div>
+    <% if connected_right? %><div class="tw:shrink-0"><%= connected_right %></div><% end %>
+  </div>
+  <% if @error.present? %>
+    <p id="<%= @id %>-description" class="<%= ShopifyUI::TextFieldComponent::ERROR %>">
+      <svg class="<%= ShopifyUI::TextFieldComponent::ERROR_ICON %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-.75 4.5a.75.75 0 0 1 1.5 0v4a.75.75 0 0 1-1.5 0v-4ZM10 14.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>
+      <span><%= @error %></span>
+    </p>
+  <% elsif @help_text.present? %>
+    <p id="<%= @id %>-description" class="<%= ShopifyUI::TextFieldComponent::HELP_TEXT %>"><%= @help_text %></p>
+  <% end %>
+</div>
+<script><%= raw ShopifyUI::TextFieldComponent::SCRIPT %></script>

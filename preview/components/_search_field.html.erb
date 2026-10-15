@@ -1,0 +1,57 @@
+<% s = ShopifyUI::SearchFieldComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+
+<div class="tw:flex tw:flex-col tw:gap-6">
+  <div>
+    <p class="<%= label_class %>">Outlined (default) — form submit on Enter, clear button</p>
+    <%= render(s.new(name: "q", placeholder: "Search products", url: "#", params: { status: "active" })) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Filled — admin top-bar search with Ctrl K / "/" shortcut (large)</p>
+    <%= render(s.new(variant: :filled, size: :large, placeholder: "Search", shortcut: true)) %>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Plain — inline search in a table toolbar, with Cancel (search mode)</p>
+    <div class="tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:p-1.5">
+      <%= render(s.new(variant: :plain, size: :slim, placeholder: "Searching all orders", value: "#1602", cancel_button: true)) %>
+    </div>
+  </div>
+  <div class="tw:grid tw:gap-5 tw:sm:grid-cols-3">
+    <div><p class="<%= label_class %>">Slim</p><%= render(s.new(size: :slim, placeholder: "Filter tags")) %></div>
+    <div><p class="<%= label_class %>">Medium</p><%= render(s.new(placeholder: "Search customers")) %></div>
+    <div><p class="<%= label_class %>">Large</p><%= render(s.new(size: :large, placeholder: "Search apps")) %></div>
+  </div>
+  <div class="tw:grid tw:gap-5 tw:sm:grid-cols-3">
+    <div><p class="<%= label_class %>">With value</p><%= render(s.new(value: "snowboard")) %></div>
+    <div><p class="<%= label_class %>">Loading</p><%= render(s.new(value: "hydrogen", loading: true)) %></div>
+    <div><p class="<%= label_class %>">Disabled</p><%= render(s.new(placeholder: "Search disabled", disabled: true)) %></div>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Live search — debounced <code>sui:search</code> event (results update while typing)</p>
+    <%= render(s.new(id: "live-search", placeholder: "Type a product name", debounce: 250)) %>
+    <ul id="live-results" class="tw:m-0 tw:mt-2 tw:list-none tw:p-0 tw:text-[13px]"></ul>
+    <script>
+      (function () {
+        var items = ["Gift Card", "The Minimal Snowboard", "The Collection Snowboard: Hydrogen", "Selling Plans Ski Wax", "The Draft Snowboard"];
+        var root = document.getElementById("live-search"), list = document.getElementById("live-results");
+        function show(q) {
+          list.innerHTML = "";
+          items.filter(function (i) { return i.toLowerCase().indexOf(q.toLowerCase()) !== -1; })
+               .forEach(function (i) { var li = document.createElement("li"); li.className = "tw:py-1"; li.textContent = i; list.appendChild(li); });
+        }
+        root.addEventListener("sui:search", function (e) {
+          ShopifyUI.setSearchLoading(root, true);
+          setTimeout(function () { show(e.detail.value); ShopifyUI.setSearchLoading(root, false); }, 300);
+        });
+        show("");
+      })();
+    </script>
+  </div>
+  <div>
+    <p class="<%= label_class %>">Collapsible — icon button on phones, expands full width when tapped (resize to see)</p>
+    <div class="tw:flex tw:items-center tw:gap-2">
+      <span class="tw:text-[16px] tw:font-semibold tw:text-ink tw:mr-auto">Products</span>
+      <%= render(s.new(collapsible: true, cancel_button: true, placeholder: "Search products", class: "tw:sm:w-72")) %>
+    </div>
+  </div>
+</div>
