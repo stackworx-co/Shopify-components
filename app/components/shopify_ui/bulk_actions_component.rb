@@ -47,7 +47,7 @@ module ShopifyUI
       tw:max-sm:size-9
     ].freeze
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiBulk) return; window.__suiBulk = true;
         function scope(bar) { return document.getElementById(bar.getAttribute('data-for')) || bar.parentElement; }
@@ -97,7 +97,7 @@ module ShopifyUI
           document.body.appendChild(f); f.submit();
         });
         function init() { bars().forEach(update); }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        ShopifyUI.onLoad(init);
       })();
     JS
 

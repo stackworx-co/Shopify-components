@@ -63,7 +63,7 @@ module ShopifyUI
     ].freeze
     SEARCH_HINT = "tw:ml-auto tw:text-[11px] tw:text-frame-muted tw:max-lg:hidden tw:[@media(hover:none)]:hidden"
 
-    SCROLL = "tw:flex-1 tw:min-h-0 tw:overflow-y-auto tw:overscroll-contain tw:pb-2 tw:[scrollbar-width:thin] tw:[scrollbar-color:#3a3a3a_transparent]"
+    SCROLL = "tw:relative tw:flex-1 tw:min-h-0 tw:overflow-y-auto tw:overscroll-contain tw:pb-2 tw:[scrollbar-width:thin] tw:[scrollbar-color:#3a3a3a_transparent]"
     SECTION = "tw:flex tw:flex-col tw:gap-px tw:px-2 tw:py-0.5"
     SECTION_TITLE = %w[
       tw:flex tw:items-center tw:justify-between tw:px-2.5 tw:pt-2 tw:pb-1 tw:text-[12px] tw:font-semibold
@@ -125,7 +125,7 @@ module ShopifyUI
       chevron: '<path d="m8 5 5 5-5 5"/>'
     }.freeze
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiSidebar) return; window.__suiSidebar = true;
         var desktop = window.matchMedia('(min-width: 64rem)');

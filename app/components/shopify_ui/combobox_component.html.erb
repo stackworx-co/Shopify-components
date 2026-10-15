@@ -26,4 +26,4 @@
   <% if @error.present? %><p id="<%= @id %>-help" class="<%= ShopifyUI::ComboboxComponent::ERROR %>"><%= @error %></p>
   <% elsif @help_text.present? %><p id="<%= @id %>-help" class="<%= ShopifyUI::ComboboxComponent::HELP %>"><%= @help_text %></p><% end %>
 </div>
-<script><%= raw ShopifyUI::ComboboxComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :combobox, ShopifyUI::ComboboxComponent::SCRIPT) %>

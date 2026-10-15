@@ -1,0 +1,21 @@
+<% bc = ShopifyUI::BreadcrumbsComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% trail = [ { label: "Home", href: "#", icon: :home }, { label: "Products", href: "#" }, { label: "Snowboards", href: "#" }, { label: "The Collection Snowboard: Hydrogen" } ] %>
+<% deep = [ { label: "Settings", href: "#", icon: :settings }, { label: "Shipping and delivery", href: "#" }, { label: "Shipping profiles", href: "#" }, { label: "General profile", href: "#" }, { label: "Domestic zone", href: "#" }, { label: "Edit rate" } ] %>
+
+<div class="tw:flex tw:flex-col tw:gap-7">
+  <div><p class="<%= label_class %>">Back button (Polaris Breadcrumbs) — beside a page title</p>
+    <div class="tw:flex tw:items-center tw:gap-2">
+      <%= render(bc.new(variant: :back, items: [ { label: "Orders", href: "#" }, { label: "#1602" } ])) %>
+      <h2 class="tw:m-0 tw:text-[20px] tw:font-semibold">#1602</h2>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Trail — chevrons, home icon, current page (phones: "‹ Snowboards")</p>
+    <%= render(bc.new(items: trail)) %></div>
+
+  <div><p class="<%= label_class %>">Slash separator, current page hidden</p>
+    <%= render(bc.new(items: trail, separator: :slash, show_current: false)) %></div>
+
+  <div><p class="<%= label_class %>">Long trail collapsed — max 4 items, middle pages in a "…" menu</p>
+    <%= render(bc.new(items: deep, max_items: 4)) %></div>
+</div>

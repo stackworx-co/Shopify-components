@@ -18,11 +18,11 @@ module ShopifyUI
 
     VARIANTS = %i[strip grid].freeze
 
-    CARD = "tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card tw:min-w-0"
+    CARD = "tw:relative tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card tw:min-w-0"
 
     # --- strip ---
     STRIP = %w[
-      tw:flex tw:items-stretch tw:overflow-x-auto tw:overscroll-x-contain tw:snap-x tw:snap-mandatory
+      tw:relative tw:flex tw:items-stretch tw:overflow-x-auto tw:overscroll-x-contain tw:snap-x tw:snap-mandatory
       tw:px-4 tw:py-3.5 tw:max-sm:px-3 tw:max-sm:py-3 tw:[scrollbar-width:thin]
     ].freeze
     STRIP_RANGE = %w[
@@ -56,13 +56,29 @@ module ShopifyUI
       tw:decoration-faint tw:underline-offset-4 tw:outline-none
       tw:focus-visible:rounded tw:focus-visible:outline-2 tw:focus-visible:outline-link
     ].freeze
+    # Fixed so scrolling / clipping containers (the strip scrolls sideways) can't cut it off;
+    # TOOLTIP_SCRIPT places it under the label. Hidden tooltips take no space.
     TOOLTIP = %w[
-      tw:pointer-events-none tw:absolute tw:left-0 tw:top-full tw:z-20 tw:mt-1.5 tw:w-max tw:max-w-[240px]
+      tw:pointer-events-none tw:fixed tw:z-[1000] tw:w-max tw:max-w-[240px]
       tw:max-sm:max-w-[calc(100vw-48px)] tw:whitespace-normal tw:rounded-lg tw:border tw:border-border-secondary
       tw:bg-surface tw:px-2.5 tw:py-1.5 tw:text-[12px] tw:font-normal tw:text-ink tw:shadow-card
-      tw:opacity-0 tw:invisible tw:transition-opacity tw:duration-100
-      tw:group-hover:visible tw:group-hover:opacity-100 tw:group-focus:visible tw:group-focus:opacity-100
+      tw:hidden tw:group-hover:block tw:group-focus:block
     ].freeze
+
+    TOOLTIP_SCRIPT = <<~JS.squish.freeze
+      (function () {
+        if (window.__suiStatsTip) return; window.__suiStatsTip = true;
+        function place(e) {
+          var h = e.target.closest && e.target.closest('[data-sui-help]'); if (!h) return;
+          var t = h.querySelector('[role=tooltip]'), r = h.getBoundingClientRect();
+          requestAnimationFrame(function () {
+            t.style.top = (r.bottom + 6) + 'px';
+            t.style.left = Math.max(8, Math.min(r.left, innerWidth - t.offsetWidth - 8)) + 'px';
+          });
+        }
+        document.addEventListener('mouseover', place); document.addEventListener('focusin', place);
+      })();
+    JS
 
     TREND = "tw:inline-flex tw:items-center tw:gap-0.5 tw:text-[12px] tw:font-medium tw:whitespace-nowrap"
     TREND_TONES = { good: "tw:text-good", bad: "tw:text-danger", neutral: "tw:text-muted" }.freeze
@@ -117,7 +133,7 @@ module ShopifyUI
       return metric[:label] if metric[:help].blank?
 
       tag.span(safe_join([ metric[:label], tag.span(metric[:help], class: TOOLTIP.join(" "), role: "tooltip") ]),
-               class: HELP.join(" "), tabindex: 0)
+               class: HELP.join(" "), tabindex: 0, data: { sui_help: "" })
     end
 
     def value_tag(metric)

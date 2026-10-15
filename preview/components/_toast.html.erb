@@ -1,7 +1,7 @@
 <% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
 <% btn = ->(label, js) { render(ShopifyUI::ButtonComponent.new(onclick: js)) { label } } %>
 
-<script><%= raw ShopifyUI::ToastComponent.script %></script>
+<%= ShopifyUI::Runtime.script(self, :toast, ShopifyUI::ToastComponent.script) %>
 
 <div class="tw:flex tw:flex-col tw:gap-5">
   <div>

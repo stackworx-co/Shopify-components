@@ -10,7 +10,7 @@ module ShopifyUI
 
     WRAPPER = "tw:flex tw:flex-col tw:font-sans"
     BAR = "tw:flex tw:flex-wrap tw:items-center tw:gap-2 tw:px-2.5 tw:py-2"
-    TABS = "tw:flex tw:min-w-0 tw:items-center tw:gap-1 tw:overflow-x-auto"
+    TABS = "tw:relative tw:flex tw:min-w-0 tw:items-center tw:gap-1 tw:overflow-x-auto"
 
     TAB = %w[
       tw:inline-flex tw:h-7 tw:shrink-0 tw:items-center tw:gap-1.5 tw:rounded-full tw:px-3

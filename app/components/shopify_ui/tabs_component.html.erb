@@ -9,4 +9,4 @@
   </div>
   <% panels.each do |panel| %><%= panel %><% end %>
 </div>
-<script><%= raw ShopifyUI::TabsComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :tabs, ShopifyUI::TabsComponent::SCRIPT) %>

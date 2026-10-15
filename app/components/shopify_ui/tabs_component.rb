@@ -22,7 +22,7 @@ module ShopifyUI
       underline: "tw:relative tw:flex tw:min-w-0 tw:items-end tw:gap-1 tw:border-b tw:border-border"
     }.freeze
     LIST = %w[
-      tw:flex tw:min-w-0 tw:flex-1 tw:items-center tw:gap-1 tw:overflow-x-auto tw:overscroll-x-contain
+      tw:relative tw:flex tw:min-w-0 tw:flex-1 tw:items-center tw:gap-1 tw:overflow-x-auto tw:overscroll-x-contain
       tw:snap-x tw:snap-proximity tw:[scrollbar-width:none] tw:[&::-webkit-scrollbar]:hidden
       tw:md:overflow-x-visible
     ].freeze
@@ -78,7 +78,7 @@ module ShopifyUI
 
     PANEL = "tw:pt-4 tw:outline-none tw:focus-visible:outline-2 tw:focus-visible:outline-link tw:rounded-control"
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiTabs) return; window.__suiTabs = true;
         function tabs(root) { return Array.prototype.slice.call(root.querySelectorAll('[data-sui-tab]')); }
@@ -150,11 +150,11 @@ module ShopifyUI
           document.querySelectorAll('[data-sui-tabs]').forEach(function (root) {
             overflow(root);
             var sel = root.querySelector('[data-sui-tab][aria-selected=true], [data-sui-tab][aria-current=page]');
-            if (sel) { var l = root.querySelector('[data-sui-tab-list]'); l.scrollLeft = sel.offsetLeft - l.offsetLeft - 16; }
+            if (sel && !root.__suiScrolled) { root.__suiScrolled = true; var l = root.querySelector('[data-sui-tab-list]'); l.scrollLeft = sel.offsetLeft - l.offsetLeft - 16; }
           });
         }
         var timer; window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(init, 100); });
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        ShopifyUI.onLoad(init);
       })();
     JS
 

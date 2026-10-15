@@ -33,7 +33,7 @@ module ShopifyUI
     LINE_WIDTHS = %w[tw:w-full tw:w-[92%] tw:w-[96%] tw:w-[88%] tw:w-[94%]].freeze
     LAST_LINE = "tw:w-[62%]"
 
-    CARD = "tw:overflow-hidden tw:rounded-surface tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
+    CARD = "tw:relative tw:overflow-hidden tw:rounded-surface tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
     SECTION = "tw:flex tw:flex-col tw:gap-3 tw:p-4 tw:max-sm:p-3.5 tw:border-t tw:border-border-secondary tw:first:border-t-0"
 
     PAGE_WIDTHS = { default: "tw:max-w-[998px]", narrow: "tw:max-w-[662px]", full: "tw:max-w-none" }.freeze
@@ -95,7 +95,7 @@ module ShopifyUI
     def tabs
       widths = %w[tw:w-10 tw:w-24 tw:w-16 tw:w-20 tw:w-14 tw:w-24]
       items = (0...@count).map { |i| bone("tw:h-7 tw:max-sm:h-10 tw:shrink-0 #{@fitted ? 'tw:flex-1' : widths[i % widths.size]}") }
-      tag.div(safe_join(items), class: "tw:flex tw:min-w-0 tw:gap-2 tw:overflow-hidden")
+      tag.div(safe_join(items), class: "tw:relative tw:flex tw:min-w-0 tw:gap-2 tw:overflow-hidden")
     end
 
     def card(title: @title, sections: @sections, lines: @lines)
@@ -133,7 +133,7 @@ module ShopifyUI
         tag.div(safe_join([ bone("tw:h-2.5 tw:w-20"), bone("tw:h-3.5 tw:w-12"), bone("tw:h-1 tw:w-[72px]") ]),
                 class: "tw:flex tw:shrink-0 tw:flex-col tw:gap-2 tw:pr-7 tw:max-sm:pr-5")
       end
-      tag.div(tag.div(safe_join(items), class: "tw:flex tw:overflow-hidden tw:px-4 tw:py-3.5"), class: CARD)
+      tag.div(tag.div(safe_join(items), class: "tw:relative tw:flex tw:overflow-hidden tw:px-4 tw:py-3.5"), class: CARD)
     end
 
     def page

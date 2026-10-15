@@ -40,7 +40,7 @@ module ShopifyUI
     }.freeze
 
     BASE = "tw:relative tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:min-w-0 tw:break-words"
-    TITLED = "tw:overflow-hidden tw:rounded-[12px] tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary"
+    TITLED = "tw:relative tw:overflow-hidden tw:rounded-[12px] tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary"
     UNTITLED = "tw:rounded-[12px] tw:shadow-card"
     IN_CARD = "tw:rounded-lg"
 

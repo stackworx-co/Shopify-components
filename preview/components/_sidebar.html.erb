@@ -19,16 +19,22 @@
   { title: "Apps", title_href: "#", items: [ { label: "OOS Orders", icon: :orders, href: "#" } ] }
 ] %>
 
-<p class="<%= label_class %>">Desktop: fixed black column. Below 1024px: black top bar + slide-in drawer (resize the window or open on a phone).</p>
-<div class="tw:overflow-hidden tw:rounded-[20px] tw:border tw:border-border tw:lg:flex tw:lg:h-[680px] tw:[transform:translateZ(0)]">
-  <%= render(ShopifyUI::SidebarComponent.new(
-    sections: sections,
-    footer_items: [ { label: "Settings", icon: :settings, href: "#" } ],
-    store: { name: "Stackworx Store", badge: "dev", href: "#", notifications_href: "#" },
-    contained: true
-  )) %>
-  <main class="tw:min-w-0 tw:flex-1 tw:overflow-y-auto tw:bg-page tw:p-5 tw:max-sm:p-4">
-    <h2 class="tw:m-0 tw:text-[20px] tw:font-semibold tw:text-ink">Shipping labels</h2>
-    <p class="tw:mt-2 tw:text-muted">Page content goes here.</p>
-  </main>
+<p class="<%= label_class %>">Desktop: black frame, sidebar, rounded content panel that scrolls on its own. Below 1024px: black top bar + slide-in drawer.</p>
+<div class="tw:overflow-hidden tw:rounded-[20px] tw:border tw:border-border tw:h-[680px] tw:max-lg:h-auto tw:[transform:translateZ(0)]">
+  <%= render(ShopifyUI::AppFrameComponent.new(contained: true, main_id: "sidebar-demo-main")) do |frame| %>
+    <% frame.with_sidebar(
+         id: "sidebar-demo",
+         sections: sections,
+         footer_items: [ { label: "Settings", icon: :settings, href: "#" } ],
+         store: { name: "Stackworx Store", badge: "dev", href: "#", notifications_href: "#" }) %>
+    <div class="tw:mx-auto tw:max-w-3xl tw:p-6 tw:max-sm:p-4">
+      <%= render(ShopifyUI::PageHeaderComponent.new(title: "Shipping labels", back_url: "#",
+            secondary_actions: [ { label: "Export" } ], primary_action: { label: "Buy shipping label" })) %>
+      <div class="tw:flex tw:flex-col tw:gap-4">
+        <% 6.times do |i| %>
+          <%= render(ShopifyUI::CardComponent.new(title: "Label batch #{i + 1}", edge_to_edge: false)) { tag.p("Scroll inside the panel — the frame and sidebar stay put.", class: "tw:m-0 tw:text-muted") } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

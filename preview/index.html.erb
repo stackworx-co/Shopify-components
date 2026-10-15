@@ -3,38 +3,83 @@
   <head>
     <meta charset="utf-8">
     <title>shopify-ui components</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="light">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@450;550;650;700&display=swap">
     <link rel="stylesheet" href="/preview.css?v=<%= File.mtime(Rails.root.join("build/preview.css")).to_i rescue 0 %>">
     <style>
-      body { margin: 0; background: var(--sui-page); color: var(--sui-ink);
+      body { margin: 0; background: var(--sui-frame); color: var(--sui-ink);
              font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 13px; }
     </style>
   </head>
   <body>
-    <div class="tw:mx-auto tw:max-w-5xl tw:px-6 tw:py-10">
-      <header class="tw:mb-8">
-        <h1 class="tw:m-0 tw:text-[24px] tw:font-semibold tw:text-ink">shopify-ui components</h1>
-        <p class="tw:mt-1 tw:mb-0 tw:text-muted">Version <%= ShopifyUISetup.version %></p>
-        <nav class="tw:mt-4 tw:flex tw:flex-wrap tw:gap-2">
-          <a href="/" class="tw:text-link tw:no-underline tw:hover:underline">All</a>
-          <% @all_sections.each do |name| %>
-            <a href="/<%= name %>" class="tw:text-link tw:no-underline tw:hover:underline"><%= name.humanize %></a>
-          <% end %>
-        </nav>
-      </header>
+    <%
+      # Sidebar groups, like Shopify's nav sections. Anything not listed lands in "Other".
+      groups = {
+        "Actions" => %w[button dropdown_menu bulk_actions],
+        "Forms" => %w[text_field search_field dropdown_select combobox radio switch tag date_picker],
+        "Lists and data" => %w[table table_filters pagination stats_card badge thumbnail],
+        "Layout and navigation" => %w[card page_header tabs breadcrumbs sidebar],
+        "Feedback" => %w[banner toast modal empty_state skeleton]
+      }
+      listed = groups.values.flatten
+      others = @all_sections - listed
+      groups["Other"] = others if others.any?
+      current = params[:name]
+      item = ->(name) { { label: name.humanize, href: "/#{name}", active: current == name } }
 
-      <div class="tw:flex tw:flex-col tw:gap-6">
-        <% @sections.each do |name| %>
-          <section id="<%= name %>" class="tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:p-6 tw:shadow-card">
-            <h2 class="tw:m-0 tw:mb-4 tw:text-[16px] tw:font-semibold tw:text-ink"><%= name.humanize %></h2>
-            <%= render "components/#{name}" %>
-          </section>
+      sections = [ { items: [ { label: "All components", icon: :home, href: "/", active: current.nil?, count: @all_sections.size } ] } ]
+      groups.each do |title, names|
+        names = names & @all_sections
+        sections << { title: title, items: names.map(&item) } if names.any?
+      end
+    %>
+
+    <%= render(ShopifyUI::AppFrameComponent.new) do |frame| %>
+      <% frame.with_sidebar(
+            id: "preview-nav",
+            label: "Components",
+            sections: sections,
+            search: false,
+            store: { name: "shopify-ui", badge: "v#{ShopifyUISetup.version}", href: "/" }
+          ) do |c| %>
+        <% c.with_brand do %>
+          <span class="tw:flex tw:min-w-0 tw:items-center tw:gap-2">
+            <span class="<%= ShopifyUI::SidebarComponent::LOGO.join(" ") %>" aria-hidden="true">S</span>
+            <span class="tw:truncate tw:text-[13px] tw:font-semibold tw:text-frame-ink">shopify-ui</span>
+          </span>
         <% end %>
+      <% end %>
+
+      <div class="tw:mx-auto tw:max-w-5xl tw:px-6 tw:py-8 tw:max-sm:px-0 tw:max-sm:py-5">
+          <header class="tw:mb-6 tw:max-sm:px-4">
+            <h1 class="tw:m-0 tw:text-[20px] tw:font-semibold tw:text-ink tw:max-sm:text-[18px]">
+              <%= current ? current.humanize : "All components" %>
+            </h1>
+            <p class="tw:mt-1 tw:mb-0 tw:text-muted">
+              <% if current %>
+                <a class="tw:text-link tw:no-underline tw:hover:underline" href="/">All components</a> · Version <%= ShopifyUISetup.version %>
+              <% else %>
+                <%= @all_sections.size %> components · Version <%= ShopifyUISetup.version %>
+              <% end %>
+            </p>
+          </header>
+
+          <div class="tw:flex tw:flex-col tw:gap-6 tw:max-sm:gap-4">
+            <% @sections.each do |name| %>
+              <section id="<%= name %>" class="tw:rounded-surface tw:bg-surface tw:p-6 tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border tw:max-sm:p-4">
+                <% unless current %>
+                  <h2 class="tw:m-0 tw:mb-4 tw:text-[16px] tw:font-semibold tw:text-ink">
+                    <a class="tw:text-inherit tw:no-underline tw:hover:underline" href="/<%= name %>"><%= name.humanize %></a>
+                  </h2>
+                <% end %>
+                <%= render "components/#{name}" %>
+              </section>
+            <% end %>
+          </div>
       </div>
-    </div>
+    <% end %>
   </body>
 </html>

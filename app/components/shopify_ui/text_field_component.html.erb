@@ -28,4 +28,4 @@
     <p id="<%= @id %>-description" class="<%= ShopifyUI::TextFieldComponent::HELP_TEXT %>"><%= @help_text %></p>
   <% end %>
 </div>
-<script><%= raw ShopifyUI::TextFieldComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :text_field, ShopifyUI::TextFieldComponent::SCRIPT) %>

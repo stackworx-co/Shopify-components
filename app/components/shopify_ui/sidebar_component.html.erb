@@ -28,4 +28,4 @@
     <% end %>
   </aside>
 </div>
-<script><%= raw ShopifyUI::SidebarComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :sidebar, ShopifyUI::SidebarComponent::SCRIPT) %>

@@ -26,7 +26,7 @@ module ShopifyUI
     }.freeze
     X_PADDINGS = { none: "", tight: "tw:px-3", base: "tw:px-4 tw:max-sm:px-3.5", loose: "tw:px-5 tw:max-sm:px-4" }.freeze
 
-    CARD = "tw:min-w-0 tw:overflow-hidden tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:rounded-surface"
+    CARD = "tw:relative tw:min-w-0 tw:overflow-hidden tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:rounded-surface"
     EDGE_TO_EDGE = "tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
     BACKGROUNDS = { default: "tw:bg-surface", subdued: "tw:bg-surface-secondary" }.freeze
 

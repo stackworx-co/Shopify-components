@@ -27,7 +27,7 @@ module ShopifyUI
     HELP = "tw:m-0 tw:text-[13px] tw:text-muted"
     ERROR = "tw:m-0 tw:text-[13px] tw:text-danger"
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiTagInput) return; window.__suiTagInput = true;
         function root(el) { return el.closest('[data-sui-tag-input]'); }
@@ -100,7 +100,7 @@ module ShopifyUI
         box, template,
         (tag.p(@error, id: "#{@id}-help", class: ERROR) if @error.present?),
         (tag.p(@help_text, id: "#{@id}-help", class: HELP) if @help_text.present? && @error.blank?),
-        tag.script(raw(SCRIPT))
+        Runtime.script(self, :tag_input, SCRIPT)
       ].compact), **@html_attributes, class: [ WRAPPER, @html_attributes[:class] ].compact.join(" "),
          data: { sui_tag_input: "", max: @max_tags, placeholder: @placeholder })
     end

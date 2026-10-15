@@ -5,7 +5,7 @@ module ShopifyUI
     strip_trailing_whitespace
 
     INPUT = %w[
-      tw:peer tw:m-0 tw:size-4 tw:cursor-pointer tw:appearance-none tw:rounded-[4px]
+      tw:peer tw:m-0 tw:size-4 tw:max-sm:size-5 tw:cursor-pointer tw:appearance-none tw:rounded-[4px]
       tw:border tw:border-input-border tw:bg-surface tw:transition-colors tw:duration-100
       tw:checked:border-accent tw:checked:bg-accent
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
@@ -13,7 +13,7 @@ module ShopifyUI
     ].freeze
 
     CHECK = %w[
-      tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:text-on-accent
+      tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:max-sm:size-5 tw:text-on-accent
       tw:peer-checked:block
     ].freeze
 

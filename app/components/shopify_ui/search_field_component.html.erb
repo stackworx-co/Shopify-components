@@ -17,4 +17,4 @@
     <% end %>
   <% end %>
 </div>
-<script><%= raw ShopifyUI::SearchFieldComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :search_field, ShopifyUI::SearchFieldComponent::SCRIPT) %>

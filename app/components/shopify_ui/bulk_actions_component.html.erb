@@ -17,4 +17,4 @@
     <%= clear_tag %>
   </div>
 </div>
-<script><%= raw ShopifyUI::BulkActionsComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :bulk_actions, ShopifyUI::BulkActionsComponent::SCRIPT) %>

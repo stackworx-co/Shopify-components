@@ -28,4 +28,4 @@
     <% end %>
   </div>
 </dialog>
-<script><%= raw ShopifyUI::ModalComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :modal, ShopifyUI::ModalComponent::SCRIPT) %>

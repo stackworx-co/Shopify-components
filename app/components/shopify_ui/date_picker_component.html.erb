@@ -51,7 +51,7 @@
     <%= tag.div(**popover_attributes) { tag.form(panel, action: @url, method: "get") } %>
   <% end %>
 </sui-date-picker>
-<script>
+<%= ShopifyUI::Runtime.script(self, :date_picker) do %><script>
 (function () {
   if (window.customElements.get("sui-date-picker")) return;
 
@@ -200,4 +200,4 @@
     }
   });
 })();
-</script>
+</script><% end %>

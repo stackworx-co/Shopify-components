@@ -1,7 +1,7 @@
 <% es = ShopifyUI::EmptyStateComponent %>
 <% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted tw:max-sm:px-4" %>
 
-<div class="tw:-mx-6 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0 tw:flex tw:flex-col tw:gap-8">
+<div class="tw:-mx-6 tw:max-sm:-mx-4 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0 tw:flex tw:flex-col tw:gap-8">
   <div>
     <p class="<%= label_class %>">Page-level in a card — illustration, body, primary + secondary, footer link (Orders)</p>
     <%= render(es.new(heading: "Your orders will show here", image: :orders, card: true,

@@ -161,7 +161,7 @@
   function reposition() { document.querySelectorAll('[data-sui-combobox] [role=listbox]:popover-open').forEach(function (l) { place(parts(l)); }); }
   window.addEventListener('resize', reposition); window.addEventListener('scroll', reposition, true);
   function init() {
-    document.querySelectorAll('[data-sui-combobox]').forEach(function (r) { var p = parts(r); if (!p.multiple) r.__chosenLabel = p.input.value; });
+    document.querySelectorAll('[data-sui-combobox]').forEach(function (r) { if (r.__suiInit) return; r.__suiInit = true; var p = parts(r); if (!p.multiple) r.__chosenLabel = p.input.value; });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  ShopifyUI.onLoad(init);
 })();

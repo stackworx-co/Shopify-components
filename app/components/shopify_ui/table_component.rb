@@ -9,7 +9,7 @@ module ShopifyUI
     renders_many :rows, ->(**options) { TableRowComponent.new(table: self, **options) }
 
     CARD = %w[
-      tw:overflow-hidden tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card
+      tw:relative tw:overflow-hidden tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card
     ].freeze
 
     TABLE = "tw:w-full tw:border-collapse tw:bg-surface tw:font-sans"

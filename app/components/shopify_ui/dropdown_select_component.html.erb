@@ -26,4 +26,4 @@
     <p id="<%= @id %>-description" class="<%= ShopifyUI::DropdownSelectComponent::HELP_TEXT %>"><%= @help_text %></p>
   <% end %>
 </div>
-<script><%= raw ShopifyUI::DropdownSelectComponent::SCRIPT %></script>
+<%= ShopifyUI::Runtime.script(self, :dropdown_select, ShopifyUI::DropdownSelectComponent::SCRIPT) %>

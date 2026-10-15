@@ -60,7 +60,7 @@ module ShopifyUI
     HELP = "tw:m-0 tw:text-[13px] tw:text-muted"
     ERROR = "tw:m-0 tw:text-[13px] tw:text-danger"
 
-    SCRIPT = File.read(File.join(__dir__, "combobox_component.js")).freeze
+    SCRIPT = Runtime.wrap(File.read(File.join(__dir__, "combobox_component.js")))
 
     def initialize(name:, options: [], label: nil, selected: nil, multiple: false, placeholder: "Search",
                    allow_create: false, url: nil, min_chars: 0, empty_text: "No results found",

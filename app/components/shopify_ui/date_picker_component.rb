@@ -11,14 +11,14 @@ module ShopifyUI
     ].freeze
 
     INLINE = %w[
-      tw:inline-block tw:max-w-full tw:overflow-hidden tw:rounded-surface tw:border tw:border-border
+      tw:relative tw:inline-block tw:max-w-full tw:overflow-hidden tw:rounded-surface tw:border tw:border-border
       tw:bg-surface tw:font-sans tw:text-ink tw:shadow-card
     ].freeze
 
     BODY = "tw:flex tw:flex-col tw:sm:flex-row"
 
     PRESETS = %w[
-      tw:flex tw:gap-0.5 tw:overflow-x-auto tw:border-b tw:border-border tw:p-2
+      tw:relative tw:flex tw:gap-0.5 tw:overflow-x-auto tw:border-b tw:border-border tw:p-2
       tw:sm:w-44 tw:sm:flex-col tw:sm:overflow-y-auto tw:sm:border-r tw:sm:border-b-0
     ].freeze
 

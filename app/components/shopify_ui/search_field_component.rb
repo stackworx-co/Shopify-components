@@ -79,7 +79,7 @@ module ShopifyUI
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
     ].freeze
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiSearch) return; window.__suiSearch = true;
         function root(el) { return el.closest('[data-sui-search]'); }
@@ -120,7 +120,7 @@ module ShopifyUI
         window.ShopifyUI = window.ShopifyUI || {};
         window.ShopifyUI.setSearchLoading = function (el, on) { var r = typeof el === 'string' ? document.getElementById(el) : el; if (r) r.toggleAttribute('data-loading', on !== false); };
         function init() { document.querySelectorAll('[data-sui-search]').forEach(refresh); }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        ShopifyUI.onLoad(init);
       })();
     JS
 

@@ -27,9 +27,9 @@ module ShopifyUI
       close: "tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:border-0 tw:bg-transparent tw:p-0 tw:text-inherit tw:opacity-75 tw:cursor-pointer tw:hover:opacity-100 tw:hover:bg-[rgba(255,255,255,.12)] tw:focus-visible:outline-2 tw:focus-visible:outline-white tw:max-sm:size-9"
     }.freeze
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
-        if (window.ShopifyUI && window.ShopifyUI.toast) return;
+        if (window.ShopifyUI.toast) return;
         var C = CLASSES_JSON, MAX = 3;
         function region() {
           var r = document.getElementById('sui-toast-region');
@@ -90,8 +90,7 @@ module ShopifyUI
             if (s.__done) return; s.__done = true; var o = JSON.parse(s.textContent); toast(o.message, o);
           });
         }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-        document.addEventListener('turbo:load', init);
+        ShopifyUI.onLoad(init);
       })();
     JS
 
@@ -105,11 +104,12 @@ module ShopifyUI
     def call
       safe_join([
         tag.script(raw(ERB::Util.json_escape(@options.to_json)), type: "application/json", data: { sui_toast: "" }),
-        tag.script(raw(self.class.script))
+        Runtime.script(self, :toast, self.class.script)
       ])
     end
 
-    # The toast engine, for layouts that call ShopifyUI.toast(...) without rendering a server toast first.
+    # The toast engine, for layouts that call ShopifyUI.toast(...) without rendering a server toast first:
+    #   <%= ShopifyUI::Runtime.script(self, :toast, ShopifyUI::ToastComponent.script) %>
     def self.script
       SCRIPT.sub("CLASSES_JSON", CLASSES.to_json)
     end

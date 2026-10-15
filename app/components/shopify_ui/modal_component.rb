@@ -54,7 +54,7 @@ module ShopifyUI
       tw:max-sm:size-9
     ].freeze
 
-    BODY = "tw:min-h-0 tw:flex-1 tw:overflow-y-auto tw:overscroll-contain tw:text-[13px] tw:leading-5"
+    BODY = "tw:relative tw:min-h-0 tw:flex-1 tw:overflow-y-auto tw:overscroll-contain tw:text-[13px] tw:leading-5"
     BODY_PADDING = "tw:p-4"
     SECTION = "tw:p-4 tw:border-t tw:border-border-secondary tw:first:border-t-0"
     LOADING = "tw:flex tw:items-center tw:justify-center tw:py-12"
@@ -68,7 +68,7 @@ module ShopifyUI
     FOOTER_LEFT = "tw:min-w-0 tw:flex-1 tw:basis-[180px] tw:text-[13px]"
     FOOTER_ACTIONS = "tw:ml-auto tw:flex tw:flex-wrap tw:items-center tw:justify-end tw:gap-2 tw:max-sm:w-full tw:max-sm:[&>*]:flex-1"
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiModal) return; window.__suiModal = true;
         function lock() { document.documentElement.style.overflow = document.querySelector('dialog[data-sui-modal][open]') ? 'hidden' : ''; }
@@ -91,8 +91,8 @@ module ShopifyUI
           var d = event.target; if (!d.matches || !d.matches('dialog[data-sui-modal]')) return;
           lock(); if (d.__suiOpener && d.__suiOpener.focus) d.__suiOpener.focus();
         }, true);
-        function init() { document.querySelectorAll('dialog[data-sui-modal][data-open-on-load]').forEach(function (d) { open(d); }); }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        function init() { document.querySelectorAll('dialog[data-sui-modal][data-open-on-load]').forEach(function (d) { if (d.__suiAutoOpened) return; d.__suiAutoOpened = true; open(d); }); }
+        ShopifyUI.onLoad(init);
       })();
     JS
 

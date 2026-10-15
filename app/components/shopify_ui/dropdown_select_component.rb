@@ -57,7 +57,7 @@ module ShopifyUI
     ERROR = "tw:m-0 tw:flex tw:items-center tw:gap-1 tw:text-[13px] tw:text-danger"
     ERROR_ICON = "tw:size-4 tw:shrink-0 tw:text-danger-icon"
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiSelect) return; window.__suiSelect = true;
         function parts(el) {

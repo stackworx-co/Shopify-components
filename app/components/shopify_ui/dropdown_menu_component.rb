@@ -11,7 +11,7 @@ module ShopifyUI
     }
 
     MENU = %w[
-      tw:m-0 tw:min-w-[180px] tw:max-w-[320px] tw:overflow-hidden
+      tw:m-0 tw:min-w-[min(180px,calc(100vw-16px))] tw:max-w-[min(320px,calc(100vw-16px))] tw:max-h-[min(420px,calc(100dvh-16px))] tw:overflow-y-auto tw:overscroll-contain
       tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-1.5 tw:font-sans tw:text-ink
       tw:shadow-[0_4px_6px_-2px_rgba(26,26,26,.2),0_0_0_1px_rgba(0,0,0,.08)]
     ].freeze
@@ -19,7 +19,7 @@ module ShopifyUI
     ITEM = %w[
       tw:flex tw:w-full tw:items-start tw:gap-2 tw:rounded-[8px] tw:border-0 tw:bg-transparent
       tw:px-2 tw:py-1.5 tw:text-left tw:font-sans tw:text-[13px] tw:leading-5 tw:no-underline
-      tw:cursor-pointer tw:hover:no-underline
+      tw:cursor-pointer tw:hover:no-underline tw:max-sm:py-2.5 tw:max-sm:text-[15px]
       tw:focus-visible:outline-2 tw:focus-visible:-outline-offset-2 tw:focus-visible:outline-link
     ].freeze
 

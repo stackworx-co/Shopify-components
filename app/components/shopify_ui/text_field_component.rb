@@ -98,7 +98,7 @@ module ShopifyUI
       link: '<path d="M8.5 11.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2l-.9.9"/><path d="M11.5 8.5a3 3 0 0 0-4.2 0l-2.6 2.6a3 3 0 0 0 4.2 4.2l.9-.9"/>'
     }.freeze
 
-    SCRIPT = <<~JS.squish.freeze
+    SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiTextField) return; window.__suiTextField = true;
         function field(el) { return el.closest('[data-sui-text-field]'); }
@@ -126,7 +126,7 @@ module ShopifyUI
           el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true }));
         });
         function init() { document.querySelectorAll('[data-sui-text-field]').forEach(refresh); }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        ShopifyUI.onLoad(init);
       })();
     JS
 
