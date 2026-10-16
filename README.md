@@ -2,7 +2,7 @@
 
 Shared Shopify-admin-style UI for our Rails applications: ViewComponents, CSS and vanilla JavaScript.
 
-This repository is **not** a Ruby gem, npm package, Rails app or deployable service. Rails apps include it as a Git submodule (e.g. `vendor/shopify-ui`), pinned to a specific commit or tag, and it is deployed as part of each app.
+This repository is a Rails engine, installed in apps as the `shopify_ui` gem from Git, pinned to a tag.
 
 ## Structure
 
@@ -14,7 +14,9 @@ shopify-ui/
 │   └── assets/stylesheets/shopify_ui/
 │       ├── tokens.css              design tokens (--sui-* CSS variables)
 │       └── theme.css               Tailwind theme, imported by the app's Tailwind entry
-├── lib/shopify_ui_setup.rb         one-line Rails setup (autoload + ShopifyUI namespace)
+├── lib/shopify_ui.rb, lib/shopify_ui/  gem entry point + Rails engine
+├── lib/shopify_ui_setup.rb         submodule setup (also used by the local gallery)
+├── shopify_ui.gemspec
 ├── javascript/                     shared vanilla JS
 ├── docs/setup.md                   how to add shopify-ui to a Rails app
 ├── examples/                       example ERB usage
@@ -44,11 +46,17 @@ and nothing here is deployed.
 
 ## Usage in a Rails app
 
-```bash
-git submodule add <shopify-ui-repo-url> vendor/shopify-ui
+```ruby
+# Gemfile
+gem "shopify_ui", git: "https://github.com/stackworx-co/Shopify-components.git", tag: "v1.0.0"
 ```
 
-Each app pins its own version, so apps can upgrade independently. Full steps (Ruby, Tailwind, layout): [docs/setup.md](docs/setup.md).
+```bash
+bundle install
+bin/rails shopify_ui:tailwind
+```
+
+Each app pins its own tag, so apps can upgrade independently. Full steps (Tailwind, layout): [docs/setup.md](docs/setup.md).
 
 Components use Tailwind classes with the `tw:` prefix and the token names from `theme.css`
 (e.g. `tw:bg-accent`, `tw:text-ink`, `tw:rounded-surface`).
