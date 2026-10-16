@@ -10,14 +10,18 @@ module ShopifyUI
   #   A divider is drawn between sections, as between Shopify's nav and app-installed items.
   # item: { label:, href:, icon: :orders | "<svg>…</svg>".html_safe, active: true, count: 414,
   #         children: [{ label:, href:, active: }] }  (children show when the item or a child is active)
-  # footer_items: items pinned to the bottom (e.g. Settings).
+  # footer_items: items pinned to the bottom (e.g. Settings). Add method: :delete (or :post, ...) to render the item
+  #   as a button_to form, e.g. { label: "Sign out", icon: :sign_out, href: destroy_user_session_path, method: :delete }.
   # store: { name:, badge: "dev", href:, notifications_href: }
+  # with_store_actions: replaces the default bell next to the store name, e.g. an app's own live-updating bell
+  #   partial. Style it with BELL_BUTTON (+ BELL_DOT for an unread count) to match.
   # search: { placeholder: "Search", href: } or false. Ctrl/⌘ K activates it.
   # contained: true fills the parent's height instead of sticking to the viewport.
   class SidebarComponent < ViewComponent::Base
     strip_trailing_whitespace
 
     renders_one :brand
+    renders_one :store_actions
 
     ROOT = "tw:group tw:font-sans tw:lg:w-60 tw:lg:shrink-0"
     # viewport: sticks to the window at full height (app layouts). contained: fills its parent (previews, frames).
@@ -87,6 +91,15 @@ module ShopifyUI
     COUNT = "tw:shrink-0 tw:text-[11px] tw:tabular-nums tw:text-frame-muted"
     COUNT_ACTIVE = "tw:shrink-0 tw:text-[11px] tw:tabular-nums tw:text-frame-ink"
 
+    ITEM_BUTTON = "tw:w-full tw:border-0 tw:bg-transparent tw:text-left tw:cursor-pointer tw:appearance-none tw:font-sans"
+
+    BELL_BUTTON = [ *ICON_BUTTON, "tw:relative" ].freeze
+    BELL_DOT = %w[
+      tw:absolute tw:top-1 tw:right-1 tw:inline-flex tw:min-w-4 tw:h-4 tw:items-center tw:justify-center tw:rounded-full
+      tw:bg-[#e51c00] tw:px-1 tw:text-[10px] tw:font-semibold tw:leading-none tw:tabular-nums tw:text-white
+      tw:ring-2 tw:ring-frame
+    ].freeze
+
     FOOTER = "tw:border-t tw:border-frame-border tw:px-2 tw:pt-2 tw:pb-[max(8px,env(safe-area-inset-bottom))]"
     STORE = "tw:flex tw:items-center tw:gap-1 tw:pt-1"
     STORE_LINK = %w[
@@ -122,7 +135,8 @@ module ShopifyUI
       bell: '<path d="M5.5 13.5V9a4.5 4.5 0 0 1 9 0v4.5l1.5 1.5H4z"/><path d="M8.5 17.5h3"/>',
       menu: '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
       close: '<path d="m5 5 10 10M15 5 5 15"/>',
-      chevron: '<path d="m8 5 5 5-5 5"/>'
+      chevron: '<path d="m8 5 5 5-5 5"/>',
+      sign_out: '<path d="M8 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="m13 14 4-4-4-4"/><path d="M17 10H8"/>'
     }.freeze
 
     SCRIPT = Runtime.wrap <<~JS.squish
@@ -151,6 +165,27 @@ module ShopifyUI
             var search = document.querySelector('[data-sui-sidebar-search]');
             if (search) { event.preventDefault(); search.click(); }
           }
+        });
+        function key(nav) { var root = nav.closest('[data-sui-sidebar]'); return 'sui-sidebar-scroll:' + (root && root.querySelector('aside') ? root.querySelector('aside').id : ''); }
+        function save() {
+          document.querySelectorAll('[data-sui-sidebar-scroll]').forEach(function (nav) {
+            try { sessionStorage.setItem(key(nav), String(nav.scrollTop)); } catch (e) {}
+          });
+        }
+        document.addEventListener('click', function (event) { if (event.target.closest('[data-sui-sidebar] a, [data-sui-sidebar] button[type=submit]')) save(); }, true);
+        window.addEventListener('pagehide', save);
+        document.addEventListener('turbo:before-visit', save);
+        document.addEventListener('turbo:before-cache', save);
+        ShopifyUI.onLoad(function () {
+          document.querySelectorAll('[data-sui-sidebar-scroll]:not([data-sui-restored])').forEach(function (nav) {
+            nav.setAttribute('data-sui-restored', '');
+            var saved = null; try { saved = sessionStorage.getItem(key(nav)); } catch (e) {}
+            if (saved !== null) nav.scrollTop = parseInt(saved, 10) || 0;
+            var active = nav.querySelector('[aria-current=page]');
+            if (!active) return;
+            var n = nav.getBoundingClientRect(), a = active.getBoundingClientRect();
+            if (a.top < n.top || a.bottom > n.bottom) active.scrollIntoView({ block: 'center' });
+          });
         });
         desktop.addEventListener('change', function (e) {
           if (e.matches) document.querySelectorAll('[data-sui-sidebar][data-open]').forEach(function (r) { setOpen(r, false, false); });
@@ -216,6 +251,11 @@ module ShopifyUI
               end
       left = tag.span(safe_join([ (icon(item[:icon]) unless sub), tag.span(item[:label], class: ITEM_LABEL) ].compact), class: ITEM_LEFT)
       count = tag.span(item[:count], class: active ? COUNT_ACTIVE : COUNT) if item[:count].present?
+      method = item[:method]&.to_s&.downcase
+      if method.present? && method != "get"
+        return button_to(item[:href], method: method, form: { class: "tw:contents" }, data: item[:data],
+                         class: [ ITEM, state, ITEM_BUTTON ].flatten.join(" ")) { safe_join([ left, count ].compact) }
+      end
       tag.a(safe_join([ left, count ].compact), href: item[:href] || "#",
             class: [ ITEM, state, (SUB_ITEM if sub) ].flatten.join(" "),
             aria: { current: (active ? "page" : nil) })
@@ -249,7 +289,9 @@ module ShopifyUI
       body = safe_join([ tag.span(initial, class: STORE_AVATAR, aria: { hidden: true }),
                          tag.span(@store[:name], class: STORE_NAME),
                          (tag.span(@store[:badge], class: STORE_BADGE) if @store[:badge].present?) ].compact)
-      bell = if @store[:notifications_href]
+      bell = if store_actions?
+               store_actions
+             elsif @store[:notifications_href]
                tag.a(icon(:bell), href: @store[:notifications_href], class: ICON_BUTTON.join(" "), aria: { label: "Notifications" })
              end
       tag.div(safe_join([ tag.a(body, href: @store[:href] || "#", class: STORE_LINK.join(" ")), bell ].compact), class: STORE)

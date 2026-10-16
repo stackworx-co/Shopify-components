@@ -11,7 +11,7 @@
       <button type="button" class="<%= ShopifyUI::SidebarComponent::ICON_BUTTON.join(" ") %> tw:lg:hidden" aria-label="Close navigation" data-sui-sidebar-close><%= icon(:close, size: 20) %></button>
     </div>
     <%= search_tag %>
-    <nav aria-label="<%= @label %>" class="<%= ShopifyUI::SidebarComponent::SCROLL %>">
+    <nav aria-label="<%= @label %>" class="<%= ShopifyUI::SidebarComponent::SCROLL %>" data-sui-sidebar-scroll>
       <% @sections.each_with_index do |section, index| %>
         <% if index.positive? %><hr class="<%= ShopifyUI::SidebarComponent::DIVIDER %>"><% end %>
         <div class="<%= ShopifyUI::SidebarComponent::SECTION %>">
