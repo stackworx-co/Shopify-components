@@ -12,7 +12,11 @@ module ShopifyUI
   #         children: [{ label:, href:, active: }] }  (children show when the item or a child is active)
   # footer_items: items pinned to the bottom (e.g. Settings). Add method: :delete (or :post, ...) to render the item
   #   as a button_to form, e.g. { label: "Sign out", icon: :sign_out, href: destroy_user_session_path, method: :delete }.
-  # store: { name:, badge: "dev", href:, notifications_href: }
+  # footer_label: aria-label of the footer nav (default "Account").
+  # store: { name:, badge: "dev", href:, avatar: "https://…/logo.png", notifications_href: }
+  #   avatar is an image URL; without it the first letter of name is shown.
+  # with_footer: replaces the whole footer (items and store row) with your own markup. Reuse ITEM + ITEM_IDLE,
+  #   STORE, STORE_LINK etc. to keep the look.
   # with_store_actions: replaces the default bell next to the store name, e.g. an app's own live-updating bell
   #   partial. Style it with BELL_BUTTON (+ BELL_DOT for an unread count) to match.
   # search: { placeholder: "Search", href: } or false. Ctrl/⌘ K activates it.
@@ -22,6 +26,7 @@ module ShopifyUI
 
     renders_one :brand
     renders_one :store_actions
+    renders_one :footer
 
     ROOT = "tw:group tw:font-sans tw:lg:w-60 tw:lg:shrink-0"
     # viewport: sticks to the window at full height (app layouts). contained: fills its parent (previews, frames).
@@ -67,7 +72,7 @@ module ShopifyUI
     ].freeze
     SEARCH_HINT = "tw:ml-auto tw:text-[11px] tw:text-frame-muted tw:max-lg:hidden tw:[@media(hover:none)]:hidden"
 
-    SCROLL = "tw:relative tw:flex-1 tw:min-h-0 tw:overflow-y-auto tw:overscroll-contain tw:pb-2 tw:[scrollbar-width:thin] tw:[scrollbar-color:#3a3a3a_transparent]"
+    SCROLL = "tw:relative tw:flex-1 tw:min-h-0 tw:overflow-y-auto tw:overscroll-contain tw:pb-2 sui-scrollbar-dark"
     SECTION = "tw:flex tw:flex-col tw:gap-px tw:px-2 tw:py-0.5"
     SECTION_TITLE = %w[
       tw:flex tw:items-center tw:justify-between tw:px-2.5 tw:pt-2 tw:pb-1 tw:text-[12px] tw:font-semibold
@@ -176,7 +181,7 @@ module ShopifyUI
         window.addEventListener('pagehide', save);
         document.addEventListener('turbo:before-visit', save);
         document.addEventListener('turbo:before-cache', save);
-        ShopifyUI.onLoad(function () {
+        function restore() {
           document.querySelectorAll('[data-sui-sidebar-scroll]:not([data-sui-restored])').forEach(function (nav) {
             nav.setAttribute('data-sui-restored', '');
             var saved = null; try { saved = sessionStorage.getItem(key(nav)); } catch (e) {}
@@ -186,17 +191,20 @@ module ShopifyUI
             var n = nav.getBoundingClientRect(), a = active.getBoundingClientRect();
             if (a.top < n.top || a.bottom > n.bottom) active.scrollIntoView({ block: 'center' });
           });
-        });
+        }
+        ShopifyUI.onLoad(restore);
+        document.addEventListener('turbo:render', restore);
         desktop.addEventListener('change', function (e) {
           if (e.matches) document.querySelectorAll('[data-sui-sidebar][data-open]').forEach(function (r) { setOpen(r, false, false); });
         });
       })();
     JS
 
-    def initialize(sections:, footer_items: [], store: nil, search: { placeholder: "Search" },
+    def initialize(sections:, footer_items: [], footer_label: "Account", store: nil, search: { placeholder: "Search" },
                    label: "Main navigation", id: "sui-sidebar", contained: false, **html_attributes)
       @sections = Array(sections).map { |s| s.to_h.symbolize_keys }
       @footer_items = Array(footer_items).map { |i| i.to_h.symbolize_keys }
+      @footer_label = footer_label
       @store = store&.to_h&.symbolize_keys
       @search = search ? { placeholder: "Search" }.merge(search.to_h.symbolize_keys) : nil
       @label = label
@@ -286,7 +294,12 @@ module ShopifyUI
       return unless @store
 
       initial = @store[:name].to_s.strip[0].to_s.upcase
-      body = safe_join([ tag.span(initial, class: STORE_AVATAR, aria: { hidden: true }),
+      avatar = if @store[:avatar].present?
+                 tag.img(src: @store[:avatar], alt: "", class: "#{STORE_AVATAR} tw:object-cover")
+               else
+                 tag.span(initial, class: STORE_AVATAR, aria: { hidden: true })
+               end
+      body = safe_join([ avatar,
                          tag.span(@store[:name], class: STORE_NAME),
                          (tag.span(@store[:badge], class: STORE_BADGE) if @store[:badge].present?) ].compact)
       bell = if store_actions?
@@ -294,7 +307,12 @@ module ShopifyUI
              elsif @store[:notifications_href]
                tag.a(icon(:bell), href: @store[:notifications_href], class: ICON_BUTTON.join(" "), aria: { label: "Notifications" })
              end
-      tag.div(safe_join([ tag.a(body, href: @store[:href] || "#", class: STORE_LINK.join(" ")), bell ].compact), class: STORE)
+      row = if @store[:href]
+              tag.a(body, href: @store[:href], class: STORE_LINK.join(" "))
+            else
+              tag.div(body, class: STORE_LINK.join(" ").gsub(/tw:hover:\S+/, ""))
+            end
+      tag.div(safe_join([ row, bell ].compact), class: STORE)
     end
   end
 end

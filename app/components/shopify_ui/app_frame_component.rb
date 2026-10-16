@@ -23,7 +23,7 @@ module ShopifyUI
       contained: "tw:relative tw:overflow-hidden tw:bg-frame tw:font-sans tw:lg:flex tw:lg:h-full"
     }.freeze
     PANEL = "tw:relative tw:min-w-0 tw:flex-1 tw:bg-page tw:lg:my-2 tw:lg:mr-2 tw:lg:overflow-hidden tw:lg:rounded-[16px]"
-    SCROLLER = "tw:relative tw:lg:h-full tw:lg:overflow-y-auto tw:lg:overscroll-contain tw:lg:[scrollbar-width:thin] tw:lg:[scrollbar-gutter:stable]"
+    SCROLLER = "tw:relative tw:lg:h-full tw:lg:overflow-y-auto tw:lg:overscroll-contain sui-scrollbar tw:lg:[scrollbar-gutter:stable]"
     PANEL_BACKGROUNDS = { page: "tw:bg-page", surface: "tw:bg-surface" }.freeze
 
     # background: :page (light grey, default) or :surface (white panel).

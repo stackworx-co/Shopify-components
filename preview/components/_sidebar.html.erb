@@ -27,7 +27,7 @@
          sections: sections,
          footer_items: [ { label: "Settings", icon: :settings, href: "#" },
                         { label: "Sign out", icon: :sign_out, href: "#", method: :delete } ],
-         store: { name: "Midway Inventory", href: "#" }) do |sidebar| %>
+         store: { name: "My Store", href: "#" }) do |sidebar| %>
       <% sidebar.with_store_actions do %>
         <a id="demo_notifications_bell" href="#" aria-label="Notifications, 3 unread" class="<%= ShopifyUI::SidebarComponent::BELL_BUTTON.join(" ") %>">
           <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 13.5V9a4.5 4.5 0 0 1 9 0v4.5l1.5 1.5H4z"/><path d="M8.5 17.5h3"/></svg>

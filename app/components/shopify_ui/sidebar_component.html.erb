@@ -20,9 +20,13 @@
         </div>
       <% end %>
     </nav>
-    <% if @footer_items.any? || @store %>
+    <% if footer? %>
+      <div class="<%= ShopifyUI::SidebarComponent::FOOTER %>"><%= footer %></div>
+    <% elsif @footer_items.any? || @store %>
       <div class="<%= ShopifyUI::SidebarComponent::FOOTER %>">
-        <nav aria-label="Settings" class="tw:flex tw:flex-col tw:gap-px"><%= items_tag(@footer_items) %></nav>
+        <% if @footer_items.any? %>
+          <nav aria-label="<%= @footer_label %>" class="tw:flex tw:flex-col tw:gap-px"><%= items_tag(@footer_items) %></nav>
+        <% end %>
         <%= store_tag %>
       </div>
     <% end %>
