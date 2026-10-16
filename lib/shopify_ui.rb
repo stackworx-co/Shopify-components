@@ -2,6 +2,7 @@
 
 require "view_component"
 require "shopify_ui/version"
+require "shopify_ui/head_tags_helper"
 require "shopify_ui/engine"
 
 module ShopifyUI

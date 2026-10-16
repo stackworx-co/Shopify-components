@@ -1,0 +1,7 @@
+/* Entry for the prebuilt stylesheet shipped in the gem (bin/build-css -> app/assets/builds/shopify_ui.css).
+   tw: prefix, no Preflight, !important — same as the host-app Tailwind setup. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) important;
+
+@import "../../app/assets/stylesheets/shopify_ui/theme.css";

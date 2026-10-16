@@ -14,6 +14,7 @@ shopify-ui/
 │   └── assets/stylesheets/shopify_ui/
 │       ├── tokens.css              design tokens (--sui-* CSS variables)
 │       └── theme.css               Tailwind theme, imported by the app's Tailwind entry
+│   └── assets/builds/shopify_ui.css prebuilt stylesheet (bin/build-css), used without Tailwind
 ├── lib/shopify_ui.rb, lib/shopify_ui/  gem entry point + Rails engine
 ├── lib/shopify_ui_setup.rb         submodule setup (also used by the local gallery)
 ├── shopify_ui.gemspec
@@ -48,18 +49,27 @@ and nothing here is deployed.
 
 ```ruby
 # Gemfile
-gem "shopify_ui", git: "https://github.com/stackworx-co/Shopify-components.git", tag: "v1.0.0"
+gem "shopify_ui", git: "https://github.com/stackworx-co/Shopify-components.git", tag: "v1.1.0"
 ```
+
+```erb
+<%# layout <head>, after the app's own stylesheets %>
+<%= shopify_ui_head_tags %>
+```
+
+That's it: `render ShopifyUI::ButtonComponent.new(...)` is fully styled. No Tailwind or Node needed;
+the gem ships a prebuilt `shopify_ui.css` (Sprockets or Propshaft).
+
+Apps that also want `tw:` utility classes in their own views can use the Tailwind setup in
+[docs/setup.md](docs/setup.md) instead (then use `shopify_ui_head_tags(stylesheet: false)`).
+
+## Releasing
+
+Rebuild the prebuilt stylesheet, commit it, bump `VERSION`, then tag:
 
 ```bash
-bundle install
-bin/rails shopify_ui:tailwind
+bin/build-css
 ```
-
-Each app pins its own tag, so apps can upgrade independently. Full steps (Tailwind, layout): [docs/setup.md](docs/setup.md).
-
-Components use Tailwind classes with the `tw:` prefix and the token names from `theme.css`
-(e.g. `tw:bg-accent`, `tw:text-ink`, `tw:rounded-surface`).
 
 ## Versioning
 

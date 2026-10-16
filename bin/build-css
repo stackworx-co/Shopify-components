@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Builds app/assets/builds/shopify_ui.css, the prebuilt stylesheet apps use without Tailwind.
+# Run before tagging each release and commit the output.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+bundle exec tailwindcss -i lib/shopify_ui/bundle.css -o app/assets/builds/shopify_ui.css --minify
