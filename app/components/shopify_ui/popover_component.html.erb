@@ -15,20 +15,25 @@
     <% end %>
   </div>
   <% end %>
+  <% if items? %>
+  <div class="<%= ShopifyUI::PopoverComponent::BODY %>">
+    <ul class="<%= ShopifyUI::PopoverComponent::LIST %>">
+      <% items.first(@max_items).each do |item| %>
+        <%= item %>
+      <% end %>
+    </ul>
+    <% if @end_message %><p class="<%= ShopifyUI::PopoverComponent::END_MESSAGE %>"><%= @end_message %></p><% end %>
+  </div>
+  <% end %>
+  <% if content.present? || !items? %>
   <div class="<%= body_classes %>">
-    <% if items? %>
-      <ul class="<%= ShopifyUI::PopoverComponent::LIST %>">
-        <% items.first(@max_items).each do |item| %>
-          <%= item %>
-        <% end %>
-      </ul>
-    <% end %>
     <% if content.present? %>
       <%= content %>
-    <% elsif @empty && !items? %>
+    <% elsif @empty %>
       <p class="<%= ShopifyUI::PopoverComponent::EMPTY.join(" ") %> tw:m-0"><%= @empty %></p>
     <% end %>
   </div>
+  <% end %>
   <% if footer? %>
   <div class="<%= ShopifyUI::PopoverComponent::FOOTER %>"><%= footer %></div>
   <% end %>

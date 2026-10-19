@@ -6,9 +6,19 @@
 
 <div class="tw:flex tw:flex-col tw:gap-6">
   <div>
-    <p class="<%= label_class %>">Notifications (latest 4, one line each, click to expand)</p>
+    <p class="<%= label_class %>">Alerts (latest 4 notifications)</p>
     <div class="<%= row_class %>">
-      <%= render(ShopifyUI::PopoverComponent.new(title: "Notifications", empty: "Notifications about your store and account will show here")) do |p| %>
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Alerts", width: :large, end_message: "No more alerts",
+            empty: "Alerts about your store and account will show here")) do |p| %>
+        <% p.with_activator(aria: { label: "Alerts" }) { bell } %>
+        <% p.with_header_action(icon: check) { "Mark all as read" } %>
+        <% p.with_item(category: "Taxes", time: "Oct 3 at 10:17 AM", title: "15 returns open for review", unread: true, href: "#") { "Your October 2026 tax returns are ready for review. Do this by October 8, as after this date your return will file automatically unless skipped." } %>
+        <% p.with_item(category: "Taxes", time: "Sep 30 at 3:21 AM", title: "6 of 9 October tax returns were not filed", unread: true, href: "#") { "File these tax returns manually, and resolve issues to enable automated filing next period." } %>
+        <% p.with_item(category: "Credit", time: "Sep 15 at 4:11 PM", title: "Shopify Credit + QuickBooks", unread: true, href: "#") { "Connect your card to QuickBooks Online to sync your transactions." } %>
+        <% p.with_item(category: "Fulfillment", time: "Sep 8 at 11:27 AM", title: "Fulfillment request declined for order #179851", unread: true, href: "#") { "The fulfillment request for order #179851 was declined by Phenom Elite Brand via Shopify Collective." } %>
+        <% p.with_item(category: "Orders", time: "Sep 1", title: "Hidden by max_items") { "Not shown." } %>
+      <% end %>
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Alerts", empty: "Alerts about your store and account will show here")) do |p| %>
         <% p.with_activator(aria: { label: "Notifications" }) { bell } %>
         <% p.with_header_action(icon: check) { "Mark all as read" } %>
         <% p.with_item(title: "Order #1042 was paid and is ready to fulfill", time: "2m", unread: true, href: "#") { "Customer Jane Cooper paid $128.40 by card. 3 items are waiting to be fulfilled." } %>
@@ -17,8 +27,8 @@
         <% p.with_item(title: "New app permissions requested by Inventory Sync", time: "Mon") { "Inventory Sync needs read access to locations. Review it in Settings → Apps." } %>
         <% p.with_item(title: "This fifth notification is hidden by max_items", time: "Sep 30") { "Not shown." } %>
       <% end %>
-      <%= render(ShopifyUI::PopoverComponent.new(title: "Notifications", empty: "Notifications about your store and account will show here")) do |p| %>
-        <% p.with_activator(aria: { label: "Notifications (empty)" }) { bell } %>
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Alerts", empty: "Alerts about your store and account will show here")) do |p| %>
+        <% p.with_activator(aria: { label: "Alerts (empty)" }) { bell } %>
       <% end %>
     </div>
   </div>
