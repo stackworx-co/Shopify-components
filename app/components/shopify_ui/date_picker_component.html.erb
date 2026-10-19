@@ -84,7 +84,11 @@
       this.addEventListener("click", this.onClick.bind(this));
       this.addEventListener("change", this.onInput.bind(this));
       var popover = this.querySelector("[popover]");
-      if (popover) popover.addEventListener("toggle", this.onToggle.bind(this, popover));
+      if (popover) {
+        // Hide before the browser paints the panel at its default spot, show again once positioned.
+        popover.addEventListener("beforetoggle", function (event) { if (event.newState === "open") popover.style.visibility = "hidden"; });
+        popover.addEventListener("toggle", this.onToggle.bind(this, popover));
+      }
       this.render();
     }
 
@@ -103,6 +107,7 @@
       popover.style.left = Math.max(8, Math.min(r.left, window.innerWidth - popover.offsetWidth - 8)) + "px";
       popover.style.top = (r.bottom + 4) + "px";
       popover.style.right = popover.style.bottom = "auto";
+      popover.style.visibility = "";
     }
 
     onClick(event) {

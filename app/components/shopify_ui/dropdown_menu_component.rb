@@ -89,6 +89,7 @@ module ShopifyUI
         role: "menu",
         class: [ MENU, @html_attributes[:class] ].flatten.compact.join(" "),
         data: { align: @align },
+        onbeforetoggle: "if (event.newState === 'open') this.style.visibility = 'hidden'",
         ontoggle: position_script,
         onclick: "if (event.target.closest('a, button')) this.hidePopover()"
       )
@@ -100,7 +101,8 @@ module ShopifyUI
         "var left = this.dataset.align === 'end' ? r.right - this.offsetWidth : r.left;" \
         "this.style.left = Math.max(8, Math.min(left, innerWidth - this.offsetWidth - 8)) + 'px';" \
         "this.style.top = (r.bottom + 4) + 'px';" \
-        "this.style.right = this.style.bottom = 'auto';"
+        "this.style.right = this.style.bottom = 'auto';" \
+        "this.style.visibility = '';"
     end
   end
 end

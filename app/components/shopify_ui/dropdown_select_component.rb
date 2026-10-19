@@ -97,7 +97,11 @@ module ShopifyUI
           l.style.left = Math.max(8, Math.min(r.left, innerWidth - l.offsetWidth - 8)) + 'px';
           var below = innerHeight - r.bottom - 8, above = r.top - 8;
           l.style.top = (l.offsetHeight > below && above > below ? Math.max(8, r.top - 4 - l.offsetHeight) : r.bottom + 4) + 'px';
+          l.style.visibility = '';
         }
+        document.addEventListener('beforetoggle', function (event) {
+          var l = event.target; if (event.newState === 'open' && l.matches && l.matches('[data-sui-select] [role=listbox]')) l.style.visibility = 'hidden';
+        }, true);
         document.addEventListener('toggle', function (event) {
           var l = event.target; if (!l.matches || !l.matches('[data-sui-select] [role=listbox]')) return;
           var p = parts(l);

@@ -125,6 +125,7 @@ module ShopifyUI
         aria: { label: @title || @label },
         class: [ PANEL, @width, @html_attributes[:class] ].flatten.compact.join(" "),
         data: { placement: @placement, align: @align },
+        onbeforetoggle: "if (event.newState === 'open') this.style.visibility = 'hidden'",
         ontoggle: position_script,
         onclick: "if (event.target.closest('[data-popover-close]')) this.hidePopover()"
       )
@@ -134,7 +135,7 @@ module ShopifyUI
     # an 8px gutter from the viewport edges.
     def position_script
       "if (event.newState !== 'open') return;" \
-        "var t = document.querySelector('[popovertarget=\"' + this.id + '\"]'); if (!t) return;" \
+        "var t = document.querySelector('[popovertarget=\"' + this.id + '\"]'); if (!t) { this.style.visibility = ''; return; }" \
         "var r = t.getBoundingClientRect(), w = this.offsetWidth, h = this.offsetHeight, g = 8, gap = 6;" \
         "var a = this.dataset.align, left = a === 'end' ? r.right - w : a === 'center' ? r.left + (r.width - w) / 2 : r.left;" \
         "var below = innerHeight - r.bottom - gap, above = r.top - gap;" \
@@ -142,7 +143,8 @@ module ShopifyUI
         "var top = up ? r.top - gap - h : r.bottom + gap;" \
         "this.style.left = Math.max(g, Math.min(left, innerWidth - w - g)) + 'px';" \
         "this.style.top = Math.max(g, Math.min(top, innerHeight - h - g)) + 'px';" \
-        "this.style.right = this.style.bottom = 'auto';"
+        "this.style.right = this.style.bottom = 'auto';" \
+        "this.style.visibility = '';"
     end
   end
 end

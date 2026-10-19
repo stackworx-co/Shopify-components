@@ -128,10 +128,14 @@ module ShopifyUI
           if (menu && active) { e.preventDefault(); menu.togglePopover(); if (menu.matches(':popover-open')) place(menu, tab); return; }
           if (tab.tagName !== 'A') select(root, tab, false);
         });
+        document.addEventListener('beforetoggle', function (e) {
+          if (e.newState === 'open' && e.target.matches && e.target.matches('[data-sui-tabs] [popover]')) e.target.style.visibility = 'hidden';
+        }, true);
         document.addEventListener('toggle', function (e) {
           if (e.newState === 'open' && e.target.matches && e.target.matches('[data-sui-tabs] [popover]')) {
             var anchor = document.querySelector('[popovertarget="' + e.target.id + '"]') || document.querySelector('[data-actions="' + e.target.id + '"]');
             if (anchor) place(e.target, anchor);
+            e.target.style.visibility = '';
           }
         }, true);
         document.addEventListener('keydown', function (e) {
