@@ -16,9 +16,16 @@
   </div>
   <% end %>
   <div class="<%= body_classes %>">
+    <% if items? %>
+      <ul class="<%= ShopifyUI::PopoverComponent::LIST %>">
+        <% items.first(@max_items).each do |item| %>
+          <%= item %>
+        <% end %>
+      </ul>
+    <% end %>
     <% if content.present? %>
       <%= content %>
-    <% elsif @empty %>
+    <% elsif @empty && !items? %>
       <p class="<%= ShopifyUI::PopoverComponent::EMPTY.join(" ") %> tw:m-0"><%= @empty %></p>
     <% end %>
   </div>

@@ -32,6 +32,25 @@ module ShopifyUI
 
     renders_one :footer
 
+    # One-line notification rows. Only the newest `max_items` are shown (pass them newest first).
+    # The block is the detail text, revealed when the row is clicked.
+    renders_many :items, ->(title:, time: nil, unread: false, href: nil, link_label: "View", &block) {
+      details = block && capture(&block)
+      summary = tag.summary(class: ITEM_SUMMARY) do
+        safe_join([
+          tag.span(class: [ ITEM_DOT, (unread ? "tw:bg-link" : "tw:bg-transparent") ].join(" "), aria: { hidden: true }),
+          tag.span(title, class: [ ITEM_TITLE, (unread ? "tw:font-semibold" : "tw:font-normal") ].join(" ")),
+          (tag.span(time, class: ITEM_TIME) if time),
+          tag.svg(tag.path(d: "m6 8 4 4 4-4"), class: ITEM_CHEVRON, viewBox: "0 0 20 20", fill: "none", stroke: "currentColor",
+                  "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round", aria: { hidden: true })
+        ].compact)
+      end
+      body = tag.div(class: ITEM_DETAILS) do
+        safe_join([ details, (tag.a(link_label, href: href, class: ITEM_LINK) if href) ].compact)
+      end
+      tag.li(tag.details(safe_join([ summary, body ]), class: "tw:group"), class: ITEM)
+    }
+
     PANEL = %w[
       tw:m-0 tw:max-w-[calc(100vw-16px)] tw:max-h-[min(560px,calc(100dvh-16px))] tw:overflow-hidden
       tw:flex-col tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-0 tw:font-sans tw:text-[13px] tw:text-ink
@@ -59,6 +78,20 @@ module ShopifyUI
       tw:text-[13px] tw:leading-5 tw:text-ink-secondary
     ].freeze
 
+    LIST = "tw:m-0 tw:flex tw:list-none tw:flex-col tw:gap-0.5 tw:p-0"
+    ITEM = "tw:m-0"
+    ITEM_SUMMARY = %w[
+      tw:flex tw:cursor-pointer tw:list-none tw:items-center tw:gap-2 tw:rounded-[8px] tw:px-2 tw:py-1.5
+      tw:hover:bg-surface-hover tw:group-open:bg-surface-hover tw:[&::-webkit-details-marker]:hidden
+      tw:focus-visible:outline-2 tw:focus-visible:-outline-offset-2 tw:focus-visible:outline-link
+    ].join(" ")
+    ITEM_DOT = "tw:size-2 tw:shrink-0 tw:rounded-full"
+    ITEM_TITLE = "tw:min-w-0 tw:flex-1 tw:truncate tw:text-[13px] tw:leading-5 tw:text-ink"
+    ITEM_TIME = "tw:shrink-0 tw:text-[12px] tw:text-muted"
+    ITEM_CHEVRON = "tw:size-4 tw:shrink-0 tw:text-muted tw:transition-transform tw:group-open:rotate-180"
+    ITEM_DETAILS = "tw:flex tw:flex-col tw:items-start tw:gap-1.5 tw:px-2 tw:pt-1 tw:pb-2 tw:pl-6 tw:text-[13px] tw:leading-5 tw:text-ink-secondary"
+    ITEM_LINK = "tw:font-medium tw:text-link tw:no-underline tw:hover:underline"
+
     ACTION_BASE = %w[
       tw:inline-flex tw:h-7 tw:shrink-0 tw:items-center tw:justify-center tw:gap-1 tw:rounded-[8px] tw:border-0
       tw:bg-transparent tw:font-sans tw:text-[13px] tw:font-medium tw:text-muted tw:cursor-pointer
@@ -85,9 +118,10 @@ module ShopifyUI
     # align:     :start, :center, :end (relative to the trigger)
     # width:     :small, :medium, :large, :auto
     # padded:    false to let body content (lists, tables) run edge to edge
+    # max_items: how many `items` to show (newest first)
     # empty:     message shown in the grey placeholder box when no content is given
     def initialize(title: nil, label: nil, variant: :secondary, size: :medium, placement: :below,
-                   align: :start, width: :medium, padded: true, empty: nil, id: nil, **html_attributes)
+                   align: :start, width: :medium, padded: true, empty: nil, max_items: 4, id: nil, **html_attributes)
       @title = title
       @label = label
       @variant = variant
@@ -97,6 +131,7 @@ module ShopifyUI
       @width = WIDTHS.fetch(width.to_sym, WIDTHS[:medium])
       @padded = padded
       @empty = empty
+      @max_items = max_items
       @html_attributes = html_attributes
       @popover_id = id || "sui-popover-#{SecureRandom.hex(4)}"
     end

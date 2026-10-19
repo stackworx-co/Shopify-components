@@ -2,17 +2,23 @@
 <% row_class = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
 <% icon = ->(path) { tag.svg(tag.path(d: path), viewBox: "0 0 20 20", width: 20, height: 20, fill: "none", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round") } %>
 <% bell = icon.call("M10 3a4 4 0 0 0-4 4v3l-1.5 3h11L14 10V7a4 4 0 0 0-4-4ZM8.5 15.5a1.5 1.5 0 0 0 3 0") %>
-<% filter = icon.call("M4 6h12M6.5 10h7M9 14h2") %>
 <% check = icon.call("M10 3.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM7.5 10l1.8 1.8 3.2-3.6") %>
 
 <div class="tw:flex tw:flex-col tw:gap-6">
   <div>
-    <p class="<%= label_class %>">Alerts (icon trigger, header actions, empty state)</p>
+    <p class="<%= label_class %>">Notifications (latest 4, one line each, click to expand)</p>
     <div class="<%= row_class %>">
-      <%= render(ShopifyUI::PopoverComponent.new(title: "Alerts", empty: "Alerts about your store and account will show here")) do |p| %>
-        <% p.with_activator(aria: { label: "Alerts" }) { bell } %>
-        <% p.with_header_action(icon: filter, label: "Filter") %>
-        <% p.with_header_action(icon: check, disabled: true) { "Mark all as read" } %>
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Notifications", empty: "Notifications about your store and account will show here")) do |p| %>
+        <% p.with_activator(aria: { label: "Notifications" }) { bell } %>
+        <% p.with_header_action(icon: check) { "Mark all as read" } %>
+        <% p.with_item(title: "Order #1042 was paid and is ready to fulfill", time: "2m", unread: true, href: "#") { "Customer Jane Cooper paid $128.40 by card. 3 items are waiting to be fulfilled." } %>
+        <% p.with_item(title: "Low stock: The Draft Snowboard has only 2 left", time: "1h", unread: true, href: "#") { "Inventory at Main warehouse dropped below your threshold of 5 units." } %>
+        <% p.with_item(title: "Payout of $2,340.00 scheduled", time: "Yesterday") { "Your payout will arrive in your bank account within 2 business days." } %>
+        <% p.with_item(title: "New app permissions requested by Inventory Sync", time: "Mon") { "Inventory Sync needs read access to locations. Review it in Settings → Apps." } %>
+        <% p.with_item(title: "This fifth notification is hidden by max_items", time: "Sep 30") { "Not shown." } %>
+      <% end %>
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Notifications", empty: "Notifications about your store and account will show here")) do |p| %>
+        <% p.with_activator(aria: { label: "Notifications (empty)" }) { bell } %>
       <% end %>
     </div>
   </div>
