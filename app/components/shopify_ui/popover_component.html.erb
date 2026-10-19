@@ -1,0 +1,28 @@
+<% if activator? %>
+<%= activator %>
+<% elsif @label %>
+<%= render(ShopifyUI::ButtonComponent.new(variant: @variant, size: @size, **trigger_attributes)) do %>
+  <%= @label %>
+  <svg class="<%= ShopifyUI::PopoverComponent::CHEVRON %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+<% end %>
+<% end %>
+<div <%= tag.attributes(panel_attributes) %>>
+  <% if header? %>
+  <div class="<%= ShopifyUI::PopoverComponent::HEADER %>">
+    <% if @title %><h2 class="<%= ShopifyUI::PopoverComponent::TITLE %>"><%= @title %></h2><% end %>
+    <% header_actions.each do |action| %>
+      <%= action %>
+    <% end %>
+  </div>
+  <% end %>
+  <div class="<%= body_classes %>">
+    <% if content.present? %>
+      <%= content %>
+    <% elsif @empty %>
+      <p class="<%= ShopifyUI::PopoverComponent::EMPTY.join(" ") %> tw:m-0"><%= @empty %></p>
+    <% end %>
+  </div>
+  <% if footer? %>
+  <div class="<%= ShopifyUI::PopoverComponent::FOOTER %>"><%= footer %></div>
+  <% end %>
+</div>

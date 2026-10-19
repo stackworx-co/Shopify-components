@@ -1,0 +1,35 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row_class = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
+<% icon = ->(path) { tag.svg(tag.path(d: path), viewBox: "0 0 20 20", width: 20, height: 20, fill: "none", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round") } %>
+<% bell = icon.call("M10 3a4 4 0 0 0-4 4v3l-1.5 3h11L14 10V7a4 4 0 0 0-4-4ZM8.5 15.5a1.5 1.5 0 0 0 3 0") %>
+<% filter = icon.call("M4 6h12M6.5 10h7M9 14h2") %>
+<% check = icon.call("M10 3.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM7.5 10l1.8 1.8 3.2-3.6") %>
+
+<div class="tw:flex tw:flex-col tw:gap-6">
+  <div>
+    <p class="<%= label_class %>">Alerts (icon trigger, header actions, empty state)</p>
+    <div class="<%= row_class %>">
+      <%= render(ShopifyUI::PopoverComponent.new(title: "Alerts", empty: "Alerts about your store and account will show here")) do |p| %>
+        <% p.with_activator(aria: { label: "Alerts" }) { bell } %>
+        <% p.with_header_action(icon: filter, label: "Filter") %>
+        <% p.with_header_action(icon: check, disabled: true) { "Mark all as read" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Button trigger with content and footer</p>
+    <div class="<%= row_class %>">
+      <%= render(ShopifyUI::PopoverComponent.new(label: "Sales channels", title: "Sales channels", width: :small)) do |p| %>
+        <% p.with_footer do %>
+          <%= render(ShopifyUI::ButtonComponent.new(variant: :primary, size: :slim, data: { popover_close: true })) { "Done" } %>
+        <% end %>
+        <p class="tw:m-0 tw:text-ink-secondary">Choose where this product is available. Changes apply when you save.</p>
+      <% end %>
+      <%= render(ShopifyUI::PopoverComponent.new(label: "Aligned end", align: :end, width: :auto)) do %>
+        <p class="tw:m-0">A popover without a header.</p>
+      <% end %>
+      <%= render(ShopifyUI::PopoverComponent.new(label: "Opens above", placement: :above, title: "Above", empty: "Flips below when there is no room above.")) %>
+    </div>
+  </div>
+</div>
