@@ -87,12 +87,15 @@ module ShopifyUI
       tw:transition-colors tw:duration-100
       tw:focus-visible:outline-2 tw:focus-visible:-outline-offset-2 tw:focus-visible:outline-white
     ].freeze
-    ITEM_IDLE = "tw:text-frame-muted tw:hover:bg-frame-hover tw:hover:text-frame-ink"
-    ITEM_ACTIVE = "tw:bg-frame-active tw:text-white tw:font-medium tw:hover:bg-frame-active"
-    ITEM_OPEN = "tw:text-frame-ink tw:font-medium tw:hover:bg-frame-hover"
+    ITEM_IDLE = "tw:text-frame-ink-secondary tw:font-medium tw:hover:bg-frame-hover tw:hover:text-frame-ink"
+    ITEM_ACTIVE = "tw:bg-frame-active tw:text-white tw:font-semibold tw:hover:bg-frame-active"
+    # Nested items never get the pill — like Shopify, only the parent is highlighted and the
+    # current child is marked by brighter, bolder text.
+    SUB_IDLE = "tw:text-frame-muted tw:font-medium tw:hover:bg-frame-hover tw:hover:text-frame-ink"
+    SUB_ACTIVE = "tw:text-white tw:font-semibold tw:hover:bg-frame-hover"
     ITEM_LEFT = "tw:flex tw:min-w-0 tw:items-center tw:gap-2.5"
     ITEM_LABEL = "tw:truncate"
-    SUB_ITEM = "tw:pl-[38px] tw:text-[12.5px] tw:max-lg:text-[13.5px]"
+    SUB_ITEM = "tw:pl-[38px] tw:text-[13px] tw:max-lg:text-[14px]"
     COUNT = "tw:shrink-0 tw:text-[11px] tw:tabular-nums tw:text-frame-muted"
     COUNT_ACTIVE = "tw:shrink-0 tw:text-[11px] tw:tabular-nums tw:text-frame-ink"
 
@@ -252,10 +255,10 @@ module ShopifyUI
     end
 
     def item_tag(item, sub: false)
-      active = item[:active]
-      state = if active then ITEM_ACTIVE
-              elsif !sub && open?(item) then ITEM_OPEN
-              else ITEM_IDLE
+      current = item[:active] && (sub || !open?(item))
+      active = sub ? item[:active] : (item[:active] || open?(item))
+      state = if sub then (active ? SUB_ACTIVE : SUB_IDLE)
+              else (active ? ITEM_ACTIVE : ITEM_IDLE)
               end
       left = tag.span(safe_join([ (icon(item[:icon]) unless sub), tag.span(item[:label], class: ITEM_LABEL) ].compact), class: ITEM_LEFT)
       count = tag.span(item[:count], class: active ? COUNT_ACTIVE : COUNT) if item[:count].present?
@@ -266,7 +269,7 @@ module ShopifyUI
       end
       tag.a(safe_join([ left, count ].compact), href: item[:href] || "#",
             class: [ ITEM, state, (SUB_ITEM if sub) ].flatten.join(" "),
-            aria: { current: (active ? "page" : nil) })
+            aria: { current: (current ? "page" : nil) })
     end
 
     def items_tag(items)

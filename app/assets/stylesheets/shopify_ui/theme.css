@@ -62,6 +62,7 @@
   --color-frame-active: var(--sui-frame-active);
   --color-frame-input: var(--sui-frame-input);
   --color-frame-ink: var(--sui-frame-ink);
+  --color-frame-ink-secondary: var(--sui-frame-ink-secondary);
   --color-frame-muted: var(--sui-frame-muted);
   --color-frame-border: var(--sui-frame-border);
   --color-frame-logo: var(--sui-frame-logo);
