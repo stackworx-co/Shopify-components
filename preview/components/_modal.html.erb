@@ -16,6 +16,7 @@
   <%= opener.call("modal-saving", "Saving (primary loading)") %>
   <%= opener.call("modal-no-title", "Hidden title") %>
   <%= opener.call("modal-locked", "Not dismissible") %>
+  <%= opener.call("modal-import", "Import (file + vendor)") %>
 </div>
 
 <%= render(m.new(id: "modal-basic", title: "Archive order #1602?",
@@ -89,3 +90,6 @@
       primary_action: { label: "Accept", close: true })) do %>
   <p class="tw:m-0">Backdrop clicks and Esc don't close this one — only the buttons do.</p>
 <% end %>
+
+<%= render(ShopifyUI::ImportModalComponent.new(id: "modal-import", url: "#",
+      vendors: [ "Nike", "Adidas", "Puma", "Under Armour", "New Balance" ])) %>

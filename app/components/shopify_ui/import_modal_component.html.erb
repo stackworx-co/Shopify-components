@@ -1,0 +1,19 @@
+<%= render modal do %>
+  <%= form_with url: @url, method: @method, multipart: true, id: form_id do %>
+    <h3 class="<%= ShopifyUI::ImportModalComponent::HEADING %>"><%= @heading %></h3>
+    <p class="<%= ShopifyUI::ImportModalComponent::DESCRIPTION %>">
+      <%= @description %>
+      <% if @sample_url %><%= link_to @sample_label, @sample_url, class: ShopifyUI::ImportModalComponent::SAMPLE_LINK, download: true %><% end %>
+    </p>
+    <div class="<%= ShopifyUI::ImportModalComponent::DROPZONE.join(" ") %>" data-sui-dropzone>
+      <input type="file" name="<%= @file_name %>" <%= tag.attributes(accept: @accept) %> required aria-label="<%= @upload_label %>" class="<%= ShopifyUI::ImportModalComponent::FILE_INPUT %>">
+      <span class="<%= ShopifyUI::ImportModalComponent::UPLOAD_PILL.join(" ") %>" aria-hidden="true"><%= plus_icon %><%= @upload_label %></span>
+      <p class="<%= ShopifyUI::ImportModalComponent::FILE_NAME %>" data-sui-dropzone-name data-empty="<%= @empty_label %>" aria-live="polite"><%= @empty_label %></p>
+    </div>
+    <div class="<%= ShopifyUI::ImportModalComponent::FIELD %>">
+      <%= render ShopifyUI::DropdownSelectComponent.new(name: @vendor_name, options: @vendors, label: @vendor_label,
+            placeholder: @vendor_placeholder, selected: @selected_vendor, error: @vendor_error, id: "#{@id}-vendor") %>
+    </div>
+  <% end %>
+<% end %>
+<%= ShopifyUI::Runtime.script(self, :import_modal, ShopifyUI::ImportModalComponent::SCRIPT) %>
