@@ -8,6 +8,7 @@
       <svg viewBox="0 0 120 120" class="<%= ShopifyUI::DonutChartComponent::SVG %>" role="img" aria-label="<%= chart_label %>">
         <circle cx="60" cy="60" r="<%= ShopifyUI::DonutChartComponent::RADIUS %>" fill="none" stroke-width="<%= ShopifyUI::DonutChartComponent::STROKE %>" class="<%= ShopifyUI::DonutChartComponent::TRACK %>"/>
         <% @segments.each do |segment| %>
+          <% next if zero? %>
           <circle cx="60" cy="60" r="<%= ShopifyUI::DonutChartComponent::RADIUS %>" fill="none"
                   stroke-width="<%= ShopifyUI::DonutChartComponent::STROKE %>" stroke-linecap="round"
                   stroke-dasharray="<%= dasharray(segment) %>" stroke-dashoffset="<%= segment.offset.round(3) %>"

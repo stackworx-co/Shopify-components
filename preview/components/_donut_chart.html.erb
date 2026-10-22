@@ -32,6 +32,13 @@
   </div>
 
   <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Zero total — grey track, every segment at 0 / 0% (empty_when_zero: false, default)</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
+      <%= render(donut.new(segments: mix.map { |s| s.merge(value: 0) }, center_value: "0%", center_label: "OOS", label: "Fulfillment mix")) %>
+    <% end %>
+  </div>
+
+  <div>
     <p class="<%= label_class %> tw:max-sm:px-4">Legend bottom</p>
     <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
       <%= render(donut.new(segments: mix, legend: :bottom, label: "Fulfillment mix")) %>
@@ -74,9 +81,9 @@
   </div>
 
   <div>
-    <p class="<%= label_class %> tw:max-sm:px-4">Empty — total is 0</p>
+    <p class="<%= label_class %> tw:max-sm:px-4">Empty — total is 0 with empty_when_zero: true</p>
     <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
-      <%= render(donut.new(segments: mix.map { |s| s.merge(value: 0) }, empty: "No data for this range")) %>
+      <%= render(donut.new(segments: mix.map { |s| s.merge(value: 0) }, empty_when_zero: true, empty: "No data for this range")) %>
     <% end %>
   </div>
 </div>

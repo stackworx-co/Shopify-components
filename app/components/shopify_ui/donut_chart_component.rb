@@ -11,7 +11,9 @@ module ShopifyUI
   #   size:         :small (120px) | :medium (160px, default) | :large (200px) — one size smaller on phones
   #   legend:       :right (default, moves under the ring on phones) | :bottom | false
   #   show_percent: true — muted percentage next to each legend value
-  #   empty:        text shown when the total is 0
+  #   empty:        text shown when there are no segments
+  #   empty_when_zero: false (default) draws a zero total as the grey track with every segment at 0 / 0% in the
+  #                 legend; true shows `empty` instead
   #   label:        aria-label prefix for the chart
   class DonutChartComponent < ViewComponent::Base
     strip_trailing_whitespace
@@ -71,7 +73,7 @@ module ShopifyUI
     Segment = Struct.new(:label, :value, :tone, :percent, :length, :offset, keyword_init: true)
 
     def initialize(segments: [], center_value: nil, center_label: "Total", size: :medium, legend: :right,
-                   show_percent: true, empty: "No data", label: "Chart", **html_attributes)
+                   show_percent: true, empty: "No data", empty_when_zero: false, label: "Chart", **html_attributes)
       @raw_segments = Array(segments)
       @center_value = center_value
       @center_label = center_label
@@ -79,6 +81,7 @@ module ShopifyUI
       @legend = legend ? (legend.to_sym == :bottom ? :bottom : :right) : :none
       @show_percent = show_percent
       @empty = empty
+      @empty_when_zero = empty_when_zero
       @label = label
       @html_attributes = html_attributes
     end
@@ -90,9 +93,10 @@ module ShopifyUI
     private
 
     def build_segments
-      kept = @raw_segments.map { |s| s.to_h.transform_keys(&:to_sym) }.select { |s| s[:value].to_f.positive? }
+      all = @raw_segments.map { |s| s.to_h.transform_keys(&:to_sym) }
+      kept = all.select { |s| s[:value].to_f.positive? }
       @total = kept.sum { |s| s[:value].to_f }
-      return [] if @total.zero?
+      return zero_segments(all) if @total.zero?
 
       gap = kept.size > 1 ? GAP + STROKE : 0 # round caps add STROKE/2 at each end
       start = 0.0
@@ -106,6 +110,20 @@ module ShopifyUI
         start += arc
         segment
       end
+    end
+
+    # Zero total: no arcs (only the grey track), but every segment stays in the legend at 0 / 0%.
+    def zero_segments(all)
+      return [] if @empty_when_zero
+
+      all.map do |s|
+        Segment.new(label: s[:label].to_s, value: 0, percent: 0.0, length: 0, offset: 0,
+                    tone: TONES.key?(s[:tone]&.to_sym) ? s[:tone].to_sym : :neutral)
+      end
+    end
+
+    def zero?
+      @total.zero?
     end
 
     def empty?
