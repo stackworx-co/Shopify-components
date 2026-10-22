@@ -16,7 +16,8 @@ module ShopifyUI
   #   x_labels:       :auto (~5 evenly spaced, 3 on phones) or an explicit list of labels to show
   #   value_format:   ->(value) { "..." } (default: number with delimiters)
   #   highlight_last: dot on the latest point of the first series (default true)
-  #   empty:          text shown when there is no data or every value is 0
+  #   empty:          text shown when there are no data points
+  #   empty_when_zero: false (default) draws all-zero data as a flat line on a 0–5 axis; true shows `empty` instead
   #   label:          aria-label prefix
   class LineChartComponent < ViewComponent::Base
     strip_trailing_whitespace
@@ -137,7 +138,7 @@ module ShopifyUI
     Series = Struct.new(:name, :data, :tone, :dashed, keyword_init: true)
 
     def initialize(series: [], height: 180, area: true, y_ticks: 4, x_labels: :auto, value_format: nil,
-                   highlight_last: true, empty: "No data", label: "Chart", **html_attributes)
+                   highlight_last: true, empty: "No data", empty_when_zero: false, label: "Chart", **html_attributes)
       @series = Array(series).map do |s|
         s = s.to_h.transform_keys(&:to_sym)
         Series.new(name: s[:name].to_s, data: Array(s[:data]).map { |l, v| [ l.to_s, v.to_f ] },
@@ -151,6 +152,7 @@ module ShopifyUI
       @value_format = value_format
       @highlight_last = highlight_last
       @empty = empty
+      @empty_when_zero = empty_when_zero
       @label = label
       @html_attributes = html_attributes
       @uid = "sui-line-#{SecureRandom.hex(4)}"
@@ -159,7 +161,16 @@ module ShopifyUI
     private
 
     def empty?
-      @series.empty? || @series.all? { |s| s.data.all? { |_, v| v.zero? } }
+      @series.empty? || (@empty_when_zero && all_zero?)
+    end
+
+    def all_zero?
+      @series.all? { |s| s.data.all? { |_, v| v.zero? } }
+    end
+
+    # All-zero data can't scale from a max of 0: use a fixed 0–5 axis in steps of 1.
+    def tick_count
+      all_zero? ? 5 : @y_ticks
     end
 
     def primary
@@ -177,8 +188,7 @@ module ShopifyUI
     def y_max
       @y_max ||= begin
         peak = @series.flat_map { |s| s.data.map(&:last) }.max.to_f
-        step = nice_step(peak / @y_ticks)
-        step * @y_ticks
+        peak <= 0 ? 5.0 : nice_step(peak / @y_ticks) * @y_ticks
       end
     end
 
@@ -190,7 +200,7 @@ module ShopifyUI
     end
 
     def y_ticks
-      (0..@y_ticks).map { |i| y_max * i / @y_ticks }
+      (0..tick_count).map { |i| y_max * i / tick_count }
     end
 
     # Positions as percentages of the plot box (top-left origin).

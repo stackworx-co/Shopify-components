@@ -61,10 +61,22 @@
   </div>
 
   <div>
-    <p class="<%= label_class %> tw:max-sm:px-4">Empty — every value is 0</p>
+    <p class="<%= label_class %> tw:max-sm:px-4">All zeros (default) — flat line on a 0–5 axis, tooltips and latest dot as usual</p>
     <%= render(ShopifyUI::CardComponent.new(title: "OOS items per day")) do %>
-      <%= render(chart.new(series: [{ name: "OOS items", data: days.map { |d| [d, 0] } }], empty: "No data for this range")) %>
+      <%= render(chart.new(series: [{ name: "OOS items", data: days.map { |d| [d, 0] } }], label: "OOS items per day")) %>
     <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Empty — no data points, or all zeros with empty_when_zero: true</p>
+    <div class="tw:flex tw:flex-col tw:gap-5">
+      <%= render(ShopifyUI::CardComponent.new(title: "No data points")) do %>
+        <%= render(chart.new(series: [{ name: "OOS items", data: [] }], height: 100, empty: "No data for this range")) %>
+      <% end %>
+      <%= render(ShopifyUI::CardComponent.new(title: "empty_when_zero: true")) do %>
+        <%= render(chart.new(series: [{ name: "OOS items", data: days.map { |d| [d, 0] } }], height: 100, empty_when_zero: true, empty: "Nothing to show")) %>
+      <% end %>
+    </div>
   </div>
 </div>
 </div>
