@@ -6,8 +6,10 @@
   </div>
 </div>
 <% else %>
+<% if row_caption? %><p class="<%= ShopifyUI::StatsCardComponent::CHART_ROW_CAPTION %>"><%= @caption %></p><% end %>
 <div <%= tag.attributes(wrapper_attributes) %>>
   <% @metrics.each do |metric| %><%= metric_wrapper(metric) { metric_body(metric) } %><% end %>
 </div>
 <% end %>
 <%= ShopifyUI::Runtime.script(self, :stats_card, ShopifyUI::StatsCardComponent::TOOLTIP_SCRIPT) %>
+<%= ShopifyUI::Runtime.script(self, :stats_chart, ShopifyUI::StatsCardComponent::CHART_SCRIPT) if chart? %>

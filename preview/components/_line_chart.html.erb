@@ -1,0 +1,70 @@
+<% chart = ShopifyUI::LineChartComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% days = (0...14).map { |i| (Date.new(2026, 10, 9) + i).strftime("%b %-d") } %>
+<% oos = days.zip([3, 0, 4, 6, 2, 12, 7, 5, 8, 4, 9, 6, 2, 3]) %>
+<% previous = days.zip([5, 4, 6, 3, 7, 5, 9, 4, 6, 8, 5, 7, 4, 6]) %>
+<% sales = (0...30).map { |i| [(Date.new(2026, 9, 23) + i).strftime("%b %-d"), (1800 + 900 * Math.sin(i / 3.0) + i * 45).round(2)] } %>
+
+<div class="tw:-mx-6 tw:max-sm:-mx-4 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0">
+<div class="tw:grid tw:gap-5 tw:lg:grid-cols-2">
+  <div class="tw:lg:col-span-2">
+    <p class="<%= label_class %> tw:max-sm:px-4">Analytics card — big total, trend badge, comparison line (dashed), legend; hover or focus + ← →</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "OOS items per day", subtitle: "Last 14 days")) do %>
+      <div class="tw:mb-4 tw:flex tw:flex-wrap tw:items-baseline tw:gap-2">
+        <span class="tw:text-[24px] tw:font-semibold tw:tabular-nums">71</span>
+        <%= render(ShopifyUI::BadgeComponent.new(tone: :critical)) { "↑ 4%" } %>
+        <span class="tw:basis-full tw:text-[12px] tw:text-muted">Peak 12 on Oct 14 · Today 3</span>
+      </div>
+      <%= render(chart.new(label: "OOS items per day", series: [
+            { name: "OOS items", data: oos, tone: :critical },
+            { name: "Previous 14 days", data: previous, dashed: true }
+          ])) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Single series, default tone (highlight), area, last point dot</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "OOS items per day")) do %>
+      <%= render(chart.new(series: [{ name: "OOS items", data: oos }], label: "OOS items per day")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Currency format, 30 points, 5 y ticks, success tone</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Total sales over time")) do %>
+      <%= render(chart.new(series: [{ name: "Total sales", data: sales, tone: :success }], y_ticks: 5,
+            value_format: ->(v) { number_to_currency(v, precision: 0) }, label: "Total sales")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">No area, no last dot, height 120, explicit x labels</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <%= render(chart.new(series: [{ name: "Sessions", data: oos, tone: :primary }], area: false, highlight_last: false,
+            height: 120, x_labels: ["Oct 9", "Oct 16", "Oct 22"], label: "Sessions")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">All tones — highlight, primary, success, critical, warning, neutral</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <%= render(chart.new(area: false, height: 160, label: "Tones", series: %i[highlight primary success critical warning neutral].each_with_index.map { |tone, k|
+            { name: tone.to_s.humanize, tone: tone, data: days.each_with_index.map { |d, i| [d, 4 + k * 3 + (i % 4)] } } })) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Single point</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <%= render(chart.new(series: [{ name: "Orders", data: [["Oct 22", 7]] }], height: 120, label: "Orders")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Empty — every value is 0</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "OOS items per day")) do %>
+      <%= render(chart.new(series: [{ name: "OOS items", data: days.map { |d| [d, 0] } }], empty: "No data for this range")) %>
+    <% end %>
+  </div>
+</div>
+</div>

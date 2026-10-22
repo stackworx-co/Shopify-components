@@ -73,6 +73,13 @@
   --sui-on-strong-dark: #fff;
   --sui-on-strong-light: #303030;
 
+  /* Data visualisation (Analytics / Live View) */
+  --sui-viz-blue: #13acf0;
+  --sui-viz-purple: #8f71ef;
+  --sui-viz-black: #4a4a4a;
+  --sui-viz-green: #3cc08a;
+  --sui-viz-red: #ef4d5e;
+
   /* Admin frame (sidebar) — true black chrome, stays dark regardless of content theme */
   --sui-frame: #000;
   --sui-frame-hover: #232324;

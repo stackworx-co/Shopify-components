@@ -10,11 +10,13 @@ module ShopifyUI
   # Phones: a trail collapses to a single "‹ Parent" back link with a 44px tap target.
   #
   # items: [{ label:, href:, icon: :home }] — the last item is the current page.
+  # size:  :small (12px) | :medium (13px, default) | :large (15px) — text, icons, separators and back button scale together.
+  # max_label_width: px before a label truncates (default 200), or false to never truncate.
   class BreadcrumbsComponent < ViewComponent::Base
     strip_trailing_whitespace
 
     NAV = "tw:min-w-0 tw:font-sans"
-    LIST = "tw:m-0 tw:flex tw:min-w-0 tw:list-none tw:items-center tw:gap-1 tw:p-0 tw:text-[13px] tw:max-sm:hidden"
+    LIST = "tw:m-0 tw:flex tw:min-w-0 tw:list-none tw:items-center tw:gap-1 tw:p-0 tw:max-sm:hidden"
     ITEM = "tw:flex tw:min-w-0 tw:items-center tw:gap-1"
     LINK = %w[
       tw:inline-flex tw:min-w-0 tw:items-center tw:gap-1.5 tw:rounded-md tw:px-1 tw:py-0.5 tw:text-muted tw:no-underline
@@ -22,19 +24,25 @@ module ShopifyUI
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
     ].freeze
     CURRENT = "tw:inline-flex tw:min-w-0 tw:items-center tw:gap-1.5 tw:px-1 tw:py-0.5 tw:font-medium tw:text-ink"
-    LABEL = "tw:truncate tw:max-w-[200px]"
+    LABEL = "tw:truncate"
     SEPARATOR = "tw:shrink-0 tw:text-faint"
-    ICON = "tw:size-4 tw:shrink-0"
+    ICON = "tw:shrink-0"
+
+    SIZES = {
+      small: { text: "tw:text-[12px]", icon: "tw:size-3.5", sep: "tw:size-3", back: "tw:size-6", back_icon: "tw:size-4", mobile: "tw:text-[13px]" },
+      medium: { text: "tw:text-[13px]", icon: "tw:size-4", sep: "tw:size-3.5", back: "tw:size-7", back_icon: "tw:size-5", mobile: "tw:text-[14px]" },
+      large: { text: "tw:text-[15px]", icon: "tw:size-5", sep: "tw:size-4", back: "tw:size-9", back_icon: "tw:size-6", mobile: "tw:text-[16px]" }
+    }.freeze
 
     BACK = %w[
-      tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:text-ink tw:no-underline
+      tw:inline-flex tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:text-ink tw:no-underline
       tw:hover:bg-fill-tertiary tw:active:bg-fill-tertiary-hover
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
       tw:max-sm:size-10
     ].freeze
     MOBILE = %w[
       tw:hidden tw:max-sm:inline-flex tw:min-h-11 tw:max-w-full tw:items-center tw:gap-1 tw:-ml-1.5 tw:rounded-md tw:px-1.5
-      tw:text-[14px] tw:font-medium tw:text-muted tw:no-underline tw:hover:text-ink tw:hover:no-underline
+      tw:font-medium tw:text-muted tw:no-underline tw:hover:text-ink tw:hover:no-underline
       tw:focus-visible:outline-2 tw:focus-visible:outline-link
     ].freeze
 
@@ -47,7 +55,9 @@ module ShopifyUI
     }.freeze
 
     def initialize(items:, variant: :trail, separator: :chevron, show_current: true, max_items: nil,
-                   label: "Breadcrumb", **html_attributes)
+                   size: :medium, max_label_width: 200, label: "Breadcrumb", **html_attributes)
+      @size = SIZES.key?(size&.to_sym) ? size.to_sym : :medium
+      @max_label_width = max_label_width
       @items = Array(items).map { |i| i.to_h.symbolize_keys }
       @variant = variant&.to_sym == :back ? :back : :trail
       @separator = separator&.to_sym == :slash ? :slash : :chevron
@@ -64,6 +74,15 @@ module ShopifyUI
 
     private
 
+    def sz
+      SIZES[@size]
+    end
+
+    def label_tag(item)
+      style = "max-width: #{@max_label_width.to_i}px" if @max_label_width
+      tag.span(item[:label], class: LABEL, title: item[:label], style: style)
+    end
+
     def parent
       @items.size > 1 ? @items[-2] : @items.first
     end
@@ -74,14 +93,14 @@ module ShopifyUI
     end
 
     def back_tag
-      link_to(svg('<path d="M16 10H4m5-5-5 5 5 5"/>', "tw:size-5"), parent[:href] || "#",
-              class: BACK.join(" "), aria: { label: "Back to #{parent[:label]}" }, title: parent[:label])
+      link_to(svg('<path d="M16 10H4m5-5-5 5 5 5"/>', sz[:back_icon]), parent[:href] || "#",
+              class: [ BACK, sz[:back] ].flatten.join(" "), aria: { label: "Back to #{parent[:label]}" }, title: parent[:label])
     end
 
     def separator
       return tag.span("/", class: "#{SEPARATOR} tw:px-0.5", aria: { hidden: true }) if @separator == :slash
 
-      svg('<path d="m8 5 5 5-5 5"/>', "#{SEPARATOR} tw:size-3.5")
+      svg('<path d="m8 5 5 5-5 5"/>', "#{SEPARATOR} #{sz[:sep]}")
     end
 
     def visible_items
@@ -99,21 +118,21 @@ module ShopifyUI
         body = if item == :collapsed
                  collapsed_menu(hidden)
                elsif item.equal?(current) && @show_current
-                 tag.span(safe_join([ icon_for(item, index), tag.span(item[:label], class: LABEL, title: item[:label]) ].compact),
+                 tag.span(safe_join([ icon_for(item, index), label_tag(item) ].compact),
                           class: CURRENT, aria: { current: "page" })
                else
-                 link_to(safe_join([ icon_for(item, index), tag.span(item[:label], class: LABEL, title: item[:label]) ].compact),
+                 link_to(safe_join([ icon_for(item, index), label_tag(item) ].compact),
                          item[:href] || "#", class: LINK.join(" "))
                end
         tag.li(safe_join([ (separator if index.positive?), body ].compact), class: ITEM)
       end
-      tag.ol(safe_join(lis), class: LIST)
+      tag.ol(safe_join(lis), class: "#{LIST} #{sz[:text]}")
     end
 
     def icon_for(item, index)
       return unless index.zero? && item[:icon]
 
-      item[:icon].is_a?(Symbol) ? svg(ICONS[item[:icon]] || ICONS[:home], ICON) : item[:icon]
+      item[:icon].is_a?(Symbol) ? svg(ICONS[item[:icon]] || ICONS[:home], "#{ICON} #{sz[:icon]}") : item[:icon]
     end
 
     def collapsed_menu(hidden)
@@ -129,8 +148,8 @@ module ShopifyUI
 
       target = parent
 
-      link_to(safe_join([ svg('<path d="m12 5-5 5 5 5"/>', "tw:size-4 tw:shrink-0"), tag.span(target[:label], class: "tw:truncate") ]),
-              target[:href] || "#", class: MOBILE.join(" "), aria: { label: "Back to #{target[:label]}" })
+      link_to(safe_join([ svg('<path d="m12 5-5 5 5 5"/>', "#{sz[:icon]} tw:shrink-0"), tag.span(target[:label], class: "tw:truncate") ]),
+              target[:href] || "#", class: [ MOBILE, sz[:mobile] ].flatten.join(" "), aria: { label: "Back to #{target[:label]}" })
     end
   end
 end

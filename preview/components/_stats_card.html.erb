@@ -51,4 +51,31 @@
       ])) %>
     </div>
   </div>
+  <% days = (1..22).map { |d| "Oct #{d}" } %>
+  <% wave = ->(base, amp, k) { (0...22).map { |i| (base + amp * Math.sin(i / 2.5 + k) + i * base * 0.02).round } } %>
+  <div>
+    <p class="<%= label_class %>">Chart — 5 columns (2 on phones, 3 on tablets), caption, series + comparison, hover / focus + ← →</p>
+    <%= render(stats.new(variant: :chart, columns: 5, caption: "Oct 1 – Oct 22 vs previous period", metrics: [
+      { label: "Imported SKU", value: "1,240", trend: 12, sparkline: wave.(50, 12, 0), comparison: wave.(45, 8, 1), sparkline_labels: days, help: "SKUs imported from the vendor feed.", href: "#" },
+      { label: "Matched", value: "1,102", trend: 4.5, sparkline: wave.(45, 10, 0.5), comparison: wave.(44, 6, 2), sparkline_labels: days },
+      { label: "Unmatched", value: "138", trend: -18, trend_inverse: true, sparkline: wave.(8, 4, 1), comparison: wave.(10, 3, 0), sparkline_labels: days },
+      { label: "Out of stock", value: "70", trend: 9, trend_inverse: true, sparkline: wave.(3, 2, 2), sparkline_labels: days },
+      { label: "Price changes", value: "312", trend: 0, sparkline: wave.(14, 5, 3), sparkline_labels: days }
+    ])) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Chart — caption once above the row (caption_position: :row), trend only, no data, flat data</p>
+    <%= render(stats.new(variant: :chart, caption: "Oct 1 – Oct 22", caption_position: :row, metrics: [
+      { label: "Orders", value: "128", trend: 18.4 },
+      { label: "Sessions", value: "4,912", trend: -6, sparkline: wave.(220, 40, 0) },
+      { label: "Returns", value: nil },
+      { label: "Flat", value: "5", sparkline: [5] * 10, sparkline_labels: days }
+    ])) %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Chart — 6 columns, loading (lazy Turbo frames)</p>
+    <%= render(stats.new(variant: :chart, columns: 6, metrics: %w[Imported Matched Unmatched OOS Prices Errors].map { |l| { label: l, loading: true } })) %>
+  </div>
 </div>

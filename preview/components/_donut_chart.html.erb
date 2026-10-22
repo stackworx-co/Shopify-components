@@ -1,0 +1,83 @@
+<% donut = ShopifyUI::DonutChartComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% mix = [
+     { label: "Fulfilled", value: 1240, tone: :success },
+     { label: "Out of stock", value: 70, tone: :critical },
+     { label: "Other", value: 0, tone: :neutral }
+   ] %>
+<% channels = [
+     { label: "Online Store", value: 4820, tone: :primary },
+     { label: "Shop app", value: 1310, tone: :info },
+     { label: "Point of Sale", value: 960, tone: :success },
+     { label: "Draft orders", value: 412, tone: :warning },
+     { label: "Social", value: 530, tone: :magic },
+     { label: "Returns", value: 88, tone: :critical },
+     { label: "Other", value: 140, tone: :neutral }
+   ] %>
+
+<div class="tw:-mx-6 tw:max-sm:-mx-4 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0">
+<div class="tw:grid tw:gap-5 tw:lg:grid-cols-2">
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">In a card — legend right, custom centre (zero segment dropped)</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
+      <%= render(donut.new(segments: mix, center_value: "5%", center_label: "OOS", label: "Fulfillment mix")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">All tones — seven segments, default centre (total)</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Sales by channel")) do %>
+      <%= render(donut.new(segments: channels, label: "Sales by channel")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Legend bottom</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
+      <%= render(donut.new(segments: mix, legend: :bottom, label: "Fulfillment mix")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">No legend, no percentages in legend (right)</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <div class="tw:flex tw:flex-col tw:gap-6">
+        <%= render(donut.new(segments: channels.first(3), legend: false, size: :small, label: "Channels")) %>
+        <%= render(donut.new(segments: channels.first(3), show_percent: false, size: :small, label: "Channels")) %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tw:lg:col-span-2">
+    <p class="<%= label_class %> tw:max-sm:px-4">Sizes — small (120px), medium (160px, default), large (200px); one size smaller on phones</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <div class="tw:flex tw:flex-wrap tw:items-end tw:justify-around tw:gap-6">
+        <% %i[small medium large].each do |size| %>
+          <%= render(donut.new(segments: mix, size: size, legend: false, center_label: size.to_s.humanize, label: "#{size} donut")) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Single segment — full ring, no gaps</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <%= render(donut.new(segments: [{ label: "Fulfilled", value: 1240, tone: :success }, { label: "Out of stock", value: 0, tone: :critical }], center_value: "100%", center_label: "Fulfilled", label: "Fulfillment")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Tiny segment next to a large one</p>
+    <%= render(ShopifyUI::CardComponent.new) do %>
+      <%= render(donut.new(segments: [{ label: "Fulfilled", value: 9990, tone: :success }, { label: "Out of stock", value: 10, tone: :critical }], label: "Fulfillment")) %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %> tw:max-sm:px-4">Empty — total is 0</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "Fulfillment mix")) do %>
+      <%= render(donut.new(segments: mix.map { |s| s.merge(value: 0) }, empty: "No data for this range")) %>
+    <% end %>
+  </div>
+</div>
+</div>

@@ -1,0 +1,92 @@
+<% c = ShopifyUI::LineChartComponent %>
+<div <%= tag.attributes(wrapper_attributes) %>>
+  <% if empty? %>
+    <div class="<%= c::EMPTY %>" style="height: <%= @height + 24 %>px"><%= @empty %></div>
+  <% else %>
+    <span class="<%= c::HINT.join(" ") %>" aria-hidden="true">← → to read points</span>
+    <div class="<%= c::BODY %>">
+      <div class="<%= c::Y_AXIS %>" style="width: <%= y_axis_width %>; height: <%= @height %>px" aria-hidden="true">
+        <% y_ticks.each do |tick| %>
+          <span class="<%= c::Y_LABEL %>" style="top: <%= y_pct(tick).round(3) %>%"><%= format_value(tick) %></span>
+        <% end %>
+      </div>
+
+      <div class="<%= c::PLOT %>">
+        <div class="tw:relative" style="height: <%= @height %>px" data-sui-plot>
+          <svg viewBox="0 0 <%= c::VIEW_WIDTH %> <%= @height %>" preserveAspectRatio="none" class="<%= c::SVG %>" role="img" aria-label="<%= chart_label %>">
+            <% if @area %>
+              <defs>
+                <linearGradient id="<%= gradient_id %>" x1="0" y1="0" x2="0" y2="1" class="<%= c::TONES[primary.tone][:text] %>">
+                  <stop offset="0%" stop-color="currentColor" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            <% end %>
+            <% y_ticks.each do |tick| %>
+              <% y = (y_pct(tick) * @height / 100).round(2) %>
+              <line x1="0" x2="<%= c::VIEW_WIDTH %>" y1="<%= y %>" y2="<%= y %>" stroke-width="1" vector-effect="non-scaling-stroke" class="<%= c::GRID %>"/>
+            <% end %>
+            <% if @area %>
+              <path d="<%= area_path %>" fill="url(#<%= gradient_id %>)" stroke="none"/>
+            <% end %>
+            <% @series.reverse_each do |series| %>
+              <path d="<%= line_path(series) %>" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+                    vector-effect="non-scaling-stroke" <%= 'stroke-dasharray=4,4' if series.dashed %>
+                    class="<%= c::LINE %> <%= c::TONES[series.tone][:stroke] %>"/>
+            <% end %>
+          </svg>
+
+          <div class="<%= c::GUIDE %>" data-sui-guide></div>
+          <% @series.each do |series| %>
+            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[series.tone][:dot] %>" style="display: none" data-sui-hover-dot></span>
+          <% end %>
+          <% if @highlight_last %>
+            <% v = primary.data.last.last %>
+            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[primary.tone][:dot] %>" style="left: <%= x_pct(primary.data.size - 1).round(3) %>%; top: <%= y_pct(v).round(3) %>%" data-sui-last-dot></span>
+          <% end %>
+
+          <div class="<%= c::OVERLAY %>" aria-hidden="true">
+            <% count.times do %>
+              <div class="<%= c::COLUMN %>" data-sui-column></div>
+            <% end %>
+          </div>
+          <div class="<%= c::TOOLTIP.join(" ") %>" data-sui-tooltip aria-hidden="true"></div>
+        </div>
+
+        <div class="<%= c::X_AXIS %>" aria-hidden="true">
+          <% x_axis.each do |index, text, phone_hidden| %>
+            <span class="<%= c::X_LABEL %><%= ' tw:max-sm:hidden' if phone_hidden %>" style="<%= x_label_style(index) %>"><%= text %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if legend? %>
+      <ul class="<%= c::LEGEND %>" aria-hidden="true">
+        <% @series.each do |series| %>
+          <li class="<%= c::LEGEND_ITEM %>">
+            <% if series.dashed %>
+              <span class="<%= c::LEGEND_DASHED %> <%= c::TONES[series.tone][:border] %>"></span>
+            <% else %>
+              <span class="<%= c::LEGEND_LINE %> <%= c::TONES[series.tone][:dot] %>"></span>
+            <% end %>
+            <%= series.name %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <table class="tw:sr-only">
+      <caption><%= @label %></caption>
+      <thead>
+        <tr><th scope="col">Date</th><% @series.each do |series| %><th scope="col"><%= series.name %></th><% end %></tr>
+      </thead>
+      <tbody>
+        <% labels.each_with_index do |text, i| %>
+          <tr><th scope="row"><%= text %></th><% @series.each do |series| %><td><%= (v = series.data[i]&.last) ? format_value(v) : "—" %></td><% end %></tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+<%= ShopifyUI::Runtime.script(self, :line_chart, ShopifyUI::LineChartComponent::SCRIPT) unless empty? %>

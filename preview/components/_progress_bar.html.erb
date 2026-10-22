@@ -1,0 +1,63 @@
+<% bar = ShopifyUI::ProgressBarComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% rows = [
+     ["Item fulfillment", "Items shipped out of all items ordered", 1240, 1310, :success],
+     ["Item OOS share", "Items that were out of stock out of all items ordered", 70, 1310, :critical],
+     ["Order impact", "Orders with at least one out-of-stock item", 41, 620, :highlight]
+   ] %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Tones — highlight (default), magic, primary, success, critical</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <% { highlight: 60, magic: 52, primary: 45, success: 85, critical: 20 }.each do |tone, value| %>
+        <%= render(bar.new(progress: value, tone: tone, size: :small, label: tone.to_s.humanize)) %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Sizes — small (8px), medium (16px, default), large (32px)</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <% %i[small medium large].each do |size| %>
+        <%= render(bar.new(progress: 70, size: size, label: "#{size.to_s.humanize} progress")) %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Values — 0%, 50%, 100%, and out of range (-20 → 0, 140 → 100)</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <% [0, 50, 100, -20, 140].each do |value| %>
+        <%= render(bar.new(progress: value, size: :small, tone: :primary, label: "#{value}%")) %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Not animated</p>
+    <%= render(bar.new(progress: 35, size: :small, animated: false, label: "Upload")) %>
+  </div>
+
+  <div class="tw:max-w-[480px]">
+    <p class="<%= label_class %>">Inside a card — label, ⓘ tooltip, count, bar and percentage per section</p>
+    <%= render(ShopifyUI::CardComponent.new(title: "OOS vs fulfilled")) do |card| %>
+      <% rows.each do |label, hint, count, total, tone| %>
+        <% percent = (count * 100.0 / total).round(1) %>
+        <% card.with_section do %>
+          <div class="tw:flex tw:items-center tw:justify-between tw:gap-3 tw:text-[13px]">
+            <span class="tw:inline-flex tw:items-center tw:gap-1 tw:text-muted">
+              <%= label %>
+              <span class="tw:cursor-help tw:text-[12px]" title="<%= hint %>" aria-label="<%= hint %>">ⓘ</span>
+            </span>
+            <span class="tw:tabular-nums tw:text-ink"><%= number_with_delimiter(count) %> / <%= number_with_delimiter(total) %></span>
+          </div>
+          <div class="tw:mt-2 tw:flex tw:items-center tw:gap-3">
+            <%= render(bar.new(progress: percent, tone: tone, size: :small, label: label)) %>
+            <span class="tw:w-12 tw:shrink-0 tw:text-right tw:text-[13px] tw:font-medium tw:tabular-nums tw:text-ink"><%= percent %>%</span>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

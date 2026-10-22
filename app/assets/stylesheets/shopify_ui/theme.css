@@ -55,6 +55,11 @@
   --color-info-strong: var(--sui-info-strong);
   --color-warn-strong: var(--sui-warn-strong);
   --color-danger-strong: var(--sui-danger-strong);
+  --color-viz-blue: var(--sui-viz-blue);
+  --color-viz-purple: var(--sui-viz-purple);
+  --color-viz-black: var(--sui-viz-black);
+  --color-viz-green: var(--sui-viz-green);
+  --color-viz-red: var(--sui-viz-red);
   --color-on-strong-dark: var(--sui-on-strong-dark);
   --color-on-strong-light: var(--sui-on-strong-light);
   --color-frame: var(--sui-frame);

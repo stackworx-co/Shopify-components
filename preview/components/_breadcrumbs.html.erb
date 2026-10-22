@@ -18,4 +18,27 @@
 
   <div><p class="<%= label_class %>">Long trail collapsed — max 4 items, middle pages in a "…" menu</p>
     <%= render(bc.new(items: deep, max_items: 4)) %></div>
+
+  <div><p class="<%= label_class %>">Sizes — small (12px), medium (13px, default), large (15px)</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <% %i[small medium large].each do |size| %>
+        <%= render(bc.new(items: trail, size: size)) %>
+      <% end %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Back button sizes — small, medium, large</p>
+    <div class="tw:flex tw:flex-wrap tw:items-center tw:gap-x-6 tw:gap-y-3">
+      <% { small: "tw:text-[16px]", medium: "tw:text-[20px]", large: "tw:text-[24px]" }.each do |size, title| %>
+        <div class="tw:flex tw:items-center tw:gap-2">
+          <%= render(bc.new(variant: :back, size: size, items: [ { label: "Orders", href: "#" }, { label: "#1602" } ])) %>
+          <h2 class="tw:m-0 <%= title %> tw:font-semibold">#1602</h2>
+        </div>
+      <% end %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Label width — max_label_width: 120, and false (never truncate)</p>
+    <div class="tw:flex tw:flex-col tw:gap-3">
+      <%= render(bc.new(items: trail, max_label_width: 120)) %>
+      <%= render(bc.new(items: trail, max_label_width: false)) %>
+    </div></div>
 </div>

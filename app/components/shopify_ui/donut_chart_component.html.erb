@@ -1,0 +1,40 @@
+<% if empty? %>
+  <div <%= tag.attributes(@html_attributes.merge(class: [ ShopifyUI::DonutChartComponent::WRAPPER, @html_attributes[:class] ].compact.join(" "))) %>>
+    <div class="<%= ShopifyUI::DonutChartComponent::EMPTY %>"><%= @empty %></div>
+  </div>
+<% else %>
+  <div <%= tag.attributes(wrapper_attributes) %>>
+    <div class="<%= ring_classes %>">
+      <svg viewBox="0 0 120 120" class="<%= ShopifyUI::DonutChartComponent::SVG %>" role="img" aria-label="<%= chart_label %>">
+        <circle cx="60" cy="60" r="<%= ShopifyUI::DonutChartComponent::RADIUS %>" fill="none" stroke-width="<%= ShopifyUI::DonutChartComponent::STROKE %>" class="<%= ShopifyUI::DonutChartComponent::TRACK %>"/>
+        <% @segments.each do |segment| %>
+          <circle cx="60" cy="60" r="<%= ShopifyUI::DonutChartComponent::RADIUS %>" fill="none"
+                  stroke-width="<%= ShopifyUI::DonutChartComponent::STROKE %>" stroke-linecap="round"
+                  stroke-dasharray="<%= dasharray(segment) %>" stroke-dashoffset="<%= segment.offset.round(3) %>"
+                  class="<%= ShopifyUI::DonutChartComponent::SEGMENT %> <%= ShopifyUI::DonutChartComponent::TONES[segment.tone][:stroke] %>"><title><%= segment_title(segment) %></title></circle>
+        <% end %>
+      </svg>
+      <div class="<%= ShopifyUI::DonutChartComponent::CENTER %>" aria-hidden="true">
+        <span class="<%= center_value_classes %>"><%= center_value_text %></span>
+        <% if @center_label.present? %>
+          <span class="<%= ShopifyUI::DonutChartComponent::CENTER_LABEL %>"><%= @center_label %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <% unless @legend == :none %>
+      <ul class="<%= ShopifyUI::DonutChartComponent::LEGEND %><%= ' tw:max-w-[320px]' if @legend == :bottom %>">
+        <% @segments.each do |segment| %>
+          <li class="<%= ShopifyUI::DonutChartComponent::LEGEND_ROW %>">
+            <span class="<%= ShopifyUI::DonutChartComponent::DOT %> <%= ShopifyUI::DonutChartComponent::TONES[segment.tone][:dot] %>" aria-hidden="true"></span>
+            <span class="<%= ShopifyUI::DonutChartComponent::LEGEND_LABEL %>"><%= segment.label %></span>
+            <span class="<%= ShopifyUI::DonutChartComponent::LEGEND_VALUE %>"><%= format_number(segment.value) %></span>
+            <% if @show_percent %>
+              <span class="<%= ShopifyUI::DonutChartComponent::LEGEND_PERCENT %>"><%= format_percent(segment.percent) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
