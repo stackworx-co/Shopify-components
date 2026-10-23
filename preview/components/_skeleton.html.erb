@@ -23,6 +23,19 @@
 
   <div class="tw:-mx-6 tw:max-sm:-mx-4 tw:bg-page tw:px-6 tw:py-6 tw:max-sm:px-0 tw:flex tw:flex-col tw:gap-6">
     <div><p class="<%= label_class %> tw:max-sm:px-4">Stats strip</p><%= render(sk.new(type: :stats, count: 5)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Stats grid — matches StatsCardComponent variant: :grid</p><%= render(sk.new(type: :stats, variant: :grid, count: 3)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Stats chart — matches variant: :chart (2-up on phones)</p><%= render(sk.new(type: :stats, variant: :chart, count: 4)) %></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Line chart — 300px, two legend items (same height as LineChartComponent height: 300)</p><%= render(sk.new(type: :chart, height: 300, legend: 2)) %></div>
+    <div class="tw:grid tw:gap-4 tw:min-[992px]:grid-cols-3">
+      <div><p class="<%= label_class %> tw:max-sm:px-4">Donut — legend right</p><%= render(sk.new(type: :donut, size: :small, count: 3)) %></div>
+      <div><p class="<%= label_class %> tw:max-sm:px-4">Donut — legend bottom</p><%= render(sk.new(type: :donut, size: :small, legend: :bottom, count: 2)) %></div>
+      <div><p class="<%= label_class %> tw:max-sm:px-4">Chart — 180px, no card</p><%= render(sk.new(type: :chart, card: false)) %></div>
+    </div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Progress bars — small · medium · large</p>
+      <div class="tw:flex tw:flex-col tw:gap-3 tw:max-sm:px-4"><% %i[small medium large].each do |s| %><%= render(sk.new(type: :progress_bar, size: s)) %><% end %></div></div>
+    <div><p class="<%= label_class %> tw:max-sm:px-4">Table with heading and column widths (numeric columns right-aligned)</p>
+      <%= render(sk.new(type: :table, heading: true, rows: 3, selectable: false,
+                        columns: [ { width: "40%" }, { width: "20%" }, { width: "20%", numeric: true }, { width: "20%", numeric: true } ])) %></div>
     <div class="tw:grid tw:gap-4 tw:lg:grid-cols-2">
       <div><p class="<%= label_class %> tw:max-sm:px-4">Card</p><%= render(sk.new(type: :card)) %></div>
       <div><p class="<%= label_class %> tw:max-sm:px-4">Card — 3 sections, no title</p><%= render(sk.new(type: :card, title: false, sections: 3, lines: 2)) %></div>
