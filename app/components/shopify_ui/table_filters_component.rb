@@ -5,7 +5,7 @@ module ShopifyUI
     strip_trailing_whitespace
 
     CARD = %w[
-      tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card
+      tw:rounded-surface tw:bg-surface tw:shadow-card
     ].freeze
 
     WRAPPER = "tw:flex tw:flex-col tw:font-sans"

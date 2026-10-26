@@ -11,9 +11,9 @@ module ShopifyUI
       tw:hover:bg-surface-hover tw:has-checked:bg-surface-sunken
     ].freeze
 
-    CELL = "tw:px-2.5 tw:py-[9px] tw:align-middle tw:text-[13px] tw:text-ink tw:whitespace-nowrap"
-    MUTED_CELL = "tw:px-2.5 tw:py-[9px] tw:align-middle tw:text-[13px] tw:text-disabled tw:whitespace-nowrap"
-    CHECK_CELL = "tw:w-px tw:pl-3 tw:pr-1 tw:py-[9px] tw:align-middle"
+    CELL = "tw:h-8 tw:px-1.5 tw:py-1.5 tw:first:pl-3 tw:last:pr-3 tw:align-middle tw:text-[12px] tw:text-ink tw:whitespace-nowrap"
+    MUTED_CELL = "tw:h-8 tw:px-1.5 tw:py-1.5 tw:first:pl-3 tw:last:pr-3 tw:align-middle tw:text-[12px] tw:text-disabled tw:whitespace-nowrap"
+    CHECK_CELL = "tw:w-px tw:pl-3 tw:pr-1 tw:py-1.5 tw:align-middle"
     # Flush tables: hover/selected highlight reads as a rounded bar.
     FLUSH_CELL_ENDS = "tw:first:rounded-l-lg tw:last:rounded-r-lg"
 

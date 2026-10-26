@@ -26,7 +26,7 @@ module ShopifyUI
 
     DIALOG = %w[
       tw:m-auto tw:max-w-none tw:border-0 tw:bg-surface tw:p-0 tw:font-sans tw:text-ink tw:overflow-hidden
-      tw:rounded-surface tw:shadow-[0_26px_40px_-6px_rgba(26,26,26,.28),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:rounded-surface tw:shadow-dialog
       tw:sm:max-h-[calc(100dvh-64px)]
       tw:backdrop:bg-[rgba(0,0,0,.5)]
       tw:opacity-0 tw:translate-y-2 tw:open:opacity-100 tw:open:translate-y-0
@@ -47,7 +47,7 @@ module ShopifyUI
     HEADER_HIDDEN = "tw:absolute tw:right-2.5 tw:top-2.5 tw:z-10"
     TITLE = "tw:m-0 tw:min-w-0 tw:text-[14px] tw:font-semibold tw:leading-5 tw:text-ink tw:break-words"
     CLOSE = %w[
-      tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:border-0 tw:p-0
+      tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-full tw:border-0 tw:p-0
       tw:bg-transparent tw:text-muted tw:cursor-pointer tw:transition-colors tw:duration-100
       tw:hover:bg-fill-tertiary tw:hover:text-ink tw:active:bg-fill-tertiary-hover
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link

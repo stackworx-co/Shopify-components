@@ -9,7 +9,7 @@ module ShopifyUI
     renders_many :rows, ->(**options) { TableRowComponent.new(table: self, **options) }
 
     CARD = %w[
-      tw:relative tw:overflow-hidden tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card
+      tw:relative tw:overflow-hidden tw:rounded-surface tw:bg-surface tw:shadow-card
     ].freeze
 
     TABLE = "tw:w-full tw:border-collapse tw:bg-surface tw:font-sans"
@@ -22,7 +22,7 @@ module ShopifyUI
     FLUSH_CELL_ENDS = "tw:first:rounded-l-lg tw:last:rounded-r-lg"
 
     HEAD_CELL = %w[
-      tw:px-2.5 tw:py-2 tw:text-left tw:align-middle tw:text-[12px] tw:font-medium
+      tw:h-[30px] tw:px-1.5 tw:py-1.5 tw:first:pl-3 tw:last:pr-3 tw:text-left tw:align-middle tw:text-[12px] tw:font-medium
       tw:text-muted tw:whitespace-nowrap
     ].freeze
 

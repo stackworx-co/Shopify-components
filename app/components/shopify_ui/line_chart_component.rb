@@ -26,11 +26,11 @@ module ShopifyUI
     NICE_STEPS = [ 1, 2, 2.5, 5, 10 ].freeze
 
     TONES = {
-      highlight: { stroke: "tw:stroke-info-icon", text: "tw:text-info-icon", dot: "tw:bg-info-icon", border: "tw:border-info-icon" },
+      highlight: { stroke: "tw:stroke-viz-blue", text: "tw:text-viz-blue", dot: "tw:bg-viz-blue", border: "tw:border-viz-blue" },
       primary: { stroke: "tw:stroke-accent", text: "tw:text-accent", dot: "tw:bg-accent", border: "tw:border-accent" },
-      success: { stroke: "tw:stroke-good-icon", text: "tw:text-good-icon", dot: "tw:bg-good-icon", border: "tw:border-good-icon" },
-      critical: { stroke: "tw:stroke-danger-icon", text: "tw:text-danger-icon", dot: "tw:bg-danger-icon", border: "tw:border-danger-icon" },
-      warning: { stroke: "tw:stroke-warn-icon", text: "tw:text-warn-icon", dot: "tw:bg-warn-icon", border: "tw:border-warn-icon" },
+      success: { stroke: "tw:stroke-viz-green", text: "tw:text-viz-green", dot: "tw:bg-viz-green", border: "tw:border-viz-green" },
+      critical: { stroke: "tw:stroke-viz-red", text: "tw:text-viz-red", dot: "tw:bg-viz-red", border: "tw:border-viz-red" },
+      warning: { stroke: "tw:stroke-warn-strong", text: "tw:text-warn-strong", dot: "tw:bg-warn-strong", border: "tw:border-warn-strong" },
       neutral: { stroke: "tw:stroke-border-hover", text: "tw:text-border-hover", dot: "tw:bg-border-hover", border: "tw:border-border-hover" }
     }.freeze
 
@@ -55,8 +55,8 @@ module ShopifyUI
     GUIDE = "tw:pointer-events-none tw:absolute tw:inset-y-0 tw:hidden tw:w-px tw:bg-border-hover"
 
     TOOLTIP = %w[
-      tw:pointer-events-none tw:absolute tw:top-0 tw:z-20 tw:hidden tw:min-w-32 tw:rounded-lg tw:border
-      tw:border-border-secondary tw:bg-surface tw:px-2.5 tw:py-2 tw:text-[12px] tw:text-ink tw:shadow-card
+      tw:pointer-events-none tw:absolute tw:top-0 tw:z-20 tw:hidden tw:min-w-32 tw:rounded-lg
+      tw:bg-surface tw:px-2.5 tw:py-2 tw:text-[12px] tw:text-ink tw:shadow-popover
     ].freeze
     TOOLTIP_TITLE = "tw:mb-1 tw:font-semibold tw:whitespace-nowrap"
     TOOLTIP_ROW = "tw:flex tw:items-center tw:gap-2 tw:whitespace-nowrap tw:leading-5"

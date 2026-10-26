@@ -28,21 +28,19 @@ module ShopifyUI
     BOX = %w[
       tw:relative tw:flex tw:min-w-0 tw:flex-1 tw:items-center tw:gap-1.5 tw:rounded-control tw:border
       tw:px-3 tw:transition-colors tw:duration-100 tw:cursor-text
-      tw:has-[input:focus-visible,textarea:focus-visible]:outline-2
-      tw:has-[input:focus-visible,textarea:focus-visible]:outline-offset-1
-      tw:has-[input:focus-visible,textarea:focus-visible]:outline-link
+      tw:has-[input:focus-visible,textarea:focus-visible]:shadow-input-focus
     ].freeze
     BOX_HEIGHTS = {
       slim: "tw:min-h-7 tw:max-sm:min-h-10",
-      medium: "tw:min-h-8 tw:max-sm:min-h-10"
+      medium: "tw:min-h-[30px] tw:max-sm:min-h-10"
     }.freeze
     BOX_MULTILINE = "tw:items-start tw:py-1.5 tw:max-sm:py-2"
 
     STATES = {
-      default: "tw:border-input-border tw:bg-surface tw:hover:bg-surface-hover",
+      default: "tw:border-transparent tw:bg-surface tw:shadow-input tw:hover:bg-surface-hover",
       error: "tw:border-danger-icon tw:bg-danger-light",
-      disabled: "tw:cursor-not-allowed tw:border-border tw:bg-surface-secondary",
-      read_only: "tw:border-border tw:bg-surface-secondary",
+      disabled: "tw:cursor-not-allowed tw:border-transparent tw:bg-surface-secondary tw:shadow-[0_0_0_1px_rgba(0,0,0,.1)]",
+      read_only: "tw:border-transparent tw:bg-surface-secondary tw:shadow-[0_0_0_1px_rgba(0,0,0,.1)]",
       borderless: "tw:border-transparent tw:bg-transparent tw:hover:bg-surface-hover"
     }.freeze
 

@@ -22,7 +22,7 @@ module ShopifyUI
     # Titled: strong header bar. Untitled / in card: light tint.
     HEADER_TONES = {
       info: "tw:bg-info-strong tw:text-on-strong-light",
-      success: "tw:bg-good-strong tw:text-on-strong-dark",
+      success: "tw:bg-good-strong tw:text-on-strong-light",
       warning: "tw:bg-warn-strong tw:text-on-strong-light",
       critical: "tw:bg-danger-strong tw:text-on-strong-dark"
     }.freeze
@@ -40,7 +40,7 @@ module ShopifyUI
     }.freeze
 
     BASE = "tw:relative tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:min-w-0 tw:break-words"
-    TITLED = "tw:relative tw:overflow-hidden tw:rounded-[12px] tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary"
+    TITLED = "tw:relative tw:overflow-hidden tw:rounded-[12px] tw:bg-surface tw:shadow-card"
     UNTITLED = "tw:rounded-[12px] tw:shadow-card"
     IN_CARD = "tw:rounded-lg"
 

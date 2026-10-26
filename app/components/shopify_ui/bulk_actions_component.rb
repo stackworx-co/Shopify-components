@@ -21,7 +21,7 @@ module ShopifyUI
 
     ROOT = {
       inline: "tw:absolute tw:inset-x-0 tw:top-0 tw:z-10 tw:flex tw:min-h-9 tw:items-center tw:gap-2 tw:bg-surface-secondary tw:pl-3 tw:pr-2 tw:border-b tw:border-border tw:max-sm:min-h-12",
-      floating: "tw:fixed tw:bottom-[max(20px,env(safe-area-inset-bottom))] tw:left-1/2 tw:z-[900] tw:flex tw:max-w-[calc(100vw-32px)] tw:-translate-x-1/2 tw:items-center tw:gap-2 tw:rounded-full tw:bg-surface tw:py-1.5 tw:pl-3.5 tw:pr-1.5 tw:shadow-[0_8px_20px_-4px_rgba(26,26,26,.28),0_0_0_1px_rgba(0,0,0,.08)] tw:max-sm:inset-x-2 tw:max-sm:bottom-[max(8px,env(safe-area-inset-bottom))] tw:max-sm:max-w-none tw:max-sm:translate-x-0 tw:max-sm:rounded-[16px] tw:max-sm:py-2"
+      floating: "tw:fixed tw:bottom-[max(20px,env(safe-area-inset-bottom))] tw:left-1/2 tw:z-[900] tw:flex tw:max-w-[calc(100vw-32px)] tw:-translate-x-1/2 tw:items-center tw:gap-2 tw:rounded-full tw:bg-surface tw:py-1.5 tw:pl-3.5 tw:pr-1.5 tw:shadow-toast tw:max-sm:inset-x-2 tw:max-sm:bottom-[max(8px,env(safe-area-inset-bottom))] tw:max-sm:max-w-none tw:max-sm:translate-x-0 tw:max-sm:rounded-[16px] tw:max-sm:py-2"
     }.freeze
     HIDDEN = "tw:hidden"
     ROOT_BASE = "tw:font-sans tw:text-[13px] tw:text-ink tw:data-hidden:hidden"

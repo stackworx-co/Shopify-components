@@ -7,11 +7,11 @@ module ShopifyUI
     POPOVER = %w[
       tw:m-0 tw:max-w-[calc(100vw-16px)] tw:overflow-hidden tw:rounded-[12px] tw:border-0
       tw:bg-surface tw:p-0 tw:font-sans tw:text-ink
-      tw:shadow-[0_4px_6px_-2px_rgba(26,26,26,.2),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:shadow-popover
     ].freeze
 
     INLINE = %w[
-      tw:relative tw:inline-block tw:max-w-full tw:overflow-hidden tw:rounded-surface tw:border tw:border-border
+      tw:relative tw:inline-block tw:max-w-full tw:overflow-hidden tw:rounded-surface
       tw:bg-surface tw:font-sans tw:text-ink tw:shadow-card
     ].freeze
 
@@ -36,9 +36,9 @@ module ShopifyUI
     ARROW = "tw:flex tw:h-8 tw:items-center tw:text-muted"
 
     INPUT = %w[
-      tw:m-0 tw:box-border tw:h-8 tw:w-full tw:min-w-0 tw:rounded-control tw:border tw:border-input-border tw:bg-surface
+      tw:m-0 tw:box-border tw:h-[30px] tw:w-full tw:min-w-0 tw:rounded-control tw:border tw:border-transparent tw:bg-surface tw:shadow-input
       tw:px-3 tw:font-sans tw:text-[13px] tw:text-ink tw:tabular-nums
-      tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
+      tw:focus-visible:outline-none tw:focus-visible:shadow-input-focus
       tw:max-sm:text-[16px]
     ].freeze
 

@@ -55,7 +55,7 @@ module ShopifyUI
     PANEL = %w[
       tw:m-0 tw:max-w-[calc(100vw-16px)] tw:max-h-[min(560px,calc(100dvh-16px))] tw:overflow-hidden
       tw:flex-col tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-0 tw:font-sans tw:text-[13px] tw:text-ink
-      tw:shadow-[0_8px_16px_-4px_rgba(26,26,26,.22),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:shadow-popover
       tw:open:flex
     ].freeze
 

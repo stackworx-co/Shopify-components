@@ -66,7 +66,7 @@ module ShopifyUI
     MENU = %w[
       tw:m-0 tw:min-w-[180px] tw:max-w-[min(320px,calc(100vw-16px))] tw:max-h-[min(360px,60vh)] tw:overflow-y-auto
       tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-1.5 tw:font-sans tw:text-ink
-      tw:shadow-[0_4px_6px_-2px_rgba(26,26,26,.2),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:shadow-popover
     ].freeze
     MENU_ITEM = %w[
       tw:flex tw:w-full tw:items-center tw:justify-between tw:gap-3 tw:rounded-[8px] tw:border-0 tw:bg-transparent tw:px-2

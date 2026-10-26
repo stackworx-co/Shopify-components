@@ -35,7 +35,7 @@ module ShopifyUI
     TRACK_ERROR = "tw:ring-2 tw:ring-danger-icon tw:ring-offset-1"
     INPUT = "tw:peer tw:absolute tw:inset-0 tw:m-0 tw:size-full tw:cursor-[inherit] tw:appearance-none tw:rounded-full tw:opacity-0"
     KNOB = %w[
-      tw:pointer-events-none tw:block tw:rounded-full tw:bg-white tw:shadow-[0_1px_2px_rgba(0,0,0,.3)]
+      tw:pointer-events-none tw:block tw:rounded-full tw:bg-white tw:shadow-knob
       tw:transition-transform tw:duration-150 tw:ease-out tw:motion-reduce:transition-none
       tw:peer-disabled:shadow-none
     ].freeze

@@ -12,9 +12,9 @@ module ShopifyUI
     LABEL = "tw:m-0 tw:text-[13px] tw:text-ink"
     BOX = %w[
       tw:flex tw:min-h-8 tw:w-full tw:min-w-0 tw:flex-wrap tw:items-center tw:gap-1.5 tw:rounded-control tw:border
-      tw:border-input-border tw:bg-surface tw:px-1.5 tw:py-1 tw:cursor-text tw:transition-colors tw:duration-100
+      tw:border-transparent tw:bg-surface tw:shadow-input tw:px-1.5 tw:py-1 tw:cursor-text tw:transition-colors tw:duration-100
       tw:hover:bg-surface-hover
-      tw:has-[input:focus-visible]:outline-2 tw:has-[input:focus-visible]:outline-offset-1 tw:has-[input:focus-visible]:outline-link
+      tw:has-[input:focus-visible]:shadow-input-focus
       tw:max-sm:min-h-10 tw:max-sm:py-1.5
     ].freeze
     BOX_ERROR = "tw:border-danger-icon tw:bg-danger-light"
