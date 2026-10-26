@@ -21,13 +21,13 @@ module ShopifyUI
     BOX = %w[
       tw:relative tw:flex tw:min-w-0 tw:flex-1 tw:items-center tw:gap-1.5 tw:rounded-full tw:cursor-text
       tw:transition-colors tw:duration-100
-      tw:has-[input:focus-visible]:outline-2 tw:has-[input:focus-visible]:outline-offset-1 tw:has-[input:focus-visible]:outline-link
+      tw:has-[input:focus-visible]:shadow-input-focus
       tw:has-[input:disabled]:cursor-not-allowed
     ].freeze
     COLLAPSIBLE_BOX = "tw:max-sm:hidden tw:max-sm:group-data-expanded:flex"
 
     VARIANT_CLASSES = {
-      outlined: "tw:border tw:border-input-border tw:bg-surface tw:hover:bg-surface-hover tw:has-[input:disabled]:border-border tw:has-[input:disabled]:bg-surface-secondary",
+      outlined: "tw:border tw:border-transparent tw:bg-surface tw:shadow-input tw:hover:bg-surface-hover tw:has-[input:disabled]:border-border tw:has-[input:disabled]:bg-surface-secondary",
       filled: "tw:border tw:border-transparent tw:bg-fill-tertiary tw:hover:bg-fill-tertiary-hover tw:focus-within:bg-surface tw:focus-within:border-input-border tw:has-[input:disabled]:bg-surface-secondary",
       plain: "tw:border tw:border-transparent tw:bg-transparent tw:hover:bg-surface-hover tw:focus-within:bg-surface-hover"
     }.freeze

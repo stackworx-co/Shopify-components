@@ -39,7 +39,7 @@ module ShopifyUI
     LINE_WIDTHS = %w[tw:w-full tw:w-[92%] tw:w-[96%] tw:w-[88%] tw:w-[94%]].freeze
     LAST_LINE = "tw:w-[62%]"
 
-    CARD = "tw:relative tw:overflow-hidden tw:rounded-surface tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
+    CARD = "tw:relative tw:overflow-hidden tw:rounded-surface tw:bg-surface tw:shadow-card tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
     SECTION = "tw:flex tw:flex-col tw:gap-3 tw:p-4 tw:max-sm:p-3.5 tw:border-t tw:border-border-secondary tw:first:border-t-0"
 
     PROGRESS = { small: "tw:h-2", medium: "tw:h-4", large: "tw:h-8" }.freeze

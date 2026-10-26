@@ -3,7 +3,7 @@
 module ShopifyUI
   # Shopify admin app frame: black frame with the Sidebar on the left and the page in a rounded panel.
   #
-  # Desktop (lg+): 8px black margin around the panel, all four corners rounded (16px), and only the panel
+  # Desktop (lg+): 8px black margin around the panel, all four corners rounded (20px, Polaris 2 shell), and only the panel
   # scrolls (the sidebar and frame stay put). The panel clips its scrollbar so the corners stay round.
   # Below lg: the Sidebar's black top bar + slide-in drawer; the page fills the screen and scrolls normally.
   #
@@ -22,7 +22,7 @@ module ShopifyUI
       viewport: "tw:relative tw:overflow-x-clip tw:min-h-dvh tw:bg-frame tw:font-sans tw:lg:flex tw:lg:h-dvh tw:lg:overflow-hidden",
       contained: "tw:relative tw:overflow-hidden tw:bg-frame tw:font-sans tw:lg:flex tw:lg:h-full"
     }.freeze
-    PANEL = "tw:relative tw:min-w-0 tw:flex-1 tw:bg-page tw:lg:my-2 tw:lg:mr-2 tw:lg:overflow-hidden tw:lg:rounded-[16px]"
+    PANEL = "tw:relative tw:min-w-0 tw:flex-1 tw:bg-page tw:lg:my-2 tw:lg:mr-2 tw:lg:overflow-hidden tw:lg:rounded-[20px]"
     SCROLLER = "tw:relative tw:lg:h-full tw:lg:overflow-y-auto tw:lg:overscroll-contain sui-scrollbar tw:lg:[scrollbar-gutter:stable]"
     PANEL_BACKGROUNDS = { page: "tw:bg-page", surface: "tw:bg-surface" }.freeze
 

@@ -22,7 +22,7 @@ module ShopifyUI
     WRAPPER = "tw:flex tw:flex-wrap tw:items-start tw:justify-between tw:gap-x-4 tw:gap-y-3 tw:font-sans tw:min-w-0 tw:pb-4 tw:max-sm:pb-3"
     TITLE_AREA = "tw:flex tw:min-w-0 tw:flex-1 tw:basis-[240px] tw:items-start tw:gap-2"
     BACK = %w[
-      tw:mt-0.5 tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:border-0
+      tw:mt-0.5 tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-full tw:border-0
       tw:bg-transparent tw:text-ink tw:no-underline tw:cursor-pointer tw:transition-colors tw:duration-100
       tw:hover:bg-fill-tertiary tw:active:bg-fill-tertiary-hover
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
@@ -82,7 +82,7 @@ module ShopifyUI
       end)
     end
 
-    def button_for(action, variant: :secondary)
+    def button_for(action, variant: :page)
       variant = :critical if action[:destructive] && variant == :primary
       render(ButtonComponent.new(variant: variant, href: action[:href], disabled: action[:disabled] || false,
                                  **(action[:attributes] || {}))) do
@@ -96,7 +96,7 @@ module ShopifyUI
     end
 
     def group_menu(group)
-      render(DropdownMenuComponent.new(label: group[:label], align: :end)) do |menu|
+      render(DropdownMenuComponent.new(label: group[:label], variant: :page, align: :end)) do |menu|
         Array(group[:actions]).each { |a| menu_action(menu, a.to_h.symbolize_keys) }
       end
     end

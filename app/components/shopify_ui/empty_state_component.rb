@@ -56,7 +56,7 @@ module ShopifyUI
     }.freeze
     PADDING = { default: "tw:px-6 tw:py-14 tw:max-sm:px-4 tw:max-sm:py-10", compact: "tw:px-4 tw:py-8 tw:max-sm:py-6" }.freeze
     BASE = "tw:font-sans tw:text-ink tw:min-w-0"
-    CARD = "tw:rounded-surface tw:bg-surface tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
+    CARD = "tw:rounded-surface tw:bg-surface tw:shadow-card tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
 
     IMAGE = {
       default: "tw:w-[226px] tw:max-w-[70%] tw:max-sm:w-[180px]",

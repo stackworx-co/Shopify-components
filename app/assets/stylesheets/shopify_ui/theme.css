@@ -28,6 +28,13 @@
   --color-accent-light: var(--sui-accent-light);
   --color-on-accent: var(--sui-on-accent);
   --color-on-accent-hover: var(--sui-on-accent-hover);
+  --color-button: var(--sui-button);
+  --color-button-hover: var(--sui-button-hover);
+  --color-button-active: var(--sui-button-active);
+  --color-button-critical: var(--sui-button-critical);
+  --color-button-critical-hover: var(--sui-button-critical-hover);
+  --color-fill-transparent-hover: var(--sui-fill-transparent-hover);
+  --color-fill-transparent-active: var(--sui-fill-transparent-active);
   --color-fill-tertiary: var(--sui-fill-tertiary);
   --color-fill-tertiary-hover: var(--sui-fill-tertiary-hover);
   --color-fill-tertiary-active: var(--sui-fill-tertiary-active);
@@ -73,19 +80,28 @@
   --color-frame-logo: var(--sui-frame-logo);
   --color-frame-on-logo: var(--sui-frame-on-logo);
 
-  /* Inter stands in for ShopifyInter, which is not publicly distributed. */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Polaris 2 uses ShopifyInter (not publicly distributed); Inter is the stand-in where it isn't installed. */
+  --font-sans: "ShopifyInter", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Consolas, Menlo, monospace;
 
-  --font-weight-regular: 450;
-  --font-weight-medium: 550;
-  --font-weight-semibold: 650;
-  --font-weight-bold: 700;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 600;
 
-  --radius-surface: 16px;
-  --radius-control: 8px;
+  --radius-surface: 20px;
+  --radius-control: 10px;
 
   --shadow-card: var(--sui-shadow-card);
+  --shadow-button-primary: var(--sui-shadow-button-primary);
+  --shadow-button-critical: var(--sui-shadow-button-critical);
+  --shadow-page-button: var(--sui-shadow-page-button);
+  --shadow-input: var(--sui-shadow-input);
+  --shadow-input-focus: var(--sui-shadow-input-focus);
+  --shadow-popover: var(--sui-shadow-popover);
+  --shadow-dialog: var(--sui-shadow-dialog);
+  --shadow-toast: var(--sui-shadow-toast);
+  --shadow-knob: var(--sui-shadow-knob);
 }
 
 /* Thin scrollbars with no arrow buttons, like Shopify admin. Chrome on Linux/Windows still draws arrows

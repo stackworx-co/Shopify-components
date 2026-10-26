@@ -22,7 +22,7 @@ module ShopifyUI
 
     VARIANTS = %i[strip grid chart].freeze
 
-    CARD = "tw:relative tw:rounded-surface tw:border tw:border-border tw:bg-surface tw:shadow-card tw:min-w-0"
+    CARD = "tw:relative tw:rounded-surface tw:bg-surface tw:shadow-card tw:min-w-0"
 
     # --- strip ---
     STRIP = %w[
@@ -81,8 +81,8 @@ module ShopifyUI
     CHART_DOT = "tw:pointer-events-none tw:absolute tw:hidden tw:size-2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:rounded-full tw:bg-viz-blue tw:ring-2 tw:ring-surface"
     CHART_TIP = %w[
       tw:pointer-events-none tw:absolute tw:bottom-full tw:z-20 tw:mb-1 tw:hidden tw:whitespace-nowrap tw:rounded-lg
-      tw:border tw:border-border-secondary tw:bg-surface tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:text-ink
-      tw:tabular-nums tw:shadow-card
+      tw:bg-surface tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:text-ink
+      tw:tabular-nums tw:shadow-popover
     ].freeze
     CHART_VIEW = { width: 240, height: 56 }.freeze
     CHART_PAD = 8.0 # % of height kept free above and below the line
@@ -131,8 +131,8 @@ module ShopifyUI
     # TOOLTIP_SCRIPT places it under the label. Hidden tooltips take no space.
     TOOLTIP = %w[
       tw:pointer-events-none tw:fixed tw:z-[1000] tw:w-max tw:max-w-[240px]
-      tw:max-sm:max-w-[calc(100vw-48px)] tw:whitespace-normal tw:rounded-lg tw:border tw:border-border-secondary
-      tw:bg-surface tw:px-2.5 tw:py-1.5 tw:text-[12px] tw:font-normal tw:text-ink tw:shadow-card
+      tw:max-sm:max-w-[calc(100vw-48px)] tw:whitespace-normal tw:rounded-lg
+      tw:bg-surface tw:px-2.5 tw:py-1.5 tw:text-[12px] tw:font-normal tw:text-ink tw:shadow-popover
       tw:hidden tw:group-hover:block tw:group-focus:block
     ].freeze
 

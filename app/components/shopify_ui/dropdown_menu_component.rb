@@ -13,7 +13,7 @@ module ShopifyUI
     MENU = %w[
       tw:m-0 tw:min-w-[min(180px,calc(100vw-16px))] tw:max-w-[min(320px,calc(100vw-16px))] tw:max-h-[min(420px,calc(100dvh-16px))] tw:overflow-y-auto tw:overscroll-contain
       tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-1.5 tw:font-sans tw:text-ink
-      tw:shadow-[0_4px_6px_-2px_rgba(26,26,26,.2),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:shadow-popover
     ].freeze
 
     ITEM = %w[
@@ -30,6 +30,8 @@ module ShopifyUI
     }.freeze
 
     ICON = "tw:inline-flex tw:size-5 tw:shrink-0 tw:items-center tw:justify-center"
+    # Polaris 2 menus show app/integration icons in a small coloured rounded square.
+    ICON_SWATCH = "tw:inline-flex tw:size-5 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-[6px] tw:text-white tw:[&>svg]:size-3.5"
     HELP_TEXT = "tw:block tw:text-[12px] tw:text-muted"
     HEADING = "tw:m-0 tw:px-2 tw:pt-2 tw:pb-1 tw:text-[12px] tw:font-medium tw:text-muted"
     DIVIDER = "tw:-mx-1.5 tw:my-1.5 tw:border-0 tw:border-t tw:border-border"
@@ -57,9 +59,9 @@ module ShopifyUI
 
     private
 
-    def action_item(href: nil, icon: nil, help_text: nil, destructive: false, disabled: false, **attributes, &block)
+    def action_item(href: nil, icon: nil, swatch: nil, help_text: nil, destructive: false, disabled: false, **attributes, &block)
       body = safe_join([
-        (tag.span(icon, class: ICON, aria: { hidden: true }) if icon),
+        (icon_tag(icon, swatch) if icon),
         tag.span { safe_join([ capture(&block), (tag.span(help_text, class: HELP_TEXT) if help_text) ]) }
       ].compact)
 
@@ -67,6 +69,12 @@ module ShopifyUI
       return tag.a(body, **options, href: href, aria: { disabled: disabled || nil }) if href
 
       tag.button(body, **options, type: "button", disabled: disabled || nil)
+    end
+
+    def icon_tag(icon, swatch)
+      return tag.span(icon, class: ICON, aria: { hidden: true }) unless swatch
+
+      tag.span(icon, class: ICON_SWATCH, style: "background-color: #{swatch}", aria: { hidden: true })
     end
 
     def item_classes(destructive, disabled)

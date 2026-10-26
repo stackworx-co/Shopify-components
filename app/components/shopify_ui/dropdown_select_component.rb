@@ -19,14 +19,14 @@ module ShopifyUI
       tw:m-0 tw:box-border tw:flex tw:h-8 tw:w-full tw:min-w-0 tw:cursor-pointer tw:appearance-none tw:items-center
       tw:rounded-control tw:border tw:py-0 tw:pl-3 tw:pr-8 tw:text-left tw:font-sans tw:text-[13px] tw:leading-none
       tw:transition-colors tw:duration-100
-      tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
+      tw:focus-visible:outline-none tw:focus-visible:shadow-input-focus
       tw:max-sm:h-10 tw:max-sm:text-[16px]
     ].freeze
     VALUE = "tw:block tw:min-w-0 tw:truncate"
     PLACEHOLDER = "tw:text-muted"
 
     STATES = {
-      default: "tw:border-input-border tw:bg-surface tw:text-ink tw:hover:bg-surface-hover",
+      default: "tw:border-transparent tw:bg-surface tw:shadow-input tw:text-ink tw:hover:bg-surface-hover",
       error: "tw:border-danger-icon tw:bg-danger-light tw:text-ink",
       disabled: "tw:cursor-not-allowed tw:border-border tw:bg-surface-secondary tw:text-disabled"
     }.freeze
@@ -38,7 +38,7 @@ module ShopifyUI
       tw:m-0 tw:box-border tw:w-max tw:max-w-[min(360px,calc(100vw-16px))]
       tw:max-h-[min(360px,55vh)] tw:overflow-y-auto tw:overscroll-contain
       tw:rounded-[12px] tw:border-0 tw:bg-surface tw:p-1.5 tw:font-sans tw:text-ink tw:list-none
-      tw:shadow-[0_4px_6px_-2px_rgba(26,26,26,.2),0_0_0_1px_rgba(0,0,0,.08)]
+      tw:shadow-popover
       tw:outline-none tw:[scrollbar-width:thin]
     ].freeze
     GROUP = "tw:m-0 tw:px-2 tw:pt-2 tw:pb-1 tw:text-[12px] tw:font-medium tw:text-muted"

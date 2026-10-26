@@ -17,7 +17,7 @@ module ShopifyUI
 
     CLASSES = {
       region: "tw:pointer-events-none tw:fixed tw:inset-x-0 tw:bottom-0 tw:z-[1000] tw:flex tw:flex-col tw:items-center tw:gap-2 tw:px-4 tw:pb-[max(20px,env(safe-area-inset-bottom))] tw:max-sm:px-2 tw:max-sm:pb-[max(8px,env(safe-area-inset-bottom))] tw:font-sans",
-      toast: "tw:pointer-events-auto tw:flex tw:max-w-[min(500px,100%)] tw:items-center tw:gap-3 tw:rounded-[12px] tw:py-2 tw:pl-3.5 tw:pr-2 tw:text-[13px] tw:font-medium tw:leading-5 tw:shadow-[0_8px_16px_-4px_rgba(26,26,26,.24),0_0_0_1px_rgba(255,255,255,.06)] tw:transition-[opacity,translate] tw:duration-200 tw:ease-out tw:motion-reduce:transition-none tw:max-sm:w-full tw:max-sm:py-2.5",
+      toast: "tw:pointer-events-auto tw:flex tw:max-w-[min(500px,100%)] tw:items-center tw:gap-3 tw:rounded-[12px] tw:py-2 tw:pl-3.5 tw:pr-2 tw:text-[13px] tw:font-medium tw:leading-5 tw:shadow-toast tw:transition-[opacity,translate] tw:duration-200 tw:ease-out tw:motion-reduce:transition-none tw:max-sm:w-full tw:max-sm:py-2.5",
       hidden: "tw:opacity-0 tw:translate-y-3",
       default: "tw:bg-accent tw:text-on-accent",
       error: "tw:bg-danger-fill tw:text-white",

@@ -1,7 +1,7 @@
 <div <%= tag.attributes(wrapper_attributes) %>>
   <div class="<%= ShopifyUI::TableFiltersComponent::BAR %>">
     <% if @views.any? && @view_style == :menu %>
-      <%= render(ShopifyUI::DropdownMenuComponent.new(label: selected_view[:label], variant: :tertiary, size: :slim)) do |menu| %>
+      <%= render(ShopifyUI::DropdownMenuComponent.new(label: selected_view[:label], variant: :secondary, size: :slim)) do |menu| %>
         <% @views.each do |view| %>
           <% menu.with_action(href: view[:href], icon: (view[:selected] ? check_icon : blank_icon)) { view[:label] } %>
         <% end %>
@@ -46,7 +46,7 @@
         </span>
       <% end %>
       <% if @add_filters.any? %>
-        <%= render(ShopifyUI::DropdownMenuComponent.new(label: "Add filter", variant: :tertiary, size: :slim)) do |menu| %>
+        <%= render(ShopifyUI::DropdownMenuComponent.new(label: "Add filter", variant: :secondary, size: :slim)) do |menu| %>
           <% @add_filters.each do |filter| %>
             <% menu.with_action(href: filter[:href]) { filter[:label] } %>
           <% end %>

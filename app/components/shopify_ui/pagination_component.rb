@@ -31,16 +31,16 @@ module ShopifyUI
 
     BUTTON = %w[
       tw:relative tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:p-0
-      tw:border tw:border-border tw:bg-surface tw:text-ink
+      tw:border tw:border-transparent tw:bg-surface tw:text-ink
       tw:appearance-none tw:no-underline tw:transition-colors tw:duration-100
       tw:focus-visible:z-10 tw:focus-visible:outline-2 tw:focus-visible:outline-offset-2 tw:focus-visible:outline-link
     ].freeze
 
     SHAPES = {
-      table: "tw:size-[30px] tw:max-sm:size-10 tw:rounded-full",
+      table: "tw:size-7 tw:max-sm:size-10 tw:rounded-full tw:shadow-page-button",
       page: {
-        previous: "tw:h-8 tw:w-9 tw:max-sm:h-10 tw:max-sm:w-11 tw:rounded-l-full tw:shadow-card",
-        next: "tw:h-8 tw:w-9 tw:max-sm:h-10 tw:max-sm:w-11 tw:rounded-r-full tw:shadow-card"
+        previous: "tw:h-7 tw:w-9 tw:max-sm:h-10 tw:max-sm:w-11 tw:rounded-l-full tw:shadow-page-button",
+        next: "tw:h-7 tw:w-9 tw:max-sm:h-10 tw:max-sm:w-11 tw:rounded-r-full tw:shadow-page-button"
       },
       # Segmented without a label: buttons touch, so drop the shared middle border.
       joined_next: "tw:-ml-px"
@@ -56,7 +56,7 @@ module ShopifyUI
     TOOLTIP = %w[
       tw:pointer-events-none tw:absolute tw:bottom-full tw:left-1/2 tw:z-20 tw:mb-1.5 tw:-translate-x-1/2
       tw:whitespace-nowrap tw:rounded-lg tw:bg-surface tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:text-ink
-      tw:shadow-card tw:border tw:border-border-secondary
+      tw:shadow-popover
       tw:opacity-0 tw:transition-opacity tw:duration-100
       tw:group-hover:opacity-100 tw:group-focus-visible:opacity-100
       tw:max-sm:hidden

@@ -1,93 +1,114 @@
 /* shopify-ui design tokens. Light only.
-   Values follow the Polaris 1 token package (@shopify/polaris-tokens@9.4.2) plus
-   shapes observed in the current Shopify admin; an approximation, not Polaris 2.
+   Values follow Polaris 2.0 ("admin-next" light theme), taken from the stable
+   cdn.shopify.com/shopifycloud/polaris-2.0.js bundle (2026-10). Banner header bars use
+   the bundle's s-banner accent colours. Polaris 2 ships no chart palette, so data-viz
+   colours reuse its accent colours (highlight, avatar purple, success, critical).
    Prefixed --sui-* so they never collide with a host app's own variables. */
 :root {
   /* Text */
-  --sui-ink: #303030;
-  --sui-ink-secondary: #616161;
-  --sui-muted: #616161;
-  --sui-faint: #8a8a8a;
-  --sui-disabled: #b5b5b5;
+  --sui-ink: #101010;
+  --sui-ink-secondary: #4a4a4a;
+  --sui-muted: #4a4a4a;
+  --sui-faint: #606060;
+  --sui-disabled: #a6a6a6;
 
   /* Surfaces */
-  --sui-page: #f1f1f1;
+  --sui-page: #fff;
   --sui-surface: #fff;
   --sui-surface-secondary: #f7f7f7;
   --sui-surface-hover: #f7f7f7;
-  --sui-surface-sunken: #f1f1f1;
+  --sui-surface-sunken: #f2f2f2;
 
   /* Borders */
-  --sui-border: #e3e3e3;
+  --sui-border: #dddddd;
   --sui-border-secondary: #ebebeb;
-  --sui-border-hover: #cccccc;
-  --sui-input-border: #8a8a8a;
+  --sui-border-hover: #d0d0d0;
+  --sui-input-border: #8c8c8c;
 
   /* Primary */
-  --sui-accent: #1a1a1a;
-  --sui-accent-hover: #000;
-  --sui-accent-light: rgba(0, 0, 0, .06);
+  --sui-accent: #101010;
+  --sui-accent-hover: #0a0a0a;
+  --sui-accent-light: rgba(0, 0, 0, .08);
   --sui-on-accent: #fff;
   --sui-on-accent-hover: #cccccc;
 
+  /* Buttons: secondary is a grey fill; page-header buttons are white with a soft shadow */
+  --sui-button: #ebebeb;
+  --sui-button-hover: #dddddd;
+  --sui-button-active: #d0d0d0;
+  --sui-button-critical: #ffe7e6;
+  --sui-button-critical-hover: #ffd0cc;
+  --sui-fill-transparent-hover: rgba(0, 0, 0, .08);
+  --sui-fill-transparent-active: rgba(0, 0, 0, .13);
+
   /* Tertiary fill */
-  --sui-fill-tertiary: #e3e3e3;
-  --sui-fill-tertiary-hover: #cccccc;
-  --sui-fill-tertiary-active: #b5b5b5;
+  --sui-fill-tertiary: #dddddd;
+  --sui-fill-tertiary-hover: #d0d0d0;
+  --sui-fill-tertiary-active: #c0c0c0;
 
   /* Links */
-  --sui-link: #005bd3;
-  --sui-link-hover: #004299;
+  --sui-link: #1650d0;
+  --sui-link-hover: #1347b9;
 
   /* Status: text, tinted surface (-light), icon */
-  --sui-good: #014b40;
-  --sui-good-light: #cdfed4;
-  --sui-good-icon: #047b5d;
-  --sui-warn: #4f4700;
-  --sui-warn-light: #fff8db;
-  --sui-warn-icon: #998a00;
-  --sui-danger: #8e0b21;
-  --sui-danger-light: #fee8eb;
-  --sui-danger-icon: #e22c38;
-  --sui-danger-fill: #c70a24;
-  --sui-danger-fill-hover: #a3071c;
-  --sui-info: #003a5a;
-  --sui-info-light: #eaf4ff;
-  --sui-info-icon: #0094d5;
+  --sui-good: #0f2400;
+  --sui-good-light: #e8fcd9;
+  --sui-good-icon: #5ecb10;
+  --sui-warn: #312500;
+  --sui-warn-light: #fff5c5;
+  --sui-warn-icon: #433200;
+  --sui-danger: #ce1f18;
+  --sui-danger-light: #ffe7e6;
+  --sui-danger-icon: #e2221a;
+  --sui-danger-fill: #d82019;
+  --sui-danger-fill-hover: #ce1f18;
+  --sui-info: #002c38;
+  --sui-info-light: #d2f6fe;
+  --sui-info-icon: #00b0de;
 
   /* Attention (Unfulfilled / Partially paid / On hold) */
-  --sui-attention: #ffc453;
-  --sui-on-attention: #5c4000;
+  --sui-attention: #ffe45c;
+  --sui-on-attention: #312500;
 
   /* Neutral / resolved status */
-  --sui-neutral: #8a8a8a;
-  --sui-neutral-light: rgba(0, 0, 0, .06);
+  --sui-neutral: #8c8c8c;
+  --sui-neutral-light: rgba(0, 0, 0, .08);
 
-  --sui-shadow-card: 0 1px 0 0 rgba(26, 26, 26, .07), 0 3px 1px -1px rgba(26, 26, 26, .07);
+  /* Shadows (Polaris 2 admin-next) */
+  --sui-shadow-button-primary: 0 1px .5px -.5px rgba(0, 0, 0, .13), 0 1px 2px -.5px rgba(0, 0, 0, .13), 0 4px 6px -2px rgba(0, 0, 0, .13), 0 2px 3px -1.5px rgba(0, 0, 0, .13), inset 0 0 4px 1px #101010, inset 0 0 4px 2px rgba(255, 255, 255, .1), inset 0 0 12px -6px rgba(255, 255, 255, .75);
+  --sui-shadow-button-critical: 0 1px .5px -.5px rgba(229, 0, 0, .16), 0 1px 2px -.5px rgba(229, 0, 0, .16), 0 4px 6px -2px rgba(229, 0, 0, .16), 0 2px 3px -1.5px rgba(255, 0, 0, .1);
+  --sui-shadow-page-button: 0 0 0 1px rgba(0, 0, 0, .07), 0 2px 20px 0 rgba(0, 0, 0, .03), 0 5px 20px 0 rgba(0, 0, 0, .03), 0 8px 60px 0 rgba(0, 0, 0, .03);
+  --sui-shadow-input: 0 2px 3px -1px rgba(0, 0, 0, .04), 0 3px 4px -1.5px rgba(0, 0, 0, .04), 0 0 0 1px rgba(0, 0, 0, .13);
+  --sui-shadow-input-focus: 0 2px 3px -1px rgba(0, 0, 0, .04), 0 3px 4px -1.5px rgba(0, 0, 0, .04), 0 0 0 1px #5083f0, 0 0 0 3px rgba(53, 115, 246, .06), 0 4px 20px 2px rgba(53, 115, 246, .06);
+  --sui-shadow-popover: 0 2px 2px -1px rgba(0, 0, 0, .06), 0 3px 4px -2px rgba(0, 0, 0, .06), 0 6px 8px -3px rgba(0, 0, 0, .06), 0 12px 16px -4px rgba(0, 0, 0, .06), 0 0 0 1px rgba(0, 0, 0, .08);
+  --sui-shadow-dialog: 0 2px 3px -1px rgba(0, 0, 0, .06), 0 4px 6px -2px rgba(0, 0, 0, .06), 0 8px 12px -4px rgba(0, 0, 0, .06), 0 16px 24px -6px rgba(0, 0, 0, .06), 0 32px 48px -8px rgba(0, 0, 0, .06), 0 0 0 1px rgba(0, 0, 0, .08);
+  --sui-shadow-toast: 0 2px 4px -1px rgba(0, 0, 0, .08), 0 4px 8px -2px rgba(0, 0, 0, .08), 0 8px 16px -4px rgba(0, 0, 0, .08), 0 16px 32px -8px rgba(0, 0, 0, .08), 0 0 0 1px rgba(0, 0, 0, .08);
+  --sui-shadow-knob: 0 1px 1px -.5px rgba(0, 0, 0, .06), 0 2px 2px -1px rgba(0, 0, 0, .06), 0 4px 4px -2px rgba(0, 0, 0, .06), 0 2px 8px 0 rgba(0, 0, 0, .06);
+  --sui-shadow-card: 0 0 2px 0 rgba(0, 0, 0, .24), 0 2px 12px 0 rgba(0, 0, 0, .02), 0 4px 16px 0 rgba(0, 0, 0, .02), 0 4px 48px 0 rgba(0, 0, 0, .02);
 
   /* Banner header bars (titled banners) */
-  --sui-good-strong: #29845a;
-  --sui-info-strong: #91d0ff;
-  --sui-warn-strong: #ffb800;
-  --sui-danger-strong: #e51c00;
+  --sui-good-strong: #8ae156;
+  --sui-info-strong: #5bc9eb;
+  --sui-warn-strong: #ff8a3e;
+  --sui-danger-strong: #d82019;
   --sui-on-strong-dark: #fff;
-  --sui-on-strong-light: #303030;
+  --sui-on-strong-light: #101010;
 
   /* Data visualisation (Analytics / Live View) */
-  --sui-viz-blue: #13acf0;
-  --sui-viz-purple: #8f71ef;
+  --sui-viz-blue: #195ae8;
+  --sui-viz-purple: #672ff4;
   --sui-viz-black: #4a4a4a;
-  --sui-viz-green: #3cc08a;
-  --sui-viz-red: #ef4d5e;
+  --sui-viz-green: #5ecb10;
+  --sui-viz-red: #e2221a;
 
   /* Admin frame (sidebar) — true black chrome, stays dark regardless of content theme */
-  --sui-frame: #000;
-  --sui-frame-hover: #232324;
-  --sui-frame-active: #2d2d2e;
+  --sui-frame: #0a0a0a;
+  --sui-frame-hover: rgba(255, 255, 255, .06);
+  --sui-frame-active: rgba(255, 255, 255, .19);
   --sui-frame-input: rgba(255, 255, 255, .08);
-  --sui-frame-ink: #f1f1f1;
-  --sui-frame-ink-secondary: #e3e3e3;
-  --sui-frame-muted: #9a9a9c;
+  --sui-frame-ink: #f7f7f7;
+  --sui-frame-ink-secondary: #d0d0d0;
+  --sui-frame-muted: #8c8c8c;
   --sui-frame-border: #262627;
   --sui-frame-logo: #95bf47;
   --sui-frame-on-logo: #0d2b05;

@@ -6,10 +6,10 @@ module ShopifyUI
 
     BASE = %w[
       tw:inline-flex tw:items-center tw:gap-1.5 tw:max-w-full
-      tw:font-sans tw:text-[12.5px] tw:leading-[18px] tw:whitespace-nowrap
+      tw:font-sans tw:text-[12px] tw:leading-4 tw:whitespace-nowrap
     ].freeze
 
-    PILL = %w[tw:rounded-full tw:border tw:px-2.5 tw:py-px tw:font-medium].freeze
+    PILL = %w[tw:rounded-full tw:border tw:px-1.5 tw:py-px tw:font-medium].freeze
 
     FILLS = {
       neutral: "tw:border-transparent tw:bg-neutral-light tw:text-ink",

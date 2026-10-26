@@ -26,7 +26,7 @@ module ShopifyUI
     }.freeze
     X_PADDINGS = { none: "", tight: "tw:px-3", base: "tw:px-4 tw:max-sm:px-3.5", loose: "tw:px-5 tw:max-sm:px-4" }.freeze
 
-    CARD = "tw:relative tw:min-w-0 tw:overflow-hidden tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:shadow-card tw:ring-1 tw:ring-border-secondary tw:rounded-surface"
+    CARD = "tw:relative tw:min-w-0 tw:overflow-hidden tw:font-sans tw:text-[13px] tw:leading-5 tw:text-ink tw:shadow-card tw:rounded-surface"
     EDGE_TO_EDGE = "tw:max-sm:rounded-none tw:max-sm:ring-0 tw:max-sm:border-y tw:max-sm:border-border"
     BACKGROUNDS = { default: "tw:bg-surface", subdued: "tw:bg-surface-secondary" }.freeze
 
@@ -45,7 +45,7 @@ module ShopifyUI
     FOOTER = "tw:flex tw:flex-wrap tw:items-center tw:justify-end tw:gap-2 tw:border-t tw:border-border-secondary tw:py-3 tw:max-sm:[&>*]:flex-1"
 
     TOGGLE = %w[
-      tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-control tw:text-muted
+      tw:inline-flex tw:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-full tw:text-muted
       tw:hover:bg-fill-tertiary tw:hover:text-ink tw:transition-transform tw:duration-150
       tw:group-open:rotate-180 tw:max-sm:size-9 tw:-my-1 tw:-mr-1
     ].freeze
