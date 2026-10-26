@@ -1,0 +1,13 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <div class="<%= ShopifyUI::HeadingComponent::MAIN %>">
+    <% if leading? %><span class="<%= ShopifyUI::HeadingComponent::LEADING %>"><%= leading %></span><% end %>
+    <div class="<%= ShopifyUI::HeadingComponent::STACK %> <%= config[:gap] %>">
+      <div class="<%= ShopifyUI::HeadingComponent::TITLE_ROW %>">
+        <%= title_tag %>
+        <% badges.each do |badge| %><%= badge %><% end %>
+      </div>
+      <% if @subtitle.present? %><%= subtitle_tag %><% end %>
+    </div>
+  </div>
+  <% if actions? %><div class="<%= ShopifyUI::HeadingComponent::ACTIONS %>"><%= actions %></div><% end %>
+</div>

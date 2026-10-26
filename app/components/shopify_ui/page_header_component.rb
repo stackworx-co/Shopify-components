@@ -30,8 +30,9 @@ module ShopifyUI
     ].freeze
     TITLE_STACK = "tw:flex tw:min-w-0 tw:flex-col tw:gap-0.5"
     TITLE_ROW = "tw:flex tw:min-w-0 tw:flex-wrap tw:items-center tw:gap-x-2 tw:gap-y-1"
-    TITLE = "tw:m-0 tw:min-w-0 tw:text-[20px] tw:font-semibold tw:leading-8 tw:text-ink tw:break-words tw:max-sm:text-[18px] tw:max-sm:leading-7"
-    SUBTITLE = "tw:m-0 tw:text-[13px] tw:text-muted tw:break-words"
+    # Shared Polaris 2 type scale (TextComponent::SCALE) so page titles match HeadingComponent everywhere.
+    TITLE = "tw:min-w-0 tw:break-words #{TextComponent.classes(:display_md)}"
+    SUBTITLE = "tw:break-words #{TextComponent.classes(:body_md, tone: :subdued)}"
     METADATA = "tw:flex tw:flex-wrap tw:items-center tw:gap-2 tw:text-[13px] tw:text-muted"
 
     ACTIONS = "tw:flex tw:shrink-0 tw:items-center tw:gap-2 tw:max-w-full tw:ml-auto"

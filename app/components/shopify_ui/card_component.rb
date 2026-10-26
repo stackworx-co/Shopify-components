@@ -33,8 +33,8 @@ module ShopifyUI
     HEADER = "tw:flex tw:flex-wrap tw:items-start tw:justify-between tw:gap-x-3 tw:gap-y-1"
     TITLE_GROUP = "tw:flex tw:min-w-0 tw:flex-1 tw:basis-[160px] tw:flex-col tw:gap-0.5"
     TITLE_ROW = "tw:flex tw:min-w-0 tw:flex-wrap tw:items-center tw:gap-2"
-    TITLE = "tw:m-0 tw:min-w-0 tw:text-[14px] tw:font-semibold tw:leading-5 tw:text-ink tw:break-words"
-    SUBTITLE = "tw:m-0 tw:text-[13px] tw:text-muted tw:break-words"
+    TITLE = "tw:min-w-0 tw:break-words #{TextComponent.classes(:heading_lg)}"
+    SUBTITLE = "tw:break-words #{TextComponent.classes(:body_md, tone: :subdued)}"
     HEADER_ACTIONS = "tw:flex tw:shrink-0 tw:flex-wrap tw:items-center tw:gap-x-3 tw:gap-y-1 tw:-my-1"
 
     SECTION = "tw:border-t tw:border-border-secondary tw:first:border-t-0"

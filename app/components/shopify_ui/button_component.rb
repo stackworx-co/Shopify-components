@@ -37,11 +37,26 @@ module ShopifyUI
         tw:border-transparent tw:bg-danger-fill tw:text-white tw:font-medium tw:shadow-button-critical
         tw:hover:bg-danger-fill-hover tw:hover:text-white
       ],
+      # Grey pill with a link-blue label, e.g. the "View" button for a sales channel or app.
+      link: %w[
+        tw:border-transparent tw:bg-button tw:text-link tw:font-medium
+        tw:hover:bg-button-hover tw:hover:text-link-hover tw:active:bg-button-active
+      ],
       plain: %w[
         tw:border-transparent tw:bg-transparent tw:text-link tw:font-medium
         tw:hover:text-link-hover tw:hover:underline
       ]
     }.freeze
+
+    # icon: any SVG or image tag; it is sized to the button and drawn before the label.
+    ICON = "tw:inline-flex tw:size-4 tw:shrink-0 tw:items-center tw:justify-center tw:[&>svg]:size-full tw:[&>img]:size-full tw:[&>img]:object-contain"
+    ICON_ONLY_SIZES = {
+      slim: "tw:w-7 tw:px-0 tw:max-sm:w-9",
+      medium: "tw:w-[30px] tw:px-0 tw:max-sm:w-10",
+      large: "tw:w-9 tw:px-0 tw:max-sm:w-11"
+    }.freeze
+    EXTERNAL_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" ' \
+                    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5H5.5A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16h8a1.5 1.5 0 0 0 1.5-1.5V12M11 4h5v5M16 4l-7 7"/></svg>'
 
     TEXT_SIZES = {
       slim: "tw:text-[12px]",
@@ -72,18 +87,34 @@ module ShopifyUI
     DISABLED_FILL = %w[tw:border-transparent tw:bg-[rgba(0,0,0,.03)] tw:font-medium tw:shadow-none].freeze
     DISABLED_PLAIN = %w[tw:border-transparent].freeze
 
+    # icon: leading icon (SVG/img). With no label it renders a round icon-only button; pass aria: { label: }.
+    # external: true opens href in a new tab and adds a trailing "opens externally" icon.
     def initialize(variant: :secondary, size: :medium, href: nil, type: "button",
-                   disabled: false, full_width: false, **html_attributes)
+                   disabled: false, full_width: false, icon: nil, external: false, **html_attributes)
       @variant = pick(variant, VARIANTS, :secondary)
       @size = pick(size, TEXT_SIZES, :medium)
       @href = href
       @type = type
       @disabled = disabled
       @full_width = full_width
+      @icon = icon
+      @external = external && href.present?
       @html_attributes = html_attributes
     end
 
     private
+
+    def icon_only?
+      @icon.present? && content.blank?
+    end
+
+    def body
+      safe_join([
+        (tag.span(@icon, class: ICON, aria: { hidden: true }) if @icon.present?),
+        (content unless content.blank?),
+        (tag.span(EXTERNAL_ICON.html_safe, class: "#{ICON} tw:size-3.5") if @external)
+      ].compact)
+    end
 
     def link?
       @href.present?
@@ -98,7 +129,8 @@ module ShopifyUI
     end
 
     def link_attributes
-      return base_attributes.merge(href: @href) unless @disabled
+      external = @external ? { target: "_blank", rel: "noopener noreferrer" } : {}
+      return base_attributes.merge(href: @href, **external) unless @disabled
 
       base_attributes.merge(
         aria: (@html_attributes[:aria] || {}).merge(disabled: true),
@@ -117,8 +149,8 @@ module ShopifyUI
     end
 
     def size_classes
-      box = plain? ? [] : [ BOX_SIZES[@size], BOX_MOBILE ]
-      [ TEXT_SIZES[@size], TOUCH_HEIGHTS[@size], *box ]
+      box = plain? ? [] : [ BOX_SIZES[@size], BOX_MOBILE, (ICON_ONLY_SIZES[@size] if icon_only?) ]
+      [ TEXT_SIZES[@size], TOUCH_HEIGHTS[@size], *box ].compact
     end
 
     def state_classes
