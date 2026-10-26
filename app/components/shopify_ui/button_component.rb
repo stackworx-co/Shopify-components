@@ -5,7 +5,7 @@ module ShopifyUI
     strip_trailing_whitespace
 
     BASE = %w[
-      tw:inline-flex tw:items-center tw:justify-center tw:gap-1.5 tw:max-w-full
+      tw:box-border tw:inline-flex tw:items-center tw:justify-center tw:gap-1.5 tw:max-w-full
       tw:rounded-full tw:border tw:font-sans tw:text-center tw:leading-none tw:whitespace-nowrap
       tw:max-sm:leading-tight tw:max-sm:whitespace-normal
       tw:select-none tw:appearance-none tw:no-underline tw:hover:no-underline

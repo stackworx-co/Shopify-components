@@ -29,7 +29,7 @@ module ShopifyUI
     LABEL = "tw:min-w-0 tw:truncate tw:py-0.5 tw:max-w-[240px] tw:max-sm:max-w-none"
 
     REMOVE = %w[
-      tw:-mr-0.5 tw:ml-0.5 tw:inline-flex tw:size-5 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-md tw:border-0
+      tw:-mr-0.5 tw:ml-0.5 tw:inline-flex tw:size-5 tw:max-sm:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-md tw:border-0
       tw:bg-transparent tw:p-0 tw:text-muted tw:no-underline tw:cursor-pointer
       tw:hover:bg-fill-tertiary-hover tw:hover:text-ink tw:active:bg-fill-tertiary-active
       tw:focus-visible:outline-2 tw:focus-visible:outline-link

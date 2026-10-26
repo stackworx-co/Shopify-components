@@ -15,7 +15,7 @@ module ShopifyUI
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
       tw:disabled:cursor-not-allowed tw:disabled:border-border tw:disabled:bg-surface-secondary
       tw:disabled:checked:border-disabled tw:disabled:checked:bg-surface
-      tw:max-sm:size-5 tw:max-sm:mt-0 tw:max-sm:checked:border-[6px]
+      tw:max-sm:size-6 tw:max-sm:mt-0 tw:max-sm:checked:border-[7px]
     ].freeze
     INPUT_ERROR = "tw:border-danger-icon tw:bg-danger-light"
 

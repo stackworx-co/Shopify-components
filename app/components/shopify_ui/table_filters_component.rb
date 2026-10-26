@@ -47,7 +47,7 @@ module ShopifyUI
     ].freeze
 
     PILL_REMOVE = %w[
-      tw:inline-flex tw:size-5 tw:items-center tw:justify-center tw:rounded-full tw:text-muted
+      tw:inline-flex tw:size-5 tw:max-sm:size-7 tw:items-center tw:justify-center tw:rounded-full tw:text-muted
       tw:no-underline tw:hover:bg-fill-tertiary tw:hover:text-ink
       tw:focus-visible:outline-2 tw:focus-visible:outline-link
     ].freeze

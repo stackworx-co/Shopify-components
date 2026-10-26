@@ -1,0 +1,60 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% body = <<~GRAPHQL
+  query($id: ID!) {
+    order(id: $id) {
+      fulfillments(first: 10) {
+        id
+        status
+        trackingInfo {
+          number
+          url
+          company
+        }
+      }
+    }
+  }
+GRAPHQL
+%>
+<% shops = %w[doral-ytgycawl.myshopify.com doral-ytgycawl.myshopify.com sf-cutler-bay.myshopify.com sf-cutler-bay.myshopify.com sf-cutler-bay.myshopify.com sf-cutler-bay.myshopify.com] %>
+<% logs = shops.each_with_index.map do |shop, i|
+     error = i == 3
+     {
+       id: "log-#{i}", status: error ? :error : :success,
+       type: "GraphQL request", details: error ? "mutation · fulfillmentCreate" : "query · order",
+       shop: shop, time: "Oct 26, 16:09:#{(19 - i).to_s.rjust(2, "0")}",
+       title: error ? "mutation" : "query", subtitle: error ? "fulfillmentCreate" : "order",
+       status_label: error ? "Throttled" : "OK",
+       fields: [
+         [ [ "Type", "GraphQL request" ], [ "Time", "October 26, 2026 at 4:09 pm" ],
+           [ "Request ID", "02fe1ddc-4a9b-44a5-b83f-14778#{i}8a8a6c", { copy: true } ], [ "IP", "182.185.161.157" ] ],
+         [ [ "API", "admin" ], [ "API version", "2026-07 · requested 2026-07" ] ],
+         [ [ "Duration", "#{60 + i * 7}ms" ], [ "Cost", "6 (19,974 remaining)" ] ],
+         [ [ "Shop", shop, { href: "https://#{shop}" } ], [ "Shop ID", "gid://shopify/Shop/8460805757#{i}" ] ]
+       ],
+       more: [ [ "User agent", "Shopify API Library for Ruby v14" ], [ "Response code", error ? "429" : "200" ] ],
+       body: body, body_label: "Operation body"
+     }
+   end %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Click a row (or focus it and press Enter) to open its details; Escape or × closes. The table narrows while the panel is open; on phones the panel is full screen.</p>
+    <%= render(ShopifyUI::LogsComponent.new(logs: logs)) do |c| %>
+      <% c.with_toolbar do %>
+        <div class="tw:flex tw:items-center tw:gap-2">
+          <div class="tw:min-w-0 tw:flex-1"><%= render(ShopifyUI::SearchFieldComponent.new(placeholder: "Filter logs")) %></div>
+          <%= render(ShopifyUI::DropdownMenuComponent.new(label: "Last 7 days", align: :end)) do |menu| %>
+            <% menu.with_action { "Last 24 hours" } %>
+            <% menu.with_action { "Last 7 days" } %>
+            <% menu.with_action { "Last 30 days" } %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <p class="<%= label_class %>">Empty</p>
+    <%= render(ShopifyUI::LogsComponent.new(logs: [], empty: "No logs in the last 7 days")) %>
+  </div>
+</div>

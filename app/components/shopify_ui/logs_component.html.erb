@@ -1,0 +1,107 @@
+<div <%= tag.attributes(root_attributes) %>>
+  <div class="<%= ShopifyUI::LogsComponent::MAIN %>">
+    <% if toolbar? %><%= toolbar %><% end %>
+    <div class="<%= ShopifyUI::LogsComponent::TABLE_WRAPPER %>">
+    <%= render(ShopifyUI::TableComponent.new(columns: ShopifyUI::LogsComponent::COLUMNS, empty: @empty)) do |table| %>
+      <% @logs.each do |log| %>
+        <% table.with_row(**row_attributes(log)) do |row| %>
+          <% row.with_cell { status_icon(log, ShopifyUI::LogsComponent::STATUS_ICON) } %>
+          <% row.with_cell { log[:type] } %>
+          <% row.with_cell { tag.span(log[:details], class: ShopifyUI::LogsComponent::MONO) } %>
+          <% row.with_cell { tag.span(log[:shop], class: ShopifyUI::LogsComponent::MONO) } %>
+          <% row.with_cell { tag.span(log[:time], class: ShopifyUI::LogsComponent::TIME) } %>
+        <% end %>
+      <% end %>
+    <% end %>
+    </div>
+
+    <ul class="<%= ShopifyUI::LogsComponent::LIST_CARD %>">
+      <% if @logs.empty? %>
+        <li class="<%= ShopifyUI::LogsComponent::LIST_EMPTY %>"><%= @empty %></li>
+      <% end %>
+      <% @logs.each do |log| %>
+        <li <%= tag.attributes(row_attributes(log, ShopifyUI::LogsComponent::LIST_ROW)) %>>
+          <%= status_icon(log, ShopifyUI::LogsComponent::LIST_ICON) %>
+          <span class="<%= ShopifyUI::LogsComponent::LIST_TEXT %>">
+            <span class="<%= ShopifyUI::LogsComponent::LIST_PRIMARY %>"><%= log[:type] %> <span class="tw:font-mono tw:text-[12px]">· <%= log[:details] %></span></span>
+            <span class="<%= ShopifyUI::LogsComponent::LIST_SECONDARY %>"><%= log[:shop] %> · <%= log[:time] %></span>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <aside id="<%= @logs_id %>-panel" class="<%= classes(ShopifyUI::LogsComponent::PANEL) %>" aria-label="Log details">
+    <div class="<%= classes(ShopifyUI::LogsComponent::PANEL_INNER) %>" data-log-panel-body></div>
+  </aside>
+
+  <% @logs.each do |log| %>
+  <template data-log="<%= log[:id] %>">
+    <div class="<%= ShopifyUI::LogsComponent::HEADER %>">
+      <div class="tw:flex tw:min-w-0 tw:flex-col tw:gap-1.5">
+        <h2 class="<%= ShopifyUI::LogsComponent::TITLE %>">
+          <%= log[:title] || log[:type] %>
+          <% if log[:subtitle] %><span class="<%= ShopifyUI::LogsComponent::SUBTITLE %>"><%= log[:subtitle] %></span><% end %>
+        </h2>
+        <div>
+          <%= render(ShopifyUI::BadgeComponent.new(tone: success?(log) ? :success : :critical)) { log[:status_label] || (success?(log) ? "OK" : "Error") } %>
+        </div>
+      </div>
+      <button type="button" class="<%= classes(ShopifyUI::LogsComponent::CLOSE) %>" data-log-close aria-label="Close details">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8"/></svg>
+      </button>
+    </div>
+
+    <div class="<%= ShopifyUI::LogsComponent::BODY %>">
+      <% Array(log[:fields]).each do |group| %>
+        <dl class="<%= ShopifyUI::LogsComponent::LIST %>">
+          <% group.each do |field| %>
+            <% label, value, options = field_parts(field) %>
+            <dt class="<%= ShopifyUI::LogsComponent::LABEL %>"><%= label %></dt>
+            <dd class="<%= ShopifyUI::LogsComponent::VALUE %>">
+              <% if options[:href] %>
+                <a class="<%= ShopifyUI::LogsComponent::LINK %>" href="<%= options[:href] %>" target="_blank" rel="noopener"><%= value %> ↗</a>
+              <% else %>
+                <span class="tw:min-w-0"><%= value %></span>
+              <% end %>
+              <% if options[:copy] %>
+                <button type="button" class="<%= classes(ShopifyUI::LogsComponent::COPY) %>" data-log-copy="<%= value %>" aria-label="Copy <%= label %>">
+                  <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5.5A1.5 1.5 0 0 0 11.5 4h-6A1.5 1.5 0 0 0 4 5.5v6A1.5 1.5 0 0 0 5.5 13H7"/></svg>
+                </button>
+              <% end %>
+            </dd>
+          <% end %>
+        </dl>
+      <% end %>
+
+      <% if log[:more].present? %>
+        <details class="<%= ShopifyUI::LogsComponent::MORE %>">
+          <summary class="<%= classes(ShopifyUI::LogsComponent::MORE_SUMMARY) %>">
+            <svg class="<%= ShopifyUI::LogsComponent::MORE_CHEVRON %>" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+            More details
+          </summary>
+          <dl class="<%= ShopifyUI::LogsComponent::LIST %> tw:mt-3">
+            <% log[:more].each do |field| %>
+              <% label, value, = field_parts(field) %>
+              <dt class="<%= ShopifyUI::LogsComponent::LABEL %>"><%= label %></dt>
+              <dd class="<%= ShopifyUI::LogsComponent::VALUE %>"><span class="tw:min-w-0"><%= value %></span></dd>
+            <% end %>
+          </dl>
+        </details>
+      <% end %>
+
+      <% if log[:body].present? %>
+        <div class="<%= ShopifyUI::LogsComponent::CODE %>">
+          <div class="<%= ShopifyUI::LogsComponent::CODE_HEADER %>">
+            <span class="tw:font-mono"><%= log[:body_label] || "Body" %></span>
+            <button type="button" class="<%= classes(ShopifyUI::LogsComponent::COPY) %>" data-log-copy="<%= log[:body] %>" aria-label="Copy <%= log[:body_label] || "body" %>">
+              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5.5A1.5 1.5 0 0 0 11.5 4h-6A1.5 1.5 0 0 0 4 5.5v6A1.5 1.5 0 0 0 5.5 13H7"/></svg>
+            </button>
+          </div>
+          <pre class="<%= ShopifyUI::LogsComponent::CODE_BODY %>"><code><%= log[:body] %></code></pre>
+        </div>
+      <% end %>
+    </div>
+  </template>
+  <% end %>
+</div>
