@@ -1,0 +1,47 @@
+<% a = ShopifyUI::AccountModalComponent %>
+<% opener = ->(id, label, variant = :secondary) { render(ShopifyUI::ButtonComponent.new(variant: variant, **a.open_attributes(id))) { label } } %>
+<% permissions = [
+     { label: "Returns portal", value: "returns", help_text: "Can open the Returns Center." },
+     { label: "Account admin", value: "admin", help_text: "Can add, edit and remove these accounts." }
+   ] %>
+
+<div class="tw:flex tw:flex-wrap tw:gap-2">
+  <%= opener.call("account-new", "Add account", :primary) %>
+  <%= opener.call("account-edit", "Edit account") %>
+  <%= opener.call("account-errors", "With errors") %>
+  <%= opener.call("account-many", "Many permissions + extra fields") %>
+  <%= opener.call("account-login-only", "Login only") %>
+  <%= opener.call("account-access-only", "Access only") %>
+  <%= opener.call("account-saving", "Saving") %>
+</div>
+
+<%= render(a.new(id: "account-new", url: "#", permissions: permissions)) %>
+
+<%= render(a.new(id: "account-edit", url: "#", mode: :edit, email: "sam@midway.com", email_read_only: true,
+      permissions: permissions, selected: %w[returns], delete_url: "#")) %>
+
+<%= render(a.new(id: "account-errors", url: "#", email: "sam@", permissions: permissions, open: false,
+      errors: { base: "The account couldn't be created.", email: "Email is invalid",
+                password: "Password is too short (minimum is 8 characters)",
+                password_confirmation: "Password confirmation doesn't match Password" })) %>
+
+<%= render(a.new(id: "account-many", url: "#", size: :large, permissions: permissions + [
+      { label: "Products", value: "products", help_text: "Can edit products and variants." },
+      { label: "Orders", value: "orders", help_text: "Can view and fulfill orders." },
+      { label: "Billing", value: "billing", help_text: "Owner only.", disabled: true }
+    ])) do |c| %>
+  <% c.with_fields do %>
+    <div class="tw:grid tw:gap-3 tw:sm:grid-cols-2">
+      <%= render(ShopifyUI::TextFieldComponent.new(name: "user[first_name]", label: "First name")) %>
+      <%= render(ShopifyUI::TextFieldComponent.new(name: "user[last_name]", label: "Last name")) %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render(a.new(id: "account-login-only", url: "#", title: "Change password", mode: :edit, show_access: false,
+      email: "sam@midway.com", email_read_only: true, password_help: nil, submit_label: "Update password")) %>
+
+<%= render(a.new(id: "account-access-only", url: "#", title: "Edit access", mode: :edit, show_login: false,
+      permissions: permissions, selected: %w[returns admin], access_description: "sam@midway.com")) %>
+
+<%= render(a.new(id: "account-saving", url: "#", permissions: permissions, email: "sam@midway.com", saving: true)) %>
