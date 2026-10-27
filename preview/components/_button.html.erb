@@ -1,5 +1,30 @@
 <% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
 <% row_class = "tw:flex tw:flex-wrap tw:items-center tw:gap-2" %>
+<% bag = '<svg viewBox="0 0 20 20" aria-hidden="true"><path fill="#95bf47" d="M5.2 6.5h9.6l.9 10.2a1 1 0 0 1-1 1.1H5.3a1 1 0 0 1-1-1.1z"/><path fill="none" stroke="#5e8e3e" stroke-width="1.4" stroke-linecap="round" d="M7.5 8V5.5a2.5 2.5 0 0 1 5 0V8"/></svg>'.html_safe %>
+<% plus = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 5v10M5 10h10"/></svg>'.html_safe %>
+<% edit = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="m12.5 4.5 3 3L8 15H5v-3z"/></svg>'.html_safe %>
+
+<div class="tw:mb-6 tw:border-b tw:border-border tw:pb-6">
+  <h3 class="tw:m-0 tw:mb-3 tw:text-[14px] tw:font-semibold tw:text-ink">Link with icon ("View" for a sales channel or app)</h3>
+  <div class="tw:grid tw:gap-4 tw:sm:grid-cols-2">
+    <div>
+      <p class="<%= label_class %>">Sizes</p>
+      <div class="<%= row_class %>">
+        <% ShopifyUI::ButtonComponent::TEXT_SIZES.each_key do |size| %>
+          <%= render(ShopifyUI::ButtonComponent.new(variant: :link, size: size, icon: bag, href: "#button")) { "View" } %>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <p class="<%= label_class %>">External, icon only, disabled</p>
+      <div class="<%= row_class %>">
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :link, icon: bag, href: "https://example.com", external: true)) { "View in Online Store" } %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :link, icon: bag, href: "#button", aria: { label: "View in Online Store" })) %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :link, icon: bag, href: "#button", disabled: true)) { "View" } %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="tw:flex tw:flex-col tw:divide-y tw:divide-border">
   <% ShopifyUI::ButtonComponent::VARIANTS.each_key do |variant| %>
@@ -22,6 +47,25 @@
             <%= render(ShopifyUI::ButtonComponent.new(variant: variant, disabled: true)) { "Disabled" } %>
             <%= render(ShopifyUI::ButtonComponent.new(variant: variant, href: "#button")) { "Link" } %>
             <%= render(ShopifyUI::ButtonComponent.new(variant: variant, href: "#button", disabled: true)) { "Disabled link" } %>
+          </div>
+        </div>
+
+        <div>
+          <p class="<%= label_class %>">With icon</p>
+          <div class="<%= row_class %>">
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, icon: plus)) { "Add product" } %>
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, icon: edit, href: "#button")) { "Edit" } %>
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, icon: plus, disabled: true)) { "Disabled" } %>
+          </div>
+        </div>
+
+        <div>
+          <p class="<%= label_class %>">Icon only (slim, medium, large) and external link</p>
+          <div class="<%= row_class %>">
+            <% ShopifyUI::ButtonComponent::TEXT_SIZES.each_key do |size| %>
+              <%= render(ShopifyUI::ButtonComponent.new(variant: variant, size: size, icon: plus, aria: { label: "Add" })) %>
+            <% end %>
+            <%= render(ShopifyUI::ButtonComponent.new(variant: variant, href: "https://example.com", external: true)) { "Help" } %>
           </div>
         </div>
 

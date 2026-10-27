@@ -1,5 +1,5 @@
 <% if link? %>
-<a <%= tag.attributes(link_attributes) %>><%= content %></a>
+<a <%= tag.attributes(link_attributes) %>><%= body %></a>
 <% else %>
-<button <%= tag.attributes(button_attributes) %>><%= content %></button>
+<button <%= tag.attributes(button_attributes) %>><%= body %></button>
 <% end %>

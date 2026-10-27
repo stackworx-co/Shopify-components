@@ -1,0 +1,32 @@
+<%= render modal do %>
+  <%= form_with url: @url, method: @method, id: form_id do %>
+    <% if @errors[:base] %>
+      <div class="<%= ShopifyUI::ModalComponent::SECTION %>">
+        <%= render(ShopifyUI::BannerComponent.new(tone: :critical, in_card: true)) { @errors[:base] } %>
+      </div>
+    <% end %>
+    <% if @show_login %>
+      <div class="<%= ShopifyUI::ModalComponent::SECTION %> <%= ShopifyUI::AccountModalComponent::SECTION %>">
+        <%= section_title(@login_title, user_icon) %>
+        <%= text_field(:email, label: @email_label, type: :email, value: @email, autocomplete: "off",
+              required: !@email_read_only, read_only: @email_read_only) %>
+        <div class="<%= ShopifyUI::AccountModalComponent::PASSWORDS %>">
+          <%= text_field(:password, label: @password_label, type: :password, autocomplete: "new-password",
+                required: !edit?, help_text: @password_help) %>
+          <%= text_field(:password_confirmation, label: @confirmation_label, type: :password,
+                autocomplete: "new-password", required: !edit?) %>
+        </div>
+        <%= fields %>
+      </div>
+    <% end %>
+    <% if @show_access && @permissions.present? %>
+      <div class="<%= ShopifyUI::ModalComponent::SECTION %> <%= ShopifyUI::AccountModalComponent::SECTION %>">
+        <%= section_title(@access_title, shield_icon) %>
+        <% if @access_description.present? %><p class="<%= ShopifyUI::AccountModalComponent::DESCRIPTION %>"><%= @access_description %></p><% end %>
+        <%= render(ShopifyUI::ChoiceListComponent.new(name: param(:permissions), choices: @permissions, selected: @selected,
+              allow_multiple: true, appearance: :card, title: @access_title, title_hidden: true,
+              error: @errors[:permissions], disabled: @saving, id: "#{@id}-permissions")) %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

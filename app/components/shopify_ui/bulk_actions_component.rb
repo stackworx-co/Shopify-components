@@ -26,15 +26,15 @@ module ShopifyUI
     HIDDEN = "tw:hidden"
     ROOT_BASE = "tw:font-sans tw:text-[13px] tw:text-ink tw:data-hidden:hidden"
 
-    CHECK_WRAP = "tw:relative tw:inline-flex tw:size-4 tw:shrink-0"
+    CHECK_WRAP = "tw:relative tw:inline-flex tw:size-4 tw:max-sm:size-6 tw:shrink-0"
     CHECK = %w[
       tw:peer tw:m-0 tw:size-4 tw:cursor-pointer tw:appearance-none tw:rounded-[4px] tw:border tw:border-input-border tw:bg-surface
       tw:checked:border-accent tw:checked:bg-accent tw:indeterminate:border-accent tw:indeterminate:bg-accent
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
-      tw:max-sm:size-5
+      tw:max-sm:size-6
     ].freeze
-    CHECK_ICON = "tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:text-on-accent tw:peer-checked:block tw:max-sm:size-5"
-    DASH_ICON = "tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:text-on-accent tw:peer-indeterminate:block tw:max-sm:size-5"
+    CHECK_ICON = "tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:text-on-accent tw:peer-checked:block tw:max-sm:size-6"
+    DASH_ICON = "tw:pointer-events-none tw:absolute tw:inset-0 tw:hidden tw:size-4 tw:text-on-accent tw:peer-indeterminate:block tw:max-sm:size-6"
 
     COUNT = "tw:shrink-0 tw:whitespace-nowrap tw:text-[12.5px] tw:font-semibold tw:tabular-nums tw:max-sm:text-[14px]"
     SELECT_ALL = "tw:shrink-0 tw:whitespace-nowrap tw:border-0 tw:bg-transparent tw:p-0 tw:font-sans tw:text-[12.5px] tw:font-medium tw:text-link tw:cursor-pointer tw:hover:underline tw:focus-visible:outline-2 tw:focus-visible:outline-link tw:rounded tw:data-hidden:hidden tw:max-md:hidden"

@@ -1,0 +1,55 @@
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% t = ShopifyUI::TextComponent %>
+
+<div class="tw:flex tw:flex-col tw:gap-8">
+  <div>
+    <p class="<%= label_class %>">Type scale: Polaris 2 sizes; text grows slightly on phones, like Shopify admin</p>
+    <div class="tw:flex tw:flex-col tw:divide-y tw:divide-border-secondary">
+      <% t::SCALE.each_key do |variant| %>
+        <div class="tw:flex tw:items-baseline tw:gap-4 tw:py-3 tw:max-sm:flex-col tw:max-sm:gap-1">
+          <code class="tw:w-28 tw:shrink-0 tw:font-mono tw:text-[12px] tw:text-muted"><%= variant %></code>
+          <%= render(t.new(variant: variant, as: :div)) { "Orders ready to fulfill" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tw:grid tw:grid-cols-[minmax(0,1fr)] tw:gap-6 tw:sm:grid-cols-2">
+    <div>
+      <p class="<%= label_class %>">Tones</p>
+      <div class="tw:flex tw:flex-col tw:gap-1">
+        <% t::TONES.except(:inherit).each_key do |tone| %>
+          <%= render(t.new(tone: tone)) { "#{tone.to_s.humanize} text" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <p class="<%= label_class %>">Weights</p>
+      <div class="tw:flex tw:flex-col tw:gap-1">
+        <% t::WEIGHTS.each_key do |weight| %>
+          <%= render(t.new(weight: weight)) { "#{weight.to_s.humanize} weight" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <p class="<%= label_class %>">Alignment</p>
+      <div class="tw:flex tw:flex-col tw:gap-1 tw:rounded-[12px] tw:bg-surface-secondary tw:p-3">
+        <% t::ALIGNS.except(:justify).each_key do |align| %>
+          <%= render(t.new(align: align)) { "Aligned #{align}" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <p class="<%= label_class %>">Truncate, numeric, long words, inline</p>
+      <div class="tw:flex tw:flex-col tw:gap-2 tw:min-w-0">
+        <%= render(t.new(truncate: true)) { "The Collection Snowboard: Hydrogen — Limited Edition Winter 2026 with a very long product name" } %>
+        <%= render(t.new(numeric: true)) { "$1,204.50 · 11,111 · 0.98%" } %>
+        <%= render(t.new) { "gid://shopify/Order/84608057573120934820934820384203984" } %>
+        <%= render(t.new) do %>Paid with <%= render(t.new(as: :span, weight: :semibold)) { "Visa •••• 4242" } %> on Oct 26<% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -104,6 +104,11 @@
   --shadow-knob: var(--sui-shadow-knob);
 }
 
+/* Without Preflight, <a>, <div> etc. default to content-box, so a link styled as a 40px button grew to
+   58px and w-full menu items overflowed. Components are written for border-box; :where() keeps this at
+   zero specificity so any app or utility rule still wins. */
+:where([class*="tw:"]), :where([class*="tw:"])::before, :where([class*="tw:"])::after { box-sizing: border-box; }
+
 /* Thin scrollbars with no arrow buttons, like Shopify admin. Chrome on Linux/Windows still draws arrows
    for scrollbar-width: thin, so WebKit/Blink get a styled ::-webkit-scrollbar instead (it is only used
    while scrollbar-width/color are auto). Firefox keeps the standard thin scrollbar. */
