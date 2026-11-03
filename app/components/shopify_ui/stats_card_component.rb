@@ -122,35 +122,6 @@ module ShopifyUI
     LINK = "tw:block tw:rounded-lg tw:text-inherit tw:no-underline tw:hover:no-underline tw:focus-visible:outline-2 tw:focus-visible:outline-offset-2 tw:focus-visible:outline-link"
     GRID_LINK_HOVER = "tw:transition-colors tw:hover:bg-surface-hover"
 
-    HELP = %w[
-      tw:group tw:relative tw:inline-block tw:cursor-help tw:underline tw:decoration-dotted
-      tw:decoration-faint tw:underline-offset-4 tw:outline-none
-      tw:focus-visible:rounded tw:focus-visible:outline-2 tw:focus-visible:outline-link
-    ].freeze
-    # Fixed so scrolling / clipping containers (the strip scrolls sideways) can't cut it off;
-    # TOOLTIP_SCRIPT places it under the label. Hidden tooltips take no space.
-    TOOLTIP = %w[
-      tw:pointer-events-none tw:fixed tw:z-[1000] tw:w-max tw:max-w-[240px]
-      tw:max-sm:max-w-[calc(100vw-48px)] tw:whitespace-normal tw:rounded-lg
-      tw:bg-surface tw:px-2.5 tw:py-1.5 tw:text-[12px] tw:font-normal tw:text-ink tw:shadow-popover
-      tw:hidden tw:group-hover:block tw:group-focus:block
-    ].freeze
-
-    TOOLTIP_SCRIPT = <<~JS.squish.freeze
-      (function () {
-        if (window.__suiStatsTip) return; window.__suiStatsTip = true;
-        function place(e) {
-          var h = e.target.closest && e.target.closest('[data-sui-help]'); if (!h) return;
-          var t = h.querySelector('[role=tooltip]'), r = h.getBoundingClientRect();
-          requestAnimationFrame(function () {
-            t.style.top = (r.bottom + 6) + 'px';
-            t.style.left = Math.max(8, Math.min(r.left, innerWidth - t.offsetWidth - 8)) + 'px';
-          });
-        }
-        document.addEventListener('mouseover', place); document.addEventListener('focusin', place);
-      })();
-    JS
-
     TREND = "tw:inline-flex tw:items-center tw:gap-0.5 tw:text-[12px] tw:font-medium tw:whitespace-nowrap"
     TREND_TONES = { good: "tw:text-good", bad: "tw:text-danger", neutral: "tw:text-muted" }.freeze
     TREND_ICONS = { up: "M5 13 13 5M7 5h6v6", down: "M5 7l8 8M13 9v6H7" }.freeze
@@ -220,8 +191,7 @@ module ShopifyUI
     def label_tag(metric)
       return metric[:label] if metric[:help].blank?
 
-      tag.span(safe_join([ metric[:label], tag.span(metric[:help], class: TOOLTIP.join(" "), role: "tooltip") ]),
-               class: HELP.join(" "), tabindex: 0, data: { sui_help: "" })
+      render(TooltipComponent.new(text: metric[:help], position: :bottom, underline: true)) { metric[:label] }
     end
 
     def value_tag(metric)

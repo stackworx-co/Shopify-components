@@ -53,15 +53,6 @@ module ShopifyUI
     DISABLED = "tw:cursor-not-allowed tw:text-disabled"
     DISABLED_PAGE = "tw:bg-surface-secondary tw:shadow-none"
 
-    TOOLTIP = %w[
-      tw:pointer-events-none tw:absolute tw:bottom-full tw:left-1/2 tw:z-20 tw:mb-1.5 tw:-translate-x-1/2
-      tw:whitespace-nowrap tw:rounded-lg tw:bg-surface tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:text-ink
-      tw:shadow-popover
-      tw:opacity-0 tw:transition-opacity tw:duration-100
-      tw:group-hover:opacity-100 tw:group-focus-visible:opacity-100
-      tw:max-sm:hidden
-    ].freeze
-
     ICONS = { previous: "M12 4 6 10l6 6", next: "M8 4l6 6-6 6" }.freeze
 
     # Clicks the matching enabled control when a shortcut key is pressed outside a text field.
@@ -136,9 +127,9 @@ module ShopifyUI
       attrs = control[:attributes].merge(class: control_classes(direction, control),
                                          aria: { label: control[:aria_label] },
                                          data: control_data(control))
-      body = safe_join([ icon(direction), tooltip(control) ].compact)
+      body = icon(direction)
 
-      if control[:url].present?
+      element = if control[:url].present?
         if control[:enabled]
           tag.a(body, **attrs, href: control[:url], rel: direction == :previous ? "prev" : "next")
         else
@@ -147,14 +138,14 @@ module ShopifyUI
       else
         tag.button(body, **attrs, type: "button", disabled: !control[:enabled] || nil)
       end
+      with_tooltip(element, control)
     end
 
     def control_classes(direction, control)
       shape = page? ? SHAPES[:page][direction] : SHAPES[:table]
       joined = SHAPES[:joined_next] if page? && direction == :next && !label?
       state = control[:enabled] ? ENABLED : [ DISABLED, (DISABLED_PAGE if page?) ]
-      [ BUTTON, shape, joined, state, ("tw:group" if control[:tooltip].present?),
-        control[:attributes][:class] ].flatten.compact.join(" ")
+      [ BUTTON, shape, joined, state, control[:attributes][:class] ].flatten.compact.join(" ")
     end
 
     def control_data(control)
@@ -162,10 +153,12 @@ module ShopifyUI
       control[:keys].any? ? data.merge(sui_pagination_keys: control[:keys].join(" ")) : data
     end
 
-    def tooltip(control)
-      return if control[:tooltip].blank?
+    # Disabled controls have nothing to explain, so they render without one.
+    def with_tooltip(element, control)
+      return element if control[:tooltip].blank? || !control[:enabled]
 
-      tag.span(control[:tooltip], class: TOOLTIP.join(" "), aria: { hidden: true })
+      shortcut = control[:keys].first&.then { |k| k.length == 1 ? k.upcase : k }
+      render(TooltipComponent.new(text: control[:tooltip], shortcut: shortcut, delay: 150)) { element }
     end
 
     def icon(direction)

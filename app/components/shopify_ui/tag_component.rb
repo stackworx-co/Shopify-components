@@ -5,7 +5,7 @@ module ShopifyUI
   #
   # Covers: plain, removable (✕; client-side with `sui:tag-remove` event, or a remove_url link),
   # link tag (href), clickable tag (button), disabled, sizes (medium 24px / large 32px),
-  # long labels truncated with a tooltip, and an optional hidden input so tags submit with a form.
+  # long labels truncated with a tooltip (shown only when the label is clipped), and an optional hidden input so tags submit with a form.
   # Phones: medium tags grow to 32px and the ✕ gets a 32px hit area; labels can use the full row width.
   class TagComponent < ViewComponent::Base
     strip_trailing_whitespace
@@ -26,7 +26,7 @@ module ShopifyUI
       tw:focus-visible:outline-2 tw:focus-visible:outline-offset-1 tw:focus-visible:outline-link
     ].freeze
     DISABLED = "tw:bg-surface-secondary tw:text-disabled tw:cursor-not-allowed tw:ring-1 tw:ring-inset tw:ring-border-secondary"
-    LABEL = "tw:min-w-0 tw:truncate tw:py-0.5 tw:max-w-[240px] tw:max-sm:max-w-none"
+    LABEL = "tw:min-w-0 tw:py-0.5 tw:max-w-[240px] tw:max-sm:max-w-full"
 
     REMOVE = %w[
       tw:-mr-0.5 tw:ml-0.5 tw:inline-flex tw:size-5 tw:max-sm:size-7 tw:shrink-0 tw:items-center tw:justify-center tw:rounded-md tw:border-0
@@ -60,7 +60,7 @@ module ShopifyUI
     end
 
     def call
-      label = tag.span(@label, class: LABEL, title: (@label if @label.length > 24))
+      label = render(TooltipComponent.new(text: @label, truncate: true, delay: 500, class: LABEL)) { @label }
       hidden = tag.input(type: "hidden", name: @name, value: @value, disabled: @disabled || nil) if @name
 
       if (@href || @clickable) && !@removable

@@ -1,0 +1,67 @@
+<% tt = ShopifyUI::TooltipComponent %>
+<% info = ShopifyUI::InfoTooltipComponent %>
+<% label_class = "tw:m-0 tw:mb-2 tw:text-[12px] tw:text-muted" %>
+<% row = "tw:flex tw:flex-wrap tw:items-center tw:gap-3" %>
+
+<div class="tw:flex tw:flex-col tw:gap-7">
+  <div><p class="<%= label_class %>">Positions — hover or Tab to each; they flip near the screen edges</p>
+    <div class="<%= row %>">
+      <% %i[top bottom left right].each do |pos| %>
+        <%= render(tt.new(text: "Tooltip on the #{pos}", position: pos)) do %>
+          <%= render(ShopifyUI::ButtonComponent.new) { pos.to_s.capitalize } %>
+        <% end %>
+      <% end %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Info icon — one line</p>
+    <div class="tw:flex tw:items-center tw:gap-1 tw:text-[13px] tw:font-medium">
+      Available stock
+      <%= render(info.new(text: "Stock last synced 5 minutes ago from your warehouse app.")) %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Text trigger · rich content · wide · no delay</p>
+    <div class="<%= row %> tw:text-[13px]">
+      <%= render(tt.new(text: "Total sales minus returns and discounts", delay: 0)) do %>
+        <span class="tw:underline tw:decoration-dotted tw:underline-offset-4 tw:cursor-help">Net sales</span>
+      <% end %>
+      <%= render(tt.new(width: :wide)) do |t| %>
+        <% t.with_tip do %><strong>Shipping profiles</strong><br>Rates apply to every product in this profile, including drafts.<% end %>
+        <%= render(ShopifyUI::ButtonComponent.new) { "Rich tooltip" } %>
+      <% end %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Keyboard shortcut · underlined definition</p>
+    <div class="<%= row %> tw:text-[13px]">
+      <%= render(tt.new(text: "Bold", shortcut: %w[⌘ B], delay: 0)) do %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :tertiary, aria: { label: "Bold" })) { "B" } %>
+      <% end %>
+      <%= render(tt.new(text: "Undo", shortcut: "⌘Z", position: :bottom)) do %>
+        <%= render(ShopifyUI::ButtonComponent.new) { "Undo" } %>
+      <% end %>
+      <%= render(tt.new(text: "Customers who placed 2+ orders in the selected range", underline: true)) { "Returning customer rate" } %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Truncation — tooltip only appears on the clipped label</p>
+    <div class="tw:flex tw:flex-col tw:gap-1 tw:max-w-[220px] tw:text-[13px]">
+      <%= render(tt.new(truncate: true, class: "tw:max-w-full")) { "The Collection Snowboard: Liquid Edition 2026" } %>
+      <%= render(tt.new(truncate: true, class: "tw:max-w-full")) { "Short name" } %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Disabled button with a reason · persist on click · open on load</p>
+    <div class="<%= row %>">
+      <%= render(tt.new(text: "You need the Manage products permission to delete", disabled_trigger: true)) do %>
+        <%= render(ShopifyUI::ButtonComponent.new(disabled: true)) { "Delete product" } %>
+      <% end %>
+      <%= render(tt.new(text: "Pinned — click outside or press Esc to close", persist_on_click: true)) do %>
+        <%= render(ShopifyUI::ButtonComponent.new) { "Click to pin" } %>
+      <% end %>
+      <%= render(tt.new(text: "New: bulk edit prices from here", open: true, position: :right)) do %>
+        <%= render(ShopifyUI::ButtonComponent.new(variant: :primary)) { "Bulk edit" } %>
+      <% end %>
+    </div></div>
+
+  <div><p class="<%= label_class %>">Edge flipping — right-aligned trigger asks for :right</p>
+    <div class="tw:flex tw:justify-end">
+      <%= render(info.new(text: "No room on the right, so this flips to the left.", position: :right)) %>
+    </div></div>
+</div>
