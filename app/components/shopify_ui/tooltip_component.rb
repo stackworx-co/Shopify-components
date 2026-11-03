@@ -69,6 +69,7 @@ module ShopifyUI
         if (window.__suiTooltip) return; window.__suiTooltip = true;
         var G = 8, GAP = 6, timers = new WeakMap(), OPEN = '[data-sui-tooltip] > [role=tooltip][data-show]';
         var FOCUSABLE = 'a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])';
+        function set(el, p, v) { el.style.setProperty(p, v, 'important'); }
         function rootOf(el) { return el && el.closest ? el.closest('[data-sui-tooltip]') : null; }
         function tipOf(root) { return root.querySelector(':scope > [role=tooltip]'); }
         function clear(root) { clearTimeout(timers.get(root)); timers.delete(root); }
@@ -104,15 +105,16 @@ module ShopifyUI
             left = side === 'left' ? r.left - GAP - w : r.right + GAP;
             top = Math.max(G, Math.min(r.top + r.height / 2 - h / 2, vh - h - G));
           }
-          tip.style.top = Math.round(top) + 'px'; tip.style.left = Math.round(left) + 'px';
+          set(tip, 'top', Math.round(top) + 'px'); set(tip, 'left', Math.round(left) + 'px');
           tip.dataset.side = side;
-          var a = tip.querySelector('[data-arrow]'); a.style.cssText = '';
+          var a = tip.querySelector('[data-arrow]');
+          ['top', 'left', 'right', 'bottom'].forEach(function (p) { a.style.removeProperty(p); });
           if (side === 'top' || side === 'bottom') {
-            a.style.left = Math.max(8, Math.min(r.left + r.width / 2 - left, w - 8)) - 4 + 'px';
-            a.style[side === 'top' ? 'bottom' : 'top'] = '-4px';
+            set(a, 'left', Math.max(8, Math.min(r.left + r.width / 2 - left, w - 8)) - 4 + 'px');
+            set(a, side === 'top' ? 'bottom' : 'top', '-4px');
           } else {
-            a.style.top = Math.max(8, Math.min(r.top + r.height / 2 - top, h - 8)) - 4 + 'px';
-            a.style[side === 'left' ? 'right' : 'left'] = '-4px';
+            set(a, 'top', Math.max(8, Math.min(r.top + r.height / 2 - top, h - 8)) - 4 + 'px');
+            set(a, side === 'left' ? 'right' : 'left', '-4px');
           }
         }
         function truncated(root) {

@@ -80,6 +80,7 @@ module ShopifyUI
     SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiLineChart) return; window.__suiLineChart = true;
+        function set(el, p, v) { el.style.setProperty(p, v, 'important'); }
         function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
         function init(root) {
           if (root.__suiInit) return; root.__suiInit = true;
@@ -90,12 +91,12 @@ module ShopifyUI
           var current = -1;
           function show(i) {
             var p = data.points[i]; if (!p) return; current = i;
-            guide.style.left = p.x + '%'; guide.style.display = 'block';
+            set(guide, 'left', p.x + '%'); set(guide, 'display', 'block');
             dots.forEach(function (dot, s) {
-              var v = p.s[s]; if (!v) { dot.style.display = 'none'; return; }
-              dot.style.left = p.x + '%'; dot.style.top = v.y + '%'; dot.style.display = 'block';
+              var v = p.s[s]; if (!v) { set(dot, 'display', 'none'); return; }
+              set(dot, 'left', p.x + '%'); set(dot, 'top', v.y + '%'); set(dot, 'display', 'block');
             });
-            if (last) last.style.display = 'none';
+            if (last) set(last, 'display', 'none');
             tip.textContent = '';
             tip.appendChild(el('div', data.cls.title, p.l));
             p.s.forEach(function (v, s) {
@@ -106,15 +107,15 @@ module ShopifyUI
               row.appendChild(el('span', data.cls.value, v.v));
               tip.appendChild(row);
             });
-            tip.style.display = 'block';
+            set(tip, 'display', 'block');
             var w = plot.clientWidth, tw = tip.offsetWidth, x = p.x / 100 * w, left = x + 12;
             if (left + tw > w) left = x - tw - 12;
-            tip.style.left = Math.max(0, left) + 'px';
+            set(tip, 'left', Math.max(0, left) + 'px');
           }
           function hide() {
-            current = -1; guide.style.display = 'none'; tip.style.display = 'none';
-            dots.forEach(function (dot) { dot.style.display = 'none'; });
-            if (last) last.style.display = '';
+            current = -1; set(guide, 'display', 'none'); set(tip, 'display', 'none');
+            dots.forEach(function (dot) { set(dot, 'display', 'none'); });
+            if (last) last.style.removeProperty('display');
           }
           cols.forEach(function (col, i) { col.addEventListener('mouseenter', function () { show(i); }); });
           plot.addEventListener('mouseleave', function () { if (document.activeElement !== root) hide(); });

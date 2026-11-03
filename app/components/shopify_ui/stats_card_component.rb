@@ -90,6 +90,7 @@ module ShopifyUI
     CHART_SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
         if (window.__suiStatsChart) return; window.__suiStatsChart = true;
+        function set(el, p, v) { el.style.setProperty(p, v, 'important'); }
         function init(plot) {
           if (plot.__suiInit) return; plot.__suiInit = true;
           var pts = JSON.parse(plot.getAttribute('data-sui-stats-chart')), current = -1,
@@ -97,13 +98,13 @@ module ShopifyUI
               tip = plot.querySelector('[data-sui-tip]');
           function show(i) {
             var p = pts[i]; if (!p) return; current = i;
-            guide.style.left = dot.style.left = p[0] + '%'; dot.style.top = p[1] + '%';
-            guide.style.display = dot.style.display = tip.style.display = 'block';
+            set(guide, 'left', p[0] + '%'); set(dot, 'left', p[0] + '%'); set(dot, 'top', p[1] + '%');
+            [guide, dot, tip].forEach(function (el) { set(el, 'display', 'block'); });
             tip.textContent = p[2];
             var w = plot.clientWidth, tw = tip.offsetWidth, x = p[0] / 100 * w;
-            tip.style.left = Math.max(0, Math.min(w - tw, x - tw / 2)) + 'px';
+            set(tip, 'left', Math.max(0, Math.min(w - tw, x - tw / 2)) + 'px');
           }
-          function hide() { current = -1; guide.style.display = dot.style.display = tip.style.display = 'none'; }
+          function hide() { current = -1; [guide, dot, tip].forEach(function (el) { el.style.removeProperty('display'); }); }
           plot.querySelectorAll('[data-sui-column]').forEach(function (c, i) { c.addEventListener('mouseenter', function () { show(i); }); });
           plot.addEventListener('mouseleave', function () { if (document.activeElement !== plot) hide(); });
           plot.addEventListener('focus', function () { show(current < 0 ? pts.length - 1 : current); });
