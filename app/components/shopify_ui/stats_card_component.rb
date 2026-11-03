@@ -77,13 +77,13 @@ module ShopifyUI
     CHART_FILL = "tw:text-viz-blue"
     CHART_OVERLAY = "tw:absolute tw:inset-0 tw:flex"
     CHART_COLUMN = "tw:h-full tw:flex-1"
-    CHART_GUIDE = "tw:pointer-events-none tw:absolute tw:inset-y-0 tw:hidden tw:w-px tw:bg-border-hover"
-    CHART_DOT = "tw:pointer-events-none tw:absolute tw:hidden tw:size-2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:rounded-full tw:bg-viz-blue tw:ring-2 tw:ring-surface"
+    # Shown through data-show (never inline display), so !important Tailwind builds can't override it.
+    CHART_GUIDE = "tw:pointer-events-none tw:absolute tw:inset-y-0 tw:hidden tw:data-show:block tw:w-px tw:bg-border-hover"
+    CHART_DOT = "tw:pointer-events-none tw:absolute tw:hidden tw:data-show:block tw:size-2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:rounded-full tw:bg-viz-blue tw:ring-2 tw:ring-surface"
     CHART_TIP = %w[
-      tw:pointer-events-none tw:absolute tw:bottom-full tw:z-20 tw:mb-1 tw:hidden tw:whitespace-nowrap tw:rounded-lg
-      tw:bg-surface tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:text-ink
-      tw:tabular-nums tw:shadow-popover
-    ].freeze
+      tw:pointer-events-none tw:absolute tw:bottom-full tw:z-20 tw:mb-1 tw:hidden tw:data-show:block tw:whitespace-nowrap
+      tw:px-2 tw:py-1 tw:text-[12px] tw:font-medium tw:tabular-nums
+    ].push(TooltipComponent::DARK).freeze
     CHART_VIEW = { width: 240, height: 56 }.freeze
     CHART_PAD = 8.0 # % of height kept free above and below the line
 
@@ -95,16 +95,16 @@ module ShopifyUI
           if (plot.__suiInit) return; plot.__suiInit = true;
           var pts = JSON.parse(plot.getAttribute('data-sui-stats-chart')), current = -1,
               guide = plot.querySelector('[data-sui-guide]'), dot = plot.querySelector('[data-sui-dot]'),
-              tip = plot.querySelector('[data-sui-tip]');
+              tip = plot.querySelector('[data-sui-chart-tip]');
           function show(i) {
             var p = pts[i]; if (!p) return; current = i;
             set(guide, 'left', p[0] + '%'); set(dot, 'left', p[0] + '%'); set(dot, 'top', p[1] + '%');
-            [guide, dot, tip].forEach(function (el) { set(el, 'display', 'block'); });
+            [guide, dot, tip].forEach(function (el) { el.setAttribute('data-show', ''); });
             tip.textContent = p[2];
             var w = plot.clientWidth, tw = tip.offsetWidth, x = p[0] / 100 * w;
             set(tip, 'left', Math.max(0, Math.min(w - tw, x - tw / 2)) + 'px');
           }
-          function hide() { current = -1; [guide, dot, tip].forEach(function (el) { el.style.removeProperty('display'); }); }
+          function hide() { current = -1; [guide, dot, tip].forEach(function (el) { el.removeAttribute('data-show'); }); }
           plot.querySelectorAll('[data-sui-column]').forEach(function (c, i) { c.addEventListener('mouseenter', function () { show(i); }); });
           plot.addEventListener('mouseleave', function () { if (document.activeElement !== plot) hide(); });
           plot.addEventListener('focus', function () { show(current < 0 ? pts.length - 1 : current); });
@@ -331,7 +331,7 @@ module ShopifyUI
         tag.span(class: CHART_DOT, data: { sui_dot: "" }),
         tag.div(safe_join(data.size.times.map { tag.div(class: CHART_COLUMN, data: { sui_column: "" }) }),
                 class: CHART_OVERLAY, aria: { hidden: true }),
-        tag.div(class: CHART_TIP.join(" "), data: { sui_tip: "" }, aria: { hidden: true })
+        tag.div(class: CHART_TIP.join(" "), data: { sui_chart_tip: "" }, aria: { hidden: true })
       ]), class: CHART_PLOT, tabindex: 0, data: { sui_stats_chart: tips.to_json },
           aria: { label: "#{metric[:label]} chart. Use the left and right arrow keys to read each point." })
     end

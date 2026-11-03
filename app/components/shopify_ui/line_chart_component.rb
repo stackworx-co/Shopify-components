@@ -49,19 +49,23 @@ module ShopifyUI
       tw:pointer-events-none tw:absolute tw:size-2.5 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:rounded-full
       tw:ring-2 tw:ring-surface
     ].freeze
+    # Shown / hidden by the script through data-show / data-hide, never inline display, so apps that build
+    # Tailwind with !important can't override it.
+    HOVER_DOT = "tw:hidden tw:data-show:block"
+    LAST_DOT = "tw:data-hide:hidden"
 
     OVERLAY = "tw:absolute tw:inset-0 tw:flex tw:cursor-crosshair"
     COLUMN = "tw:h-full tw:flex-1"
-    GUIDE = "tw:pointer-events-none tw:absolute tw:inset-y-0 tw:hidden tw:w-px tw:bg-border-hover"
+    GUIDE = "tw:pointer-events-none tw:absolute tw:inset-y-0 tw:hidden tw:data-show:block tw:w-px tw:bg-border-hover"
 
     TOOLTIP = %w[
-      tw:pointer-events-none tw:absolute tw:top-0 tw:z-20 tw:hidden tw:min-w-32 tw:rounded-lg
-      tw:bg-surface tw:px-2.5 tw:py-2 tw:text-[12px] tw:text-ink tw:shadow-popover
-    ].freeze
+      tw:pointer-events-none tw:absolute tw:top-0 tw:z-20 tw:hidden tw:data-show:block tw:min-w-32
+      tw:px-2.5 tw:py-2 tw:text-[12px]
+    ].push(TooltipComponent::DARK).freeze
     TOOLTIP_TITLE = "tw:mb-1 tw:font-semibold tw:whitespace-nowrap"
     TOOLTIP_ROW = "tw:flex tw:items-center tw:gap-2 tw:whitespace-nowrap tw:leading-5"
-    TOOLTIP_DOT = "tw:size-2 tw:shrink-0 tw:rounded-full"
-    TOOLTIP_NAME = "tw:flex-1 tw:text-muted"
+    TOOLTIP_DOT = "tw:size-2 tw:shrink-0 tw:rounded-full tw:ring-1 tw:ring-white/80"
+    TOOLTIP_NAME = "tw:flex-1 #{TooltipComponent::DARK_SECONDARY}".freeze
     TOOLTIP_VALUE = "tw:font-medium tw:tabular-nums"
 
     HINT = %w[
@@ -85,18 +89,18 @@ module ShopifyUI
         function init(root) {
           if (root.__suiInit) return; root.__suiInit = true;
           var data = JSON.parse(root.getAttribute('data-sui-line-chart'));
-          var plot = root.querySelector('[data-sui-plot]'), tip = root.querySelector('[data-sui-tooltip]'),
+          var plot = root.querySelector('[data-sui-plot]'), tip = root.querySelector('[data-sui-chart-tip]'),
               guide = root.querySelector('[data-sui-guide]'), dots = root.querySelectorAll('[data-sui-hover-dot]'),
               cols = root.querySelectorAll('[data-sui-column]'), last = root.querySelector('[data-sui-last-dot]');
           var current = -1;
           function show(i) {
             var p = data.points[i]; if (!p) return; current = i;
-            set(guide, 'left', p.x + '%'); set(guide, 'display', 'block');
+            set(guide, 'left', p.x + '%'); guide.setAttribute('data-show', '');
             dots.forEach(function (dot, s) {
-              var v = p.s[s]; if (!v) { set(dot, 'display', 'none'); return; }
-              set(dot, 'left', p.x + '%'); set(dot, 'top', v.y + '%'); set(dot, 'display', 'block');
+              var v = p.s[s]; if (!v) { dot.removeAttribute('data-show'); return; }
+              set(dot, 'left', p.x + '%'); set(dot, 'top', v.y + '%'); dot.setAttribute('data-show', '');
             });
-            if (last) set(last, 'display', 'none');
+            if (last) last.setAttribute('data-hide', '');
             tip.textContent = '';
             tip.appendChild(el('div', data.cls.title, p.l));
             p.s.forEach(function (v, s) {
@@ -107,15 +111,15 @@ module ShopifyUI
               row.appendChild(el('span', data.cls.value, v.v));
               tip.appendChild(row);
             });
-            set(tip, 'display', 'block');
+            tip.setAttribute('data-show', '');
             var w = plot.clientWidth, tw = tip.offsetWidth, x = p.x / 100 * w, left = x + 12;
             if (left + tw > w) left = x - tw - 12;
             set(tip, 'left', Math.max(0, left) + 'px');
           }
           function hide() {
-            current = -1; set(guide, 'display', 'none'); set(tip, 'display', 'none');
-            dots.forEach(function (dot) { set(dot, 'display', 'none'); });
-            if (last) last.style.removeProperty('display');
+            current = -1; guide.removeAttribute('data-show'); tip.removeAttribute('data-show');
+            dots.forEach(function (dot) { dot.removeAttribute('data-show'); });
+            if (last) last.removeAttribute('data-hide');
           }
           cols.forEach(function (col, i) { col.addEventListener('mouseenter', function () { show(i); }); });
           plot.addEventListener('mouseleave', function () { if (document.activeElement !== root) hide(); });

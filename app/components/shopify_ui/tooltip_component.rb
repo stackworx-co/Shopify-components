@@ -27,6 +27,12 @@ module ShopifyUI
 
     POSITIONS = %w[top bottom left right].freeze
 
+    # Shared dark tooltip look — every hover card in the gem (TooltipComponent, LineChart's data card,
+    # StatsCard's sparkline tip) uses these so they stay identical.
+    DARK_BG = "tw:bg-[#303030]"
+    DARK = "#{DARK_BG} tw:text-white tw:shadow-none tw:rounded-[8px]".freeze
+    DARK_SECONDARY = "tw:text-white/70"
+
     ROOT = "tw:inline-flex tw:max-w-full tw:align-middle"
     BLOCK_ROOT = "tw:flex tw:w-full"
 
@@ -37,15 +43,15 @@ module ShopifyUI
       tw:data-show:opacity-100 tw:motion-reduce:transition-none
     ].freeze
     BODY = %w[
-      tw:relative tw:block tw:rounded-[8px] tw:bg-[#303030] tw:px-2 tw:py-1 tw:font-sans tw:text-[12px]
-      tw:font-medium tw:leading-4 tw:text-white tw:break-words tw:text-left
+      tw:relative tw:block tw:px-2 tw:py-1 tw:font-sans tw:text-[12px]
+      tw:font-medium tw:leading-4 tw:break-words tw:text-left
       tw:max-sm:text-[13px] tw:max-sm:leading-5 tw:max-sm:px-2.5 tw:max-sm:py-1.5
-    ].freeze
+    ].push(DARK).freeze
     WIDTHS = {
       default: "tw:w-max tw:max-w-[min(200px,calc(100vw-16px))]",
       wide: "tw:w-max tw:max-w-[min(320px,calc(100vw-16px))]"
     }.freeze
-    ARROW = "tw:absolute tw:size-2 tw:rotate-45 tw:bg-[#303030]"
+    ARROW = "tw:absolute tw:size-2 tw:rotate-45 #{DARK_BG}".freeze
     SHORTCUT = "tw:ml-2 tw:inline-flex tw:gap-0.5 tw:align-baseline"
     KBD = %w[
       tw:inline-flex tw:min-w-4 tw:justify-center tw:rounded-[4px] tw:bg-white/15 tw:px-1 tw:font-sans

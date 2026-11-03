@@ -38,11 +38,11 @@
 
           <div class="<%= c::GUIDE %>" data-sui-guide></div>
           <% @series.each do |series| %>
-            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[series.tone][:dot] %>" style="display: none" data-sui-hover-dot></span>
+            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[series.tone][:dot] %> <%= c::HOVER_DOT %>" data-sui-hover-dot></span>
           <% end %>
           <% if @highlight_last %>
             <% v = primary.data.last.last %>
-            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[primary.tone][:dot] %>" style="left: <%= x_pct(primary.data.size - 1).round(3) %>%; top: <%= y_pct(v).round(3) %>%" data-sui-last-dot></span>
+            <span class="<%= c::POINT_DOT.join(" ") %> <%= c::TONES[primary.tone][:dot] %> <%= c::LAST_DOT %>" style="left: <%= x_pct(primary.data.size - 1).round(3) %>%; top: <%= y_pct(v).round(3) %>%" data-sui-last-dot></span>
           <% end %>
 
           <div class="<%= c::OVERLAY %>" aria-hidden="true">
@@ -50,7 +50,7 @@
               <div class="<%= c::COLUMN %>" data-sui-column></div>
             <% end %>
           </div>
-          <div class="<%= c::TOOLTIP.join(" ") %>" data-sui-tooltip aria-hidden="true"></div>
+          <div class="<%= c::TOOLTIP.join(" ") %>" data-sui-chart-tip aria-hidden="true"></div>
         </div>
 
         <div class="<%= c::X_AXIS %>" aria-hidden="true">
