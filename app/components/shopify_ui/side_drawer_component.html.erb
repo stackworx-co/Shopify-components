@@ -1,0 +1,74 @@
+<dialog <%= tag.attributes(dialog_attributes) %>>
+  <div class="<%= ShopifyUI::SideDrawerComponent::INNER %>">
+
+    <%# Header - fixed at top %>
+    <div class="<%= header_classes %>">
+      <h2
+        id="<%= title_id %>"
+        class="<%= ShopifyUI::SideDrawerComponent::TITLE %><%= " tw:sr-only" if @title_hidden %>">
+        <%= @title %>
+      </h2>
+
+      <button
+        type="button"
+        class="<%= ShopifyUI::SideDrawerComponent::CLOSE.join(" ") %>"
+        aria-label="<%= @close_label %>"
+        data-sui-side-drawer-close>
+        <%= close_icon %>
+      </button>
+    </div>
+
+    <%# Body - independently scrollable %>
+    <div class="<%= body_classes %>">
+      <% if @loading %>
+        <div class="<%= ShopifyUI::SideDrawerComponent::LOADING %>">
+          <%= spinner(ShopifyUI::SideDrawerComponent::SPINNER) %>
+          <span class="tw:sr-only">Loading</span>
+        </div>
+
+      <% elsif @sectioned && sections? %>
+        <% sections.each do |section| %>
+          <div class="<%= ShopifyUI::SideDrawerComponent::SECTION %>">
+            <%= section %>
+          </div>
+        <% end %>
+
+      <% elsif @sectioned %>
+        <div class="<%= ShopifyUI::SideDrawerComponent::SECTION %>">
+          <%= content %>
+        </div>
+
+      <% else %>
+        <%= content %>
+      <% end %>
+    </div>
+
+    <%# Footer - fixed at bottom %>
+    <% if actions? || footer? %>
+      <div class="<%= ShopifyUI::SideDrawerComponent::FOOTER.join(" ") %>">
+
+        <% if footer? %>
+          <div class="<%= ShopifyUI::SideDrawerComponent::FOOTER_LEFT %>">
+            <%= footer %>
+          </div>
+        <% end %>
+
+        <% if actions? %>
+          <div class="<%= ShopifyUI::SideDrawerComponent::FOOTER_ACTIONS %>">
+            <% @secondary.each do |action| %>
+              <%= action_button(action, variant: :secondary) %>
+            <% end %>
+
+            <% if @primary %>
+              <%= action_button(@primary, variant: :primary) %>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+
+  </div>
+</dialog>
+
+<%= ShopifyUI::Runtime.script(self, :side_drawer, ShopifyUI::SideDrawerComponent::SCRIPT) %>
