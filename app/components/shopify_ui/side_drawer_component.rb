@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 module ShopifyUI
@@ -54,7 +55,7 @@ module ShopifyUI
       tw:motion-reduce:transition-none
       tw:max-sm:w-full
       tw:max-sm:rounded-none
-    ].freeze
+    ].join(" ").freeze
 
     # Full-height flex column.
     # The drawer itself must not scroll.
@@ -80,7 +81,7 @@ module ShopifyUI
       tw:text-[14px] tw:font-semibold
       tw:leading-5 tw:text-ink
       tw:break-words
-    ].join(" ")
+    ].join(" ").freeze
 
     CLOSE = %w[
       tw:inline-flex tw:size-8
@@ -88,7 +89,8 @@ module ShopifyUI
       tw:justify-center
       tw:rounded-full
       tw:border-0 tw:p-0
-      tw:bg-transparent tw:text-muted
+      tw:bg-transparent
+      tw:text-muted
       tw:cursor-pointer
       tw:transition-colors tw:duration-100
       tw:hover:bg-fill-tertiary
@@ -108,7 +110,7 @@ module ShopifyUI
       tw:overflow-x-hidden
       tw:overscroll-contain
       tw:text-[13px] tw:leading-5
-    ].join(" ")
+    ].join(" ").freeze
 
     BODY_PADDING = "tw:p-5"
 
@@ -117,50 +119,43 @@ module ShopifyUI
       tw:border-t tw:border-border-secondary
       tw:p-5
       tw:first:border-t-0
-    ].join(" ")
+    ].join(" ").freeze
 
     LOADING = %w[
       tw:flex tw:items-center
       tw:justify-center
       tw:py-12
-    ].join(" ")
+    ].join(" ").freeze
 
-    SPINNER = "tw:size-6 tw:animate-spin tw:text-muted"
+    SPINNER = "tw:size-6 tw:animate-spin tw:text-muted".freeze
 
-    BUTTON_SPINNER = "tw:size-4 tw:animate-spin"
+    BUTTON_SPINNER = "tw:size-4 tw:animate-spin".freeze
 
     # Non-shrinking footer remains visible at the bottom.
- FOOTER = %w[
-  tw:flex tw:w-full tw:shrink-0
-  tw:box-border
-  tw:items-center
-  tw:justify-between
-  tw:gap-3
-  tw:border-t tw:border-border
-  tw:bg-surface
-  tw:px-5 tw:py-3
-  tw:pb-[max(12px,env(safe-area-inset-bottom))]
-].freeze
+    FOOTER = %w[
+      tw:flex tw:w-full tw:shrink-0
+      tw:box-border
+      tw:items-center
+      tw:justify-between
+      tw:gap-3
+      tw:border-t tw:border-border
+      tw:bg-surface
+      tw:px-5 tw:py-3
+      tw:pb-[max(12px,env(safe-area-inset-bottom))]
+    ].freeze
 
-FOOTER_ACTIONS = %w[
-  tw:ml-auto
-  tw:flex tw:shrink-0
-  tw:items-center tw:justify-end
-  tw:gap-2
-].join(" ")
+    # Actions stay aligned to the bottom-right.
+    FOOTER_ACTIONS = %w[
+      tw:ml-auto
+      tw:flex tw:shrink-0
+      tw:items-center tw:justify-end
+      tw:gap-2
+    ].join(" ").freeze
 
-   FOOTER_LEFT = %w[
-  tw:min-w-0 tw:flex-1
-  tw:text-[13px]
-].join(" ")
-
-    # FOOTER_ACTIONS = %w[
-    #   tw:ml-auto tw:flex
-    #   tw:flex-wrap tw:items-center
-    #   tw:justify-end tw:gap-2
-    #   tw:max-sm:w-full
-    #   tw:max-sm:[&>*]:flex-1
-    # ].join(" ")
+    FOOTER_LEFT = %w[
+      tw:min-w-0 tw:flex-1
+      tw:text-[13px]
+    ].join(" ").freeze
 
     SCRIPT = Runtime.wrap <<~JS.squish
       (function () {
@@ -183,14 +178,18 @@ FOOTER_ACTIONS = %w[
         function open(drawer, opener) {
           if (!drawer || drawer.open) return;
 
-          drawer.__suiOpener = opener;
+          drawer.__suiOpener = opener || null;
 
           drawer.showModal();
           lock();
         }
 
         document.addEventListener('click', function (event) {
-          var opener = event.target.closest(
+          var target = event.target;
+
+          if (!target || !target.closest) return;
+
+          var opener = target.closest(
             '[data-sui-side-drawer-open]'
           );
 
@@ -207,7 +206,7 @@ FOOTER_ACTIONS = %w[
             return;
           }
 
-          var closer = event.target.closest(
+          var closer = target.closest(
             'dialog[data-sui-side-drawer] [data-sui-side-drawer-close]'
           );
 
@@ -216,7 +215,7 @@ FOOTER_ACTIONS = %w[
             return;
           }
 
-          var drawer = event.target;
+          var drawer = target;
 
           if (
             drawer.matches &&
@@ -332,22 +331,26 @@ FOOTER_ACTIONS = %w[
     end
 
     def dialog_attributes
-      @html_attributes.merge(
+      attributes = @html_attributes.dup
+
+      attributes[:aria] = (attributes[:aria] || {}).merge(
+        labelledby: title_id,
+        busy: (@loading || nil)
+      )
+
+      attributes[:data] = (attributes[:data] || {}).merge(
+        sui_side_drawer: "",
+        dismissible: (@dismissible ? "" : nil),
+        open_on_load: (@open ? "" : nil)
+      )
+
+      attributes.merge(
         id: @id,
         class: [
           DRAWER,
           SIZES[@size],
-          @html_attributes[:class]
-        ].flatten.compact.join(" "),
-        aria: {
-          labelledby: title_id,
-          busy: (@loading || nil)
-        },
-        data: {
-          sui_side_drawer: "",
-          dismissible: (@dismissible ? "" : nil),
-          open_on_load: (@open ? "" : nil)
-        }
+          attributes[:class]
+        ].flatten.compact.join(" ")
       )
     end
 
